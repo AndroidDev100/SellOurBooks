@@ -10,6 +10,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
+    flavorDimensions "bylancerandroid"
     defaultConfig {
         applicationId "com.bylancer.classified.bylancerclassified"
         minSdkVersion 21
@@ -17,6 +18,16 @@ android {
         versionCode 8
         versionName "8.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    productFlavors {
+        bylancerdemo {
+            buildConfigField "String", "APP_NAME", "\"Bylancer\""
+        }
+        ogasell {
+            applicationIdSuffix ".ogasell"
+            versionNameSuffix "-ogasell"
+            buildConfigField "String", "DATA_API_PATH", "\"OgaSell\""
+        }
     }
     buildTypes {
         release {
