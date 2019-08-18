@@ -61,8 +61,8 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
         initializingRecyclerViewScrollListener()
         if (intent != null && intent.getBundleExtra(AppConstants.BUNDLE) != null) {
             var receivedBundle = intent.getBundleExtra(AppConstants.BUNDLE)
-            productCategoryId = receivedBundle.getString(AppConstants.SELECTED_CATEGORY_ID)
-            productSubCategoryId = receivedBundle.getString(AppConstants.SELECTED_SUB_CATEGORY_ID)
+            productCategoryId = receivedBundle.getString(AppConstants.SELECTED_CATEGORY_ID, "1")
+            productSubCategoryId = receivedBundle.getString(AppConstants.SELECTED_SUB_CATEGORY_ID, "0")
         }
 
         fetchProductList(true)
@@ -163,8 +163,8 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
     private fun showSortingAlertDialog() {
         val sortingDialog = CustomAlertDialog(this, R.style.custom_filter_dialog)
         sortingDialog.setContentView(R.layout.sorting_options_dialog)
-        sortingDialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-        sortingDialog.getWindow().setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
+        sortingDialog.window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        sortingDialog.window?.setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
         sortingDialog.setCanceledOnTouchOutside(true)
         sortingDialog.show()
 
@@ -264,8 +264,8 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
     private fun showFilterAlertDialog() {
         val filterDialog = CustomAlertDialog(this, R.style.custom_filter_dialog)
         filterDialog.setContentView(R.layout.filter_options_dialog)
-        filterDialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-        filterDialog.getWindow().setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
+        filterDialog.window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        filterDialog.window?.setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
         filterDialog.setCanceledOnTouchOutside(true)
         filterDialog.show()
 
@@ -311,8 +311,8 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
     private fun showAlertForFilterByKeyword() {
         val enterKeywordToSearchDialog = CustomAlertDialog(this, R.style.custom_filter_dialog)
         enterKeywordToSearchDialog.setContentView(R.layout.make_an_offer)
-        enterKeywordToSearchDialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-        enterKeywordToSearchDialog.getWindow().setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
+        enterKeywordToSearchDialog.window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        enterKeywordToSearchDialog.window?.setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
         enterKeywordToSearchDialog.setCanceledOnTouchOutside(true)
         enterKeywordToSearchDialog.show()
 
