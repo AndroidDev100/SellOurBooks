@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Ogasell</string>
+
+    <!-- AD CONFIG -->
+    <string name="ad_mob_banner">"ogasellca-app-pub-2589807731483436~1774789554"</string>
+    <string name="ad_mob_banner_ad_unit">"ogasell2ca-app-pub-2589807731483436/8389752062"</string>
+    <string name="ad_mob_interstitial_ad_unit">"ca-app-pub-6370111532336036/7079943350"</string>
 </resources>
