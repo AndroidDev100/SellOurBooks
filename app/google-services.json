@@ -1,78 +1,56 @@
 {
   "project_info": {
-    "project_number": "270782395282",
-    "firebase_url": "https://bylancer-classified.firebaseio.com",
-    "project_id": "bylancer-classified",
-    "storage_bucket": "bylancer-classified.appspot.com"
+    "project_number": "414474415080",
+    "firebase_url": "https://ogasell.firebaseio.com",
+    "project_id": "ogasell",
+    "storage_bucket": "ogasell.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:270782395282:android:72c1811af5549e34",
-        "android_client_info": {
-          "package_name": "com.bylancer.classified.bylancerclassified"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "270782395282-oo2n02t0l86io092h0b8raaeokej3qad.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.bylancer.classified.bylancerclassified",
-            "certificate_hash": "5eb79db057fee42c2ffa3b2208aa14731709f750"
-          }
-        },
-        {
-          "client_id": "270782395282-s6ttr509l2uqgbfvm795prd6kgju9cqt.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC0-OM0ewp9bzbOaTS4DwvWcRnDfPdXuiU"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "270782395282-s6ttr509l2uqgbfvm795prd6kgju9cqt.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      },
-      "admob_app_id": "ca-app-pub-6370111532336036~5661435384"
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:270782395282:android:c9f3781c43eb998d",
+        "mobilesdk_app_id": "1:414474415080:android:c9f3781c43eb998d",
         "android_client_info": {
           "package_name": "com.bylancer.classified.bylancerclassified.ogasell"
         }
       },
       "oauth_client": [
         {
-          "client_id": "270782395282-s6ttr509l2uqgbfvm795prd6kgju9cqt.apps.googleusercontent.com",
+          "client_id": "414474415080-43iklmrugs8okqbvki9sbusm55vo22fs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bylancer.classified.bylancerclassified.ogasell",
+            "certificate_hash": "5eb79db057fee42c2ffa3b2208aa14731709f750"
+          }
+        },
+        {
+          "client_id": "414474415080-trsgbrrupmbi9grkcevkqak3st94du6e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bylancer.classified.bylancerclassified.ogasell",
+            "certificate_hash": "3520ae25cb47a8d1fafb1d1d595bd44d7ac3be7b"
+          }
+        },
+        {
+          "client_id": "414474415080-u2h51oq0gcfdhoftk4tmuq6q3g9u68nk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC0-OM0ewp9bzbOaTS4DwvWcRnDfPdXuiU"
+          "current_key": "AIzaSyDQRF4k3OhLua7agU6CiKQdy8ovDLzIXrg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "270782395282-s6ttr509l2uqgbfvm795prd6kgju9cqt.apps.googleusercontent.com",
+              "client_id": "414474415080-u2h51oq0gcfdhoftk4tmuq6q3g9u68nk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
         }
       },
-      "admob_app_id": "ogasellca-app-pub-2589807731483436~1774789554"
+      "admob_app_id": "ca-app-pub-2589807731483436~1774789554"
     }
   ],
   "configuration_version": "1"

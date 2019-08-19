@@ -75,7 +75,7 @@ class AppConstants {
         const val ADDITIONAL_INFO_ACTIVITY_TITLE = "ADDITIONAL_INFO_ACTIVITY_TITLE"
 
         const val BANNER_DELAY = 2.0
-        const val INTERSTITIAL_DELAY = 3.0
+        const val INTERSTITIAL_DELAY = 10.0
         const val FACEBOOK_INTERSTITIAL_PLACEMENT = "2244587745860156_2351931271792469"
 
         enum class PREFERENCES private constructor(private val value: String) {

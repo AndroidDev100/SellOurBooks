@@ -123,7 +123,6 @@
     <string name="some_wrong_retry">Some thing went wrong, please restart the upload process.</string>
     <string name="map_initializing">Please wait, map is getting initialized</string>
     <string name="posted_by_you">This product belong to you.</string>
-    <string name="facebook_app_id">2244587745860156</string>
     <string name="privacy_policy">"By signing up you agree to our Terms &amp; Conditions and Privacy Policy"</string>
     <string name="privacy_text">"Privacy Policy"</string>
     <string name="default_notification_channel_id">"1009876676335"</string>
@@ -132,8 +131,11 @@
 
 
     <!-- AD CONFIG -->
-    <string name="ad_mob_banner">"ogasellca-app-pub-2589807731483436~1774789554"</string>
-    <string name="ad_mob_banner_ad_unit">"ca-app-pub-6370111532336036/4512005249"</string>
-    <string name="ad_mob_interstitial_ad_unit">"ca-app-pub-6370111532336036/7079943350"</string>
+    <string name="ad_mob_banner">"ca-app-pub-2589807731483436~1774789554"</string>
+    <string name="ad_mob_banner_ad_unit">"ca-app-pub-2589807731483436/8389752062"</string>
+    <string name="ad_mob_interstitial_ad_unit">"ca-app-pub-2589807731483436/2960620975"</string>
+
+    <!--Facebook -->
+    <string name="facebook_app_id">750790928669914</string>
 
 </resources>

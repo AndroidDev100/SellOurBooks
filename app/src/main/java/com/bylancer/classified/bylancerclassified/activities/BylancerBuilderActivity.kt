@@ -39,10 +39,10 @@ abstract class BylancerBuilderActivity : AppCompatActivity() {
 
         setOrientation() // Fixing Android O issue
 
-        /*mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd = InterstitialAd(this)
         mInterstitialAd.adUnitId = getString(R.string.ad_mob_interstitial_ad_unit)
         loadInterstitialAd()
-        addInterstitialAdListener()*/
+        addInterstitialAdListener()
 
         if (SessionState.instance.isGoogleInterstitialSupported
                 && this::class.simpleName != LoginRequiredActivity::class.simpleName
