@@ -4,10 +4,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 apply plugin: 'kotlin-kapt'
 
-/*repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}*/
-
 android {
     compileSdkVersion 29
     flavorDimensions "bylancerandroid"
@@ -80,9 +76,6 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation "com.google.android.gms:play-services-location:16.0.0"
     implementation "com.google.android.gms:play-services-places:16.0.0"
-    //implementation 'jrizani:jrspinner:0.2.4'
-    //implementation 'com.github.jrizani:JRSpinner:androidx-SNAPSHOT'
-    //implementation project(":jrspinner")
     implementation 'com.facebook.android:facebook-android-sdk:4.17.0'
     implementation 'com.github.mirrajabi:search-dialog:1.2.3'
     implementation 'androidx.room:room-runtime:2.0.0'
