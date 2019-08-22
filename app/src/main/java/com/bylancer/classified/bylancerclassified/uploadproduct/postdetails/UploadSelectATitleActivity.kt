@@ -27,7 +27,7 @@ class UploadSelectATitleActivity : BylancerBuilderActivity(), View.OnClickListen
         if(intent != null && intent.getBundleExtra(AppConstants.BUNDLE) != null) {
             var bundle = intent.getBundleExtra(AppConstants.BUNDLE)
             categoryPosition = bundle.getInt(AppConstants.SELECTED_CATEGORY_POSITION)
-            subCategoryId = bundle.getString(AppConstants.SELECTED_SUB_CATEGORY_ID)
+            subCategoryId = bundle.getString(AppConstants.SELECTED_SUB_CATEGORY_ID, "1")
         }
         addEnableListnerForButton()
     }

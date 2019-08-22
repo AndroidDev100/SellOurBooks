@@ -92,6 +92,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/upload_detail_enter_a_title_edit_text_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_twelve"
@@ -108,10 +109,12 @@
                     android:inputType="textCapSentences"
                     android:background="@null"
                     android:paddingBottom="@dimen/margin_twelve"
-                    android:paddingLeft="@dimen/margin_twelve"
-                    android:paddingRight="@dimen/margin_twelve"
+                    android:paddingStart="@dimen/margin_twelve"
+                    android:paddingEnd="@dimen/margin_twelve"
                     android:paddingTop="@dimen/margin_six"
                     android:singleLine="true"
+                    android:layout_gravity="start"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/black_color_text"
                     android:textColorHint="@color/gray"
                     android:textSize="@dimen/text_size_sixteen" />
@@ -140,10 +143,13 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/upload_detail_enter_phone_edit_text_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_twelve"
                 android:theme="@style/TextLabel"
+                android:layout_gravity="left"
+                android:gravity="left"
                 android:background="@drawable/rounded_title_selection_edit_text_states">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -153,11 +159,14 @@
                     android:layout_marginTop="@dimen/margin_twelve"
                     android:background="@null"
                     android:paddingBottom="@dimen/margin_twelve"
-                    android:paddingLeft="@dimen/margin_twelve"
-                    android:paddingRight="@dimen/margin_twelve"
+                    android:paddingStart="@dimen/margin_twelve"
+                    android:paddingEnd="@dimen/margin_twelve"
                     android:paddingTop="@dimen/margin_six"
                     android:fontFamily="@font/roboto_regular"
                     android:hint="@string/phone_number"
+                    android:layout_gravity="left"
+                    android:textDirection="ltr"
+                    android:gravity="left"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:textColor="@color/black_color_text"
@@ -172,6 +181,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_twelve"
                 android:theme="@style/TextLabel"
+                android:layout_gravity="left"
+                android:gravity="left"
                 android:background="@drawable/rounded_title_selection_edit_text_states">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -181,9 +192,12 @@
                     android:layout_marginTop="@dimen/margin_twelve"
                     android:background="@null"
                     android:paddingBottom="@dimen/margin_twelve"
-                    android:paddingLeft="@dimen/margin_twelve"
-                    android:paddingRight="@dimen/margin_twelve"
+                    android:paddingStart="@dimen/margin_twelve"
+                    android:paddingEnd="@dimen/margin_twelve"
                     android:paddingTop="@dimen/margin_six"
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    android:textDirection="ltr"
                     android:fontFamily="@font/roboto_regular"
                     android:imeOptions="actionNext"
                     android:inputType="number"
@@ -194,6 +208,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/upload_detail_enter_description_edit_text_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_twelve"
@@ -207,8 +222,8 @@
                     android:layout_marginTop="@dimen/margin_twelve"
                     android:background="@null"
                     android:paddingBottom="@dimen/margin_twelve"
-                    android:paddingLeft="@dimen/margin_twelve"
-                    android:paddingRight="@dimen/margin_twelve"
+                    android:paddingStart="@dimen/margin_twelve"
+                    android:paddingEnd="@dimen/margin_twelve"
                     android:paddingTop="@dimen/margin_six"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="start"
@@ -216,6 +231,8 @@
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine"
                     android:maxLines="7"
+                    android:layout_gravity="start"
+                    android:textAlignment="viewStart"
                     android:minHeight="@dimen/upload_description_edit_text_min_size"
                     android:textColor="@color/black_color_text"
                     android:textColorHint="@color/gray"
@@ -238,9 +255,11 @@
                     android:layout_marginTop="@dimen/margin_twelve"
                     android:background="@null"
                     android:paddingBottom="@dimen/margin_twelve"
-                    android:paddingLeft="@dimen/margin_twelve"
-                    android:paddingRight="@dimen/margin_twelve"
+                    android:paddingStart="@dimen/margin_twelve"
+                    android:paddingEnd="@dimen/margin_twelve"
                     android:paddingTop="@dimen/margin_six"
+                    android:layout_gravity="start"
+                    android:textAlignment="viewStart"
                     android:fontFamily="@font/roboto_regular"
                     android:hint="@string/country"
                     app:jrs_title="@string/select_country"
@@ -267,9 +286,11 @@
                     android:layout_marginTop="@dimen/margin_twelve"
                     android:background="@null"
                     android:paddingBottom="@dimen/margin_twelve"
-                    android:paddingLeft="@dimen/margin_twelve"
-                    android:paddingRight="@dimen/margin_twelve"
+                    android:paddingStart="@dimen/margin_twelve"
+                    android:paddingEnd="@dimen/margin_twelve"
                     android:paddingTop="@dimen/margin_six"
+                    android:layout_gravity="start"
+                    android:textAlignment="viewStart"
                     android:fontFamily="@font/roboto_regular"
                     android:hint="@string/state"
                     app:jrs_title="@string/select_state"
@@ -297,10 +318,12 @@
                     android:layout_marginTop="@dimen/margin_twelve"
                     android:background="@null"
                     android:paddingBottom="@dimen/margin_twelve"
-                    android:paddingLeft="@dimen/margin_twelve"
-                    android:paddingRight="@dimen/margin_twelve"
+                    android:paddingStart="@dimen/margin_twelve"
+                    android:paddingEnd="@dimen/margin_twelve"
                     android:paddingTop="@dimen/margin_six"
                     app:jrs_title="@string/select_city"
+                    android:layout_gravity="start"
+                    android:textAlignment="viewStart"
                     app:jrs_icon_tint="@color/light_gray"
                     android:fontFamily="@font/roboto_regular"
                     android:hint="@string/city"
@@ -326,8 +349,8 @@
                 android:textSize="@dimen/text_size_sixteen"
                 app:switchMinWidth="@dimen/upload_switch_min_width"
                 android:layout_marginTop="@dimen/margin_twelve"
-                android:layout_marginLeft="@dimen/margin_small"
-                android:layout_marginRight="@dimen/margin_small"/>
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_small"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/upload_detail_is_negotiable_switch"
@@ -343,8 +366,8 @@
                 app:switchPadding="@dimen/margin_twelve"
                 app:switchMinWidth="@dimen/upload_switch_min_width"
                 android:layout_marginTop="@dimen/margin_twelve"
-                android:layout_marginLeft="@dimen/margin_small"
-                android:layout_marginRight="@dimen/margin_small"/>
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_small"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/upload_detail_pin_in_map_text_view"

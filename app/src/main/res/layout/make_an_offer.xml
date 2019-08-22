@@ -45,6 +45,8 @@
         android:imeOptions="actionDone"
         android:inputType="number"
         android:paddingEnd="@dimen/margin_ten"
+        android:layout_gravity="start"
+        android:textAlignment="viewStart"
         android:textColor="@color/shadow_black"
         android:background="@drawable/rounded_background_gray"
         app:layout_constraintEnd_toEndOf="parent"

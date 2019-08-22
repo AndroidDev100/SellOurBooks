@@ -57,6 +57,8 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/margin_twenty_five"
             android:elevation="@dimen/margin_small"
+            android:layout_gravity="start"
+            android:textAlignment="viewStart"
             android:layout_marginEnd="@dimen/default_margin"
             android:imeOptions="actionDone"
             android:textColor="@color/black_color_text"

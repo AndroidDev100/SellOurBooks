@@ -8,6 +8,7 @@
     <dimen name="margin_forty">40dp</dimen>
     <dimen name="margin_thirty">30dp</dimen>
     <dimen name="margin_fifty">50dp</dimen>
+    <dimen name="margin_seventy">70dp</dimen>
     <dimen name="margin_hundred">100dp</dimen>
     <dimen name="margin_eighty">80dp</dimen>
     <dimen name="margin_small">4dp</dimen>
@@ -17,6 +18,10 @@
     <dimen name="margin_xsmall">2dp</dimen>
 
     <dimen name="dimen_32">32dp</dimen>
+    <dimen name="dimen_8">8dp</dimen>
+    <dimen name="dimen_4">4dp</dimen>
+    <dimen name="dimen_1">1dp</dimen>
+    <dimen name="dimen_327">327dp</dimen>
 
     <dimen name="text_size_twenty">20sp</dimen>
     <dimen name="text_size_eighteen">18sp</dimen>
@@ -46,6 +51,7 @@
     <!--Splash -->
     <dimen name="splash_title_text_size">45sp</dimen>
     <dimen name="splash_title_sub_text_size">18sp</dimen>
+    <dimen name="splash_progress_view_width">180dp</dimen>
 
     <!--Login -->
     <dimen name="edit_text_height">40dp</dimen>
@@ -89,5 +95,8 @@
     <dimen name="map_layout_in_upload_detail">250dp</dimen>
     <dimen name="upload_switch_min_width">50dp</dimen>
     <dimen name="upload_selected_image_card_view">140dp</dimen>
+
+    <!-- Language Selection -->
+    <dimen name="language_selection_flag_size">32dp</dimen>
 
 </resources>

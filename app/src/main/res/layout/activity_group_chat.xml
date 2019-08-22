@@ -40,8 +40,9 @@
         android:layout_height="0dp"
         android:paddingTop="@dimen/margin_twenty"
         app:layout_constraintTop_toBottomOf="@id/group_chat_title_text_view"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

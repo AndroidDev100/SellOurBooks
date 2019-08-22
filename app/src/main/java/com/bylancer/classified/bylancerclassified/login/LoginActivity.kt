@@ -35,10 +35,10 @@ class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<
 
     override fun initialize(savedInstanceState: Bundle?) {
         if (intent != null && intent.hasExtra(AppConstants.BUNDLE)) {
-            Utility.showSnackBar(login_screen_parent_layout, intent.getBundleExtra(AppConstants.BUNDLE).getString(AppConstants.MESSAGE), this)
+            intent.getBundleExtra(AppConstants.BUNDLE).getString(AppConstants.MESSAGE)?.let { Utility.showSnackBar(login_screen_parent_layout, it, this) }
         }
 
-        app_name_login_text_view.text = if (SessionState.instance.appName != null) SessionState.instance.appName else ""
+        app_name_login_text_view.text = if (SessionState.instance.appName != null) SessionState.instance.appName else getString(R.string.app_name)
         sign_up_to_continue_text_view.text = LanguagePack.getString(getString(R.string.sign_up_to_continue))
         login_with_email_text_view.text = LanguagePack.getString(getString(R.string.login_with_email))
         sign_up_with_email_text_view.text = LanguagePack.getString(getString(R.string.sign_up_with_email))

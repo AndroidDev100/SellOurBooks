@@ -3,6 +3,7 @@ package com.bylancer.classified.bylancerclassified.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.chat.ChatActivity
@@ -10,6 +11,7 @@ import com.bylancer.classified.bylancerclassified.login.LoginRequiredActivity
 import com.bylancer.classified.bylancerclassified.login.LoginActivity
 import com.bylancer.classified.bylancerclassified.login.ManualLoginActivity
 import com.bylancer.classified.bylancerclassified.login.RegisterUserActivity
+import com.bylancer.classified.bylancerclassified.splash.SplashActivity
 import com.bylancer.classified.bylancerclassified.uploadproduct.categoryselection.UploadCategorySelectionActivity
 import com.bylancer.classified.bylancerclassified.utils.AppConstants
 import com.bylancer.classified.bylancerclassified.utils.SessionState
@@ -26,6 +28,7 @@ abstract class BylancerBuilderActivity : AppCompatActivity() {
     lateinit var mInterstitialAd: InterstitialAd
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        isRTLSupportRequired()
         super.onCreate(savedInstanceState)
         if(this::class.simpleName != LoginRequiredActivity::class.simpleName &&
                 this::class.simpleName != LoginActivity::class.simpleName &&
@@ -166,4 +169,13 @@ abstract class BylancerBuilderActivity : AppCompatActivity() {
         val delay = (1000 * 60 * AppConstants.INTERSTITIAL_DELAY)
         timer.schedule(interstitialTask, 0L, delay.toLong())
     }
+
+    private fun isRTLSupportRequired() {
+        if (AppConstants.DIRECTION_RTL.equals(SessionState.instance.selectedLanguageDirection)) {
+            window.decorView.layoutDirection = View.LAYOUT_DIRECTION_RTL
+        } else {
+            window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
+        }
+    }
 }
+

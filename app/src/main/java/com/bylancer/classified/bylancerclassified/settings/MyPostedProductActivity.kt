@@ -29,11 +29,25 @@ class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickLis
         my_products_title_text_view.text = LanguagePack.getString(getString(R.string.my_posted_product))
         no_my_products_added.text = LanguagePack.getString(getString(R.string.no_post))
 
+        setUpPullToRefresh()
+        initializePostedPropertyRecyclerView()
+        fetchProductList()
+    }
+
+    private fun initializePostedPropertyRecyclerView() {
         my_products_recycler_view.layoutManager = GridLayoutManager(this, SPAN_COUNT)
         my_products_recycler_view.setHasFixedSize(false)
         my_products_recycler_view.isNestedScrollingEnabled = false
         my_products_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 10, false))
-        fetchProductList()
+    }
+
+    private fun setUpPullToRefresh() {
+        my_posted_property_pull_to_refresh.setWaveColor(AppConstants.SEARCH_PULL_TO_REFRESH_COLOR.toInt())
+        my_posted_property_pull_to_refresh.setColorSchemeColors(AppConstants.PULL_TO_REFRESH_COLOR_SCHEME, AppConstants.PULL_TO_REFRESH_COLOR_SCHEME)
+        my_posted_property_pull_to_refresh.setOnRefreshListener {
+            my_posted_property_pull_to_refresh?.isRefreshing = true
+            fetchProductList(false)
+        }
     }
 
     override fun onClick(view: View?) {
@@ -42,8 +56,10 @@ class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickLis
         }
     }
 
-    private fun fetchProductList() {
-        iosDialog?.show()
+    private fun fetchProductList(isLoadingRequired : Boolean = true) {
+        if (isLoadingRequired) {
+            iosDialog?.show()
+        }
         val productInputData = ProductInputData()
         productInputData.limit = "300"
         productInputData.pageNumber = "1"
@@ -65,6 +81,8 @@ class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickLis
                     no_my_products_frame.visibility = View.VISIBLE
                     my_products_recycler_view.visibility = View.GONE
                 }
+
+                my_posted_property_pull_to_refresh?.isRefreshing = false
             }
         }
     }
@@ -73,6 +91,7 @@ class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickLis
         iosDialog?.dismiss()
         no_my_products_frame.visibility = View.VISIBLE
         my_products_recycler_view.visibility = View.GONE
+        my_posted_property_pull_to_refresh?.isRefreshing = false
         Utility.showSnackBar(my_posted_product_parent_layout, LanguagePack.getString(getString(R.string.internet_issue)), this)
     }
 

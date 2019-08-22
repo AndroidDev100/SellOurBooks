@@ -65,16 +65,16 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
 
     override fun initialize(savedInstanceState: Bundle?) {
         upload_listing_under_text_view.text = LanguagePack.getString(getString(R.string.this_is_listing_under))
-        upload_detail_enter_a_title_edit_text.hint = LanguagePack.getString(getString(R.string.enter_upload_title))
+        upload_detail_enter_a_title_edit_text_input_layout.hint = LanguagePack.getString(getString(R.string.enter_upload_title))
         upload_details_add_images_button.text = LanguagePack.getString(getString(R.string.add_photo))
         upload_detail_hide_phone_switch.text = LanguagePack.getString(getString(R.string.hide_phone))
         upload_detail_is_negotiable_switch.text = LanguagePack.getString(getString(R.string.negotiable))
-        upload_detail_enter_phone_edit_text.hint = LanguagePack.getString(getString(R.string.phone_no))
+        upload_detail_enter_phone_edit_text_input_layout.hint = LanguagePack.getString(getString(R.string.phone_no))
         upload_detail_enter_price_text_input_layout.hint = LanguagePack.getString(getString(R.string.price))
-        upload_detail_enter_description_edit_text.hint = LanguagePack.getString(getString(R.string.description))
-       // upload_detail_enter_country_edit_text.hint = LanguagePack.getString(getString(R.string.country))
-       // upload_detail_enter_state_edit_text.hint = LanguagePack.getString(getString(R.string.state))
-       // upload_detail_enter_city_edit_text.hint = LanguagePack.getString(getString(R.string.city))
+        upload_detail_enter_description_edit_text_input_layout.hint = LanguagePack.getString(getString(R.string.description))
+        upload_detail_enter_country_text_input_layout.hint = LanguagePack.getString(getString(R.string.country))
+        upload_detail_enter_state_text_input_layout.hint = LanguagePack.getString(getString(R.string.state))
+        upload_detail_enter_city_text_input_layout.hint = LanguagePack.getString(getString(R.string.city))
         upload_detail_title_text_view.text = LanguagePack.getString(getString(R.string.place_ad))
         upload_detail_pin_in_map_text_view.text = LanguagePack.getString(getString(R.string.tap_to_pin_location))
         upload_product_detail_button.text = LanguagePack.getString(getString(R.string.post))
@@ -85,7 +85,7 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
             var category = AppConfigDetail.category!!.get(bundle.getInt(AppConstants.SELECTED_CATEGORY_POSITION))
             productCategoryId = category.id!!
             isJobCategory = category.name!!.contains("Job")
-            productSubCategoryId = bundle.getString(AppConstants.SELECTED_SUB_CATEGORY_ID)
+            productSubCategoryId = bundle.getString(AppConstants.SELECTED_SUB_CATEGORY_ID, "0")
             setProductListingUnder(category)
         } else {
             Utility.showSnackBar(activity_upload_products_parent_layout, getString(R.string.some_wrong_retry), this)

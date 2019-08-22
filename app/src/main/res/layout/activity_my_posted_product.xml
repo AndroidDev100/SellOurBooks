@@ -78,11 +78,18 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/my_products_recycler_view"
+        <com.bylancer.classified.bylancerclassified.widgets.pulltorefresh.WaveSwipeRefreshLayout
+            android:id="@+id/my_posted_property_pull_to_refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/my_products_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        </com.bylancer.classified.bylancerclassified.widgets.pulltorefresh.WaveSwipeRefreshLayout>
 
     </FrameLayout>
 

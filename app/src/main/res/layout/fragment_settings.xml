@@ -65,8 +65,8 @@
                 android:id="@+id/settings_login_sign_up_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin">
+                android:paddingStart="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/settings_login_sign_up_icon"
@@ -106,8 +106,8 @@
                 android:id="@+id/settings_my_ads_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin">
+                android:paddingStart="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/settings_my_ads_icon"
@@ -147,8 +147,8 @@
                 android:id="@+id/settings_my_fav_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin">
+                android:paddingStart="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/settings_my_fav_icon"
@@ -189,8 +189,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin">
+                android:paddingStart="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/settings_my_saved_search_icon"
@@ -232,7 +232,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/margin_fifty"
-                android:layout_marginLeft="@dimen/margin_fifteen"
+                android:layout_marginStart="@dimen/margin_fifteen"
                 android:text="@string/settings"
                 android:textColor="@color/light_black"
                 android:textSize="@dimen/text_size_sixteen"
@@ -246,14 +246,14 @@
                 android:layout_height="@dimen/margin_xsmall"
                 android:layout_marginTop="@dimen/margin_fifteen"
                 android:background="@color/light_gray"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"/>
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin">
+                android:paddingStart="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/settings_country_icon"
@@ -296,6 +296,8 @@
                         android:textColorHint="@color/light_gray"
                         android:background="@android:color/transparent"
                         android:padding="@dimen/margin_ten"
+                        android:layout_gravity="start"
+                        android:textAlignment="viewStart"
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/shadow_black"
                         app:jrs_title="@string/select_country"
@@ -317,8 +319,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin">
+                android:paddingStart="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/settings_state_icon"
@@ -360,6 +362,8 @@
                         android:hint="@string/select_state"
                         android:background="@android:color/transparent"
                         android:padding="@dimen/margin_ten"
+                        android:layout_gravity="start"
+                        android:textAlignment="viewStart"
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/shadow_black"
                         android:textColorHint="@color/light_gray"
@@ -382,8 +386,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin">
+                android:paddingStart="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/settings_city_icon"
@@ -425,6 +429,8 @@
                         android:hint="@string/select_city"
                         android:background="@android:color/transparent"
                         android:padding="@dimen/margin_ten"
+                        android:layout_gravity="start"
+                        android:textAlignment="viewStart"
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/shadow_black"
                         android:textColorHint="@color/light_gray"
@@ -447,8 +453,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin">
+                android:paddingStart="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/settings_language_icon"
@@ -491,6 +497,8 @@
                         android:fontFamily="@font/roboto_regular"
                         android:background="@android:color/transparent"
                         android:padding="@dimen/margin_ten"
+                        android:layout_gravity="start"
+                        android:textAlignment="viewStart"
                         android:textColorHint="@color/light_gray"
                         android:textColor="@color/shadow_black"
                         app:jrs_title="@string/select_language"
@@ -513,8 +521,8 @@
                 android:id="@+id/settings_support_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin">
+                android:paddingStart="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/settings_support_icon"
@@ -554,8 +562,8 @@
                 android:id="@+id/settings_terms_condition_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin">
+                android:paddingStart="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/settings_terms_condition_icon"

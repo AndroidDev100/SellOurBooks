@@ -25,7 +25,7 @@ import android.graphics.Typeface
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.bylancer.classified.bylancerclassified.activities.SplashActivity
+import com.bylancer.classified.bylancerclassified.splash.SplashActivity
 import com.bylancer.classified.bylancerclassified.appconfig.AppConfigDetail
 import com.bylancer.classified.bylancerclassified.appconfig.SubCategory
 import com.bylancer.classified.bylancerclassified.utils.*
@@ -41,7 +41,9 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
 
     var SPAN_COUNT = 2
     var productPageNumber = 1
+    var lastProductPageNumber = 1
     var featuredProductPageNumber = 1
+    var lastFeaturedProductPageNumber = 1
     var isProductDataLoading = false
     var animUpDown: Animation? = null
     val productDataList: ArrayList<ProductsData> = arrayListOf()
@@ -49,38 +51,11 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
 
     override fun setLayoutView() = R.layout.fragment_dashboard
 
-    override fun initialize(savedInstanceState: Bundle?) { //
-        dashboard_category_menu_recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        dashboard_category_menu_recycler_view.setHasFixedSize(false)
-        if (productDataList.isEmpty()) {
-            dashboard_category_menu_recycler_view.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
-        }
-        productDataList.clear()
-        featuredDataList.clear()
-        productPageNumber = 1
-        featuredProductPageNumber = 1
-
-        if (resources.getBoolean(R.bool.isTablet)) {
-            SPAN_COUNT = 3
-        }
-
-        val parentActivity: DashboardActivity = (activity as DashboardActivity?)!!
-        if (AppConfigDetail.category == null || dashboard_category_menu_recycler_view == null) {
-            SessionState.instance.readValuesFromPreferences(context)
-            startActivity(SplashActivity::class.java, true)
-        }
-        dashboard_category_menu_recycler_view.adapter = DashboardCategoryAdapter(AppConfigDetail.category!!, parentActivity)
-
-        dashboard_featured_recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        dashboard_featured_recycler_view.setHasFixedSize(false)
-        dashboard_featured_recycler_view.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
-
-        dashboard_recycler_view.layoutManager = GridLayoutManager(context, SPAN_COUNT);
-        dashboard_recycler_view.setHasFixedSize(false)
-        dashboard_recycler_view.isNestedScrollingEnabled = false
-        dashboard_recycler_view.itemAnimator = DefaultItemAnimator()
-        dashboard_recycler_view.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
-        dashboard_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 10, false))
+    override fun initialize(savedInstanceState: Bundle?) {
+        setUpPullToRefresh()
+        setUpCategoryRecyclerView()
+        resetAdsData()
+        setUpFeaturedLatestAdRecyclerView()
         initializingRecyclerViewScrollListener()
 
         featured_in_classified.text = LanguagePack.getString(getString(R.string.featured_ads))
@@ -99,6 +74,45 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
             bundle.putString(AppConstants.SELECTED_SUB_CATEGORY_ID, SessionState.instance.continueBrowsingSubCategoryId)
             startActivity(ProductByCategoryActivity::class.java, bundle)
         }
+    }
+
+    private fun setUpCategoryRecyclerView() {
+        dashboard_category_menu_recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        dashboard_category_menu_recycler_view.setHasFixedSize(false)
+        if (productDataList.isEmpty()) {
+            dashboard_category_menu_recycler_view.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
+        }
+        val parentActivity: DashboardActivity = (activity as DashboardActivity?)!!
+        if (AppConfigDetail.category == null || dashboard_category_menu_recycler_view == null) {
+            SessionState.instance.readValuesFromPreferences(context)
+            startActivity(SplashActivity::class.java, true)
+        }
+        dashboard_category_menu_recycler_view.adapter = DashboardCategoryAdapter(AppConfigDetail.category!!, parentActivity)
+    }
+
+    private fun setUpPullToRefresh() {
+        dashboard_pull_to_refresh.setWaveColor(AppConstants.DASHBOARD_PULL_TO_REFRESH_COLOR.toInt())
+        dashboard_pull_to_refresh.setColorSchemeColors(AppConstants.PULL_TO_REFRESH_COLOR_SCHEME, AppConstants.PULL_TO_REFRESH_COLOR_SCHEME)
+        dashboard_pull_to_refresh.setOnRefreshListener {
+            dashboard_pull_to_refresh?.isRefreshing = true
+            fetchFeaturedAndUrgentProductList()
+        }
+    }
+
+    private fun setUpFeaturedLatestAdRecyclerView() {
+        if (resources.getBoolean(R.bool.isTablet)) {
+            SPAN_COUNT = 3
+        }
+        dashboard_featured_recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        dashboard_featured_recycler_view.setHasFixedSize(false)
+        dashboard_featured_recycler_view.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
+
+        dashboard_recycler_view.layoutManager = GridLayoutManager(context, SPAN_COUNT);
+        dashboard_recycler_view.setHasFixedSize(false)
+        dashboard_recycler_view.isNestedScrollingEnabled = false
+        dashboard_recycler_view.itemAnimator = DefaultItemAnimator()
+        dashboard_recycler_view.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
+        dashboard_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 10, false))
     }
 
     private fun showItemSearchBar() {
@@ -229,8 +243,8 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
         progress_view_dashboard_frame.visibility = View.VISIBLE
         animUpDown = AnimationUtils.loadAnimation(context,
                 R.anim.up_down)
-        animUpDown?.setRepeatCount(Animation.INFINITE)
-        animUpDown?.setRepeatMode(Animation.INFINITE)
+        animUpDown?.repeatCount = Animation.INFINITE
+        animUpDown?.repeatMode = Animation.INFINITE
         animUpDown?.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
 
@@ -249,17 +263,27 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
         val productInputData = ProductInputData()
         productInputData.countryCode = SessionState.instance.selectedCountryCode
         productInputData.limit = AppConstants.PRODUCT_LOADING_LIMIT
+        if (dashboard_pull_to_refresh.isRefreshing) {
+            lastFeaturedProductPageNumber = featuredProductPageNumber
+            featuredProductPageNumber = 1
+        }
         productInputData.pageNumber = featuredProductPageNumber.toString()
         productInputData.status = AppConstants.PRODUCT_STATUS
 
         RetrofitController.fetchFeaturedAndUrgentProducts(productInputData, object : Callback<List<ProductsData>> {
             override fun onFailure(call: Call<List<ProductsData>>?, t: Throwable?) {
+                if (dashboard_pull_to_refresh != null && dashboard_pull_to_refresh.isRefreshing) {
+                    featuredProductPageNumber = lastFeaturedProductPageNumber
+                }
                 fetchProductList()
             }
 
             override fun onResponse(call: Call<List<ProductsData>>?, response: Response<List<ProductsData>>?) {
                 if(this@DashboardFragment.isAdded && this@DashboardFragment.isVisible) {
                     if(response != null && response.isSuccessful) {
+                        if (dashboard_pull_to_refresh != null && dashboard_pull_to_refresh.isRefreshing) {
+                            featuredDataList.clear()
+                        }
                         featuredDataList.addAll(response.body())
                         if (!featuredDataList.isNullOrEmpty()) {
                             featured_text_layout.visibility = View.VISIBLE
@@ -283,6 +307,10 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
         val productInputData = ProductInputData()
         productInputData.countryCode = SessionState.instance.selectedCountryCode
         productInputData.limit = AppConstants.PRODUCT_LOADING_LIMIT
+        if (dashboard_pull_to_refresh.isRefreshing) {
+            lastProductPageNumber = productPageNumber
+            productPageNumber = 1
+        }
         productInputData.pageNumber = productPageNumber.toString()
         productInputData.status = AppConstants.PRODUCT_STATUS
 
@@ -296,6 +324,9 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
             animUpDown = null
 
             if(response != null && response.isSuccessful) {
+                if (dashboard_pull_to_refresh != null && dashboard_pull_to_refresh.isRefreshing) {
+                    productDataList.clear()
+                }
                 productDataList.addAll(response.body())
                 if (!productDataList.isNullOrEmpty()) {
                     top_picks_layout.visibility = View.VISIBLE
@@ -310,6 +341,7 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
                     Utility.showSnackBar(dashboard_fragment_parent_layout, getString(R.string.internet_issue), context!!)
                 }
             }
+            dashboard_pull_to_refresh?.isRefreshing = false
         }
 
         isProductDataLoading = false
@@ -319,6 +351,11 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
         if (progress_view_dashboard_frame != null) progress_view_dashboard_frame.visibility = View.GONE
         if (progress_view_dashboard != null) progress_view_dashboard.clearAnimation()
         animUpDown = null
+        if (dashboard_pull_to_refresh != null && dashboard_pull_to_refresh.isRefreshing) {
+            productPageNumber = lastProductPageNumber
+            dashboard_pull_to_refresh.isRefreshing = false
+        }
+
         isProductDataLoading = false
     }
 
@@ -350,5 +387,12 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
                 }
             }
         })
+    }
+
+    private fun resetAdsData() {
+        productDataList.clear()
+        featuredDataList.clear()
+        productPageNumber = 1
+        featuredProductPageNumber = 1
     }
 }

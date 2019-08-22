@@ -13,6 +13,7 @@ import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.utils.Utility
 
 class ProductDetailViewPagerAdapter(private val mContext: Context, private val images: List<String>, private val imagePath:String) : PagerAdapter() {
+
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(mContext)
         val layout = inflater.inflate(R.layout.product_detail_view_pager_adapter, collection, false) as ViewGroup

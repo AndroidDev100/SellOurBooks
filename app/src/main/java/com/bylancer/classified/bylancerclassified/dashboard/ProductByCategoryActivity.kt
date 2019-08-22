@@ -28,18 +28,19 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickListener, View.OnClickListener, Callback<List<ProductsData>> {
-    val SPAN_COUNT = 2
+    private val SPAN_COUNT = 2
     var iosDialog:IOSDialog? = null
     var productPageNumber = 1
+    var lastProductPageNumber = 1
     var isProductDataLoading = false
     var productCategoryId = "1"
     var productSubCategoryId = "1"
-    var ADDITIONAL_SEARCH_INFO_REQUEST = 6
+    private var ADDITIONAL_SEARCH_INFO_REQUEST = 6
     var filterByAdditionInfoSelected = true
-    val SORT_BY_NEW_TO_OLD_DATE  = 1
-    val SORT_BY_OLD_TO_NEW_DATE  = 2
-    val SORT_BY_PRICE_HIGH_TO_LOW = 3
-    val SORT_BY_PRICE_LOW_TO_HIGH  = 4
+    private val SORT_BY_NEW_TO_OLD_DATE  = 1
+    private val SORT_BY_OLD_TO_NEW_DATE  = 2
+    private val SORT_BY_PRICE_HIGH_TO_LOW = 3
+    private val SORT_BY_PRICE_LOW_TO_HIGH  = 4
     var sortBySelectedType = 1
     var keywords = ""
     val productDataList: ArrayList<ProductsData> = arrayListOf()
@@ -53,12 +54,9 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
         no_product_by_category_added.text = LanguagePack.getString(getString(R.string.no_search_match))
         SessionState.instance.uploadedProductAdditionalInfo = ""
 
-        product_by_category_recycler_view.layoutManager = GridLayoutManager(this, SPAN_COUNT)
-        product_by_category_recycler_view.setHasFixedSize(false)
-        product_by_category_recycler_view.itemAnimator = DefaultItemAnimator()
-        product_by_category_recycler_view.isNestedScrollingEnabled = false
-        product_by_category_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 10, false))
-        initializingRecyclerViewScrollListener()
+        setUpPullToRefresh()
+        initializeProductRecyclerView()
+
         if (intent != null && intent.getBundleExtra(AppConstants.BUNDLE) != null) {
             var receivedBundle = intent.getBundleExtra(AppConstants.BUNDLE)
             productCategoryId = receivedBundle.getString(AppConstants.SELECTED_CATEGORY_ID, "1")
@@ -66,6 +64,24 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
         }
 
         fetchProductList(true)
+    }
+
+    private fun setUpPullToRefresh() {
+        search_pull_to_refresh.setWaveColor(AppConstants.SEARCH_PULL_TO_REFRESH_COLOR.toInt())
+        search_pull_to_refresh.setColorSchemeColors(AppConstants.PULL_TO_REFRESH_COLOR_SCHEME, AppConstants.PULL_TO_REFRESH_COLOR_SCHEME)
+        search_pull_to_refresh.setOnRefreshListener {
+            search_pull_to_refresh?.isRefreshing = true
+            fetchProductList(false)
+        }
+    }
+
+    private fun initializeProductRecyclerView() {
+        product_by_category_recycler_view.layoutManager = GridLayoutManager(this, SPAN_COUNT)
+        product_by_category_recycler_view.setHasFixedSize(false)
+        product_by_category_recycler_view.itemAnimator = DefaultItemAnimator()
+        product_by_category_recycler_view.isNestedScrollingEnabled = false
+        product_by_category_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 10, false))
+        initializingRecyclerViewScrollListener()
     }
 
     override fun onClick(view: View?) {
@@ -84,7 +100,13 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
         val productInputData = ProductInputData()
         productInputData.countryCode = SessionState.instance.selectedCountryCode
         productInputData.limit = AppConstants.PRODUCT_LOADING_LIMIT
+
+        if (search_pull_to_refresh.isRefreshing) {
+            lastProductPageNumber = productPageNumber
+            productPageNumber = 1
+        }
         productInputData.pageNumber = productPageNumber.toString()
+
         productInputData.status = AppConstants.PRODUCT_STATUS
         productInputData.userId = SessionState.instance.userId
         productInputData.additionalSearchInfo = SessionState.instance.uploadedProductAdditionalInfo
@@ -102,6 +124,10 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
         if(!this.isFinishing) {
             iosDialog?.dismiss()
             if(response != null && response.isSuccessful) {
+                if (search_pull_to_refresh != null && search_pull_to_refresh.isRefreshing) {
+                    productDataList.clear()
+                    search_pull_to_refresh.isRefreshing = false
+                }
                 productDataList.addAll(response.body())
                 if(!productDataList.isNullOrEmpty()) {
                     no_product_by_category_frame.visibility = View.GONE
@@ -126,6 +152,10 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
         iosDialog?.dismiss()
         no_product_by_category_frame.visibility = View.VISIBLE
         product_by_category_recycler_view.visibility = View.GONE
+        if (search_pull_to_refresh != null && search_pull_to_refresh.isRefreshing) {
+            search_pull_to_refresh.isRefreshing = false
+            productPageNumber = lastProductPageNumber
+        }
         isProductDataLoading = false
         Utility.showSnackBar(product_by_category_parent_layout, LanguagePack.getString(getString(R.string.internet_issue)), this)
     }

@@ -110,7 +110,7 @@ public class JRSpinner extends androidx.appcompat.widget.AppCompatEditText {
     private void setIcon() {
         Drawable[] drawables = getCompoundDrawables();
 
-        setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], expandDrawable, drawables[3]);
+        setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, expandDrawable, null);
     }
 
     /**

@@ -16,93 +16,100 @@
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
-        android:drawableStart="@drawable/ic_search_small"
+        android:drawableEnd="@drawable/ic_search_small"
         android:text="@string/search_text"
         android:gravity="start|center_vertical"
         android:background="@drawable/rounded_background_gray"
         android:textColor="@color/black_color_text"
         android:textAllCaps="false"
         android:drawablePadding="@dimen/margin_fifteen"
-        android:paddingLeft="@dimen/margin_fifteen"
-        android:paddingRight="@dimen/margin_fifteen"
+        android:paddingStart="@dimen/margin_fifteen"
+        android:paddingEnd="@dimen/margin_fifteen"
         android:fontFamily="@font/roboto_condensed_italic" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/dashboard_nested_scroll_view"
+    <com.bylancer.classified.bylancerclassified.widgets.pulltorefresh.WaveSwipeRefreshLayout
+        android:id="@+id/dashboard_pull_to_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_twenty">
+        android:layout_height="match_parent" >
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/dashboard_nested_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:focusableInTouchMode="true">
+            android:layout_marginTop="@dimen/margin_twenty">
 
-            <include layout="@layout/dashboard_top_item_layout"/>
-
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:focusableInTouchMode="true">
+
+                <include layout="@layout/dashboard_top_item_layout"/>
 
                 <FrameLayout
-                    android:id="@+id/progress_view_dashboard_frame"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/progress_view_dashboard_height"
-                    android:layout_gravity="center">
-
-                    <ImageView
-                        android:id="@+id/progress_view_dashboard"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_bylancer_icon" />
-
-                </FrameLayout>
-
-                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/dashboard_featured_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    android:layout_height="wrap_content">
 
                     <FrameLayout
-                        android:id="@+id/top_picks_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:padding="@dimen/margin_twelve">
+                        android:id="@+id/progress_view_dashboard_frame"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/progress_view_dashboard_height"
+                        android:layout_gravity="center">
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/top_picks_in_classified"
+                        <ImageView
+                            android:id="@+id/progress_view_dashboard"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_small"
-                            android:fontFamily="@font/roboto_regular"
-                            android:textStyle="bold"
-                            android:layout_gravity="center"
-                            android:text="@string/top_picks_in_classified"
-                            android:textColor="@color/black_color_text"
-                            android:textSize="@dimen/text_size_sixteen" />
+                            android:src="@drawable/ic_bylancer_icon" />
 
                     </FrameLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/dashboard_recycler_view"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                        android:orientation="vertical">
 
-                </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/dashboard_featured_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-            </FrameLayout>
+                        <FrameLayout
+                            android:id="@+id/top_picks_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:padding="@dimen/margin_twelve">
 
-        </LinearLayout>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/top_picks_in_classified"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/margin_small"
+                                android:fontFamily="@font/roboto_regular"
+                                android:textStyle="bold"
+                                android:layout_gravity="center"
+                                android:text="@string/top_picks_in_classified"
+                                android:textColor="@color/black_color_text"
+                                android:textSize="@dimen/text_size_sixteen" />
 
-    </androidx.core.widget.NestedScrollView>
+                        </FrameLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/dashboard_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </com.bylancer.classified.bylancerclassified.widgets.pulltorefresh.WaveSwipeRefreshLayout>
 
 </LinearLayout>

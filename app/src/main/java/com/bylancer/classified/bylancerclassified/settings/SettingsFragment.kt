@@ -177,16 +177,26 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
     }
 
     private fun initializeLanguagePack() {
-        settings_language_spinner.setHint(LanguagePack.getString(getString(R.string.select_language)))
+        settings_language_spinner.hint = LanguagePack.getString(getString(R.string.select_language))
         settings_language_spinner.setOnItemClickListener{ position ->
-            if(AppConfigDetail.languageList != null) {
-                SessionState.instance.selectedLanguage = if (AppConfigDetail.languageList?.get(position)?.name != null) AppConfigDetail.languageList?.get(position)?.name!! else ""
-                SessionState.instance.selectedLanguageCode = if (AppConfigDetail.languageList?.get(position)?.code != null) AppConfigDetail.languageList?.get(position)?.code!! else ""
+            if(LanguagePack.instance.languagePackData != null) {
+                SessionState.instance.selectedLanguage = if (LanguagePack.instance.languagePackData?.get(position)?.language != null) LanguagePack.instance.languagePackData?.get(position)?.language!! else ""
+                SessionState.instance.selectedLanguageCode = if (LanguagePack.instance.languagePackData?.get(position)?.languageCode != null) LanguagePack.instance.languagePackData?.get(position)?.languageCode!! else ""
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE.toString(),
                         SessionState.instance.selectedLanguage)
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE_CODE.toString(),
                         SessionState.instance.selectedLanguageCode)
-                initializeTextViewsWithLanguagePack(SessionState.instance.selectedLanguageCode)
+                if (SessionState.instance.selectedLanguageDirection.equals(LanguagePack.instance.languagePackData?.get(position)?.direction)) {
+                    initializeTextViewsWithLanguagePack(SessionState.instance.selectedLanguageCode)
+                } else {
+                    SessionState.instance.selectedLanguageDirection = if (LanguagePack.instance.languagePackData?.get(position)?.direction != null) LanguagePack.instance.languagePackData?.get(position)?.direction!! else ""
+                    SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE_DIRECTION.toString(),
+                            SessionState.instance.selectedLanguageDirection)
+                    if (!SessionState.instance.selectedLanguageCode.isNullOrEmpty()) {
+                        refreshCategoriesWithLanguageCode(SessionState.instance.selectedLanguageCode, true)
+                    }
+                }
+
             } else  {
                 SessionState.instance.selectedLanguage = "English"
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE.toString(),
@@ -198,10 +208,10 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
             settings_language_spinner.setText(SessionState.instance.selectedLanguage)
         }
 
-        var languageList = arrayListOf<String>()
-        if (AppConfigDetail.languageList != null) {
-            for (x in AppConfigDetail.languageList !!) {
-                languageList.add(x.name!!)
+        var languageList = arrayListOf<String?>()
+        if (LanguagePack.instance.languagePackData != null) {
+            for (x in LanguagePack.instance.languagePackData!!) {
+                languageList.add(x.language)
             }
         } else  {
             languageList.add("English")
@@ -357,11 +367,11 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         val builder = AlertDialog.Builder(context!!)
         builder.setTitle("")
         builder.setMessage(LanguagePack.getString("Are you sure you want to log out"))
-        builder.setPositiveButton(LanguagePack.getString("YES")){dialog, which ->
+        builder.setPositiveButton(LanguagePack.getString("YES")){dialog, _ ->
             dialog.dismiss()
             logoutUser()
         }
-        builder.setNegativeButton(LanguagePack.getString("No")){dialog, which ->
+        builder.setNegativeButton(LanguagePack.getString("NO")){dialog, _ ->
             dialog.dismiss()
         }
         builder.create().show()
@@ -409,7 +419,7 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         }
     }
 
-    private fun refreshCategoriesWithLanguageCode(languageCode: String) {
+    private fun refreshCategoriesWithLanguageCode(languageCode: String, isRecreateActivityRequired : Boolean = false) {
         showProgressDialog(getString(R.string.loading))
         RetrofitController.fetchAppConfig(languageCode, object : Callback<AppConfigModel> {
             override fun onFailure(call: Call<AppConfigModel>?, t: Throwable?) {
@@ -426,6 +436,9 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
                     AppConfigDetail.saveAppConfigData(context!!, Gson().toJson(appConfigUrl))
                     AppConfigDetail.initialize(Gson().toJson(appConfigUrl))
                     dismissProgressDialog()
+                    if (isRecreateActivityRequired) {
+                        this@SettingsFragment.activity?.recreate()
+                    }
                 }
             }
 

@@ -2,11 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bylancer.classified.bylancerclassified">
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -36,7 +32,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".splash.SplashActivity"
             android:screenOrientation="userPortrait"
             android:theme="@style/BylancerTheme"
             android:windowSoftInputMode="stateHidden">
@@ -135,10 +131,14 @@
             android:screenOrientation="userPortrait"
             android:theme="@style/BylancerTheme"
             android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".splash.LanguageSelectionActivity"
+            android:screenOrientation="userPortrait"
+            android:theme="@style/BylancerTheme"
+            android:windowSoftInputMode="adjustPan" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.bylancer.classified.bylancerclassified.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

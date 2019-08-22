@@ -512,3 +512,9 @@ fun checkIfNumber(price : String) : Boolean {
     val pattern : Pattern = Pattern.compile("\\d+(?:\\.\\d+)?")
     return price.matches(pattern.toRegex())
 }
+
+fun Context.isOver600dp(): Boolean {
+    val resources = this.resources
+    val displayMetrics = resources.displayMetrics
+    return displayMetrics.widthPixels / displayMetrics.density >= 600
+}
