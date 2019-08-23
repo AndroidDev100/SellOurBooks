@@ -11,8 +11,8 @@ android {
         applicationId "com.bylancer.classified.bylancerclassified"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 9
-        versionName "9.0"
+        versionCode 10
+        versionName "9.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     productFlavors {
