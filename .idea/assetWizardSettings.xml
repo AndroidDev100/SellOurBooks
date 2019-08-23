@@ -13,7 +13,7 @@
                       <PersistentState>
                         <option name="values">
                           <map>
-                            <entry key="resourceDirectory" value="ogasell" />
+                            <entry key="resourceDirectory" value="adsgyRelease" />
                           </map>
                         </option>
                       </PersistentState>
@@ -73,6 +73,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="scalingPercent" value="51" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -104,8 +105,10 @@
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="ffffff" />
                                       <entry key="backgroundImage" value="$USER_HOME$/Desktop/BylancerClients/Enamuel/WhatsApp Image 2019-08-14 at 8.02.21 AM_459.jpg" />
-                                      <entry key="foregroundAssetType" value="TEXT" />
+                                      <entry key="foregroundImage" value="$USER_HOME$/Downloads/imageedit_5_8612571079.png" />
                                     </map>
                                   </option>
                                 </PersistentState>

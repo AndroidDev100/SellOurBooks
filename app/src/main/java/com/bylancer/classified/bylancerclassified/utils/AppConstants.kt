@@ -1,6 +1,7 @@
 package com.bylancer.classified.bylancerclassified.utils
 
 import android.graphics.Color
+import com.bylancer.classified.bylancerclassified.BuildConfig
 
 /**
  * Created by Ani on 3/24/18.
@@ -9,7 +10,7 @@ class AppConstants {
     companion object {
         const val DETAIL_ACTIVITY_PARCELABLE = "DETAIL_ACTIVITY_PARCELABLE"
         const val BUNDLE = "bundle"
-        const val BASE_URL = "https://www.ogasell.com/"
+        const val BASE_URL = BuildConfig.BASE_URL
         const val REGISTER_URL = "api/v1/?action=register"
         const val LOGIN_URL = "api/v1/?action=login"
         const val FORGOT_PASSWORD_URL = "api/v1/?action=forgot_password"

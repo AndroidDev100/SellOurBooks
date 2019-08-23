@@ -1,0 +1,57 @@
+{
+  "project_info": {
+    "project_number": "414474415080",
+    "firebase_url": "https://ogasell.firebaseio.com",
+    "project_id": "ogasell",
+    "storage_bucket": "ogasell.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414474415080:android:c9f3781c43eb998d",
+        "android_client_info": {
+          "package_name": "com.bylancer.classified.bylancerclassified.ogasell"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414474415080-43iklmrugs8okqbvki9sbusm55vo22fs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bylancer.classified.bylancerclassified.ogasell",
+            "certificate_hash": "5eb79db057fee42c2ffa3b2208aa14731709f750"
+          }
+        },
+        {
+          "client_id": "414474415080-trsgbrrupmbi9grkcevkqak3st94du6e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bylancer.classified.bylancerclassified.ogasell",
+            "certificate_hash": "3520ae25cb47a8d1fafb1d1d595bd44d7ac3be7b"
+          }
+        },
+        {
+          "client_id": "414474415080-u2h51oq0gcfdhoftk4tmuq6q3g9u68nk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQRF4k3OhLua7agU6CiKQdy8ovDLzIXrg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414474415080-u2h51oq0gcfdhoftk4tmuq6q3g9u68nk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-2589807731483436~1774789554"
+    }
+  ],
+  "configuration_version": "1"
+}

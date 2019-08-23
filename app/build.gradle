@@ -18,11 +18,19 @@ android {
     productFlavors {
         bylancerdemo {
             buildConfigField "String", "APP_NAME", "\"Bylancer\""
+            buildConfigField "String", "BASE_URL", "\"https://classified.bylancer.com/\""
         }
         ogasell {
             applicationIdSuffix ".ogasell"
             versionNameSuffix "-ogasell"
             buildConfigField "String", "DATA_API_PATH", "\"OgaSell\""
+            buildConfigField "String", "BASE_URL", "\"https://www.ogasell.com/\""
+        }
+        adsgy {
+            applicationIdSuffix ".adsgy"
+            versionNameSuffix "-adsgy"
+            buildConfigField "String", "DATA_API_PATH", "\"Adsgy\""
+            buildConfigField "String", "BASE_URL", "\"https://www.adsgy.com/\""
         }
     }
     buildTypes {
