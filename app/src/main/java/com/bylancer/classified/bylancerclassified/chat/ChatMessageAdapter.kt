@@ -1,8 +1,8 @@
 package com.bylancer.classified.bylancerclassified.chat
 
-import android.support.v7.widget.AppCompatImageView
-import android.support.v7.widget.AppCompatTextView
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +15,7 @@ import com.bylancer.classified.bylancerclassified.utils.AppConstants
 import com.bylancer.classified.bylancerclassified.utils.SessionState
 import com.bylancer.classified.bylancerclassified.webservices.chat.ChatMessageModel
 
-class ChatMessageAdapter(val mChatMessageListModel: List<ChatMessageModel>): RecyclerView.Adapter<ChatMessageAdapter.ChatViewHolder>() {
+class ChatMessageAdapter(private val mChatMessageListModel: List<ChatMessageModel>): RecyclerView.Adapter<ChatMessageAdapter.ChatViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ChatViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.chat_message_adapter, parent, false)
@@ -28,7 +28,7 @@ class ChatMessageAdapter(val mChatMessageListModel: List<ChatMessageModel>): Rec
 
     override fun onBindViewHolder(chatViewHolder: ChatViewHolder, position: Int) {
         val chatModel = mChatMessageListModel.get(position)
-        if (chatModel != null && chatModel.senderId != null && !chatModel.senderId.equals(SessionState.instance.userId)) {
+        if (chatModel?.senderId != null && !chatModel.senderId.equals(SessionState.instance.userId)) {
             chatViewHolder.clientUserChatParentLayout.visibility = View.GONE
             chatViewHolder.currentUserChatParentLayout.visibility = View.VISIBLE
             if (AppConstants.ASSET_TYPE_TEXT.equals(chatModel.mtype)) {

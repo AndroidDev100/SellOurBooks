@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_twenty">
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/product_by_category_back_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:paddingEnd="@dimen/default_margin"
             app:srcCompat="@drawable/ic_backward" />
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/product_by_category_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,14 +59,14 @@
             android:onClick="onClick"
             android:layout_weight="1">
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/product_by_category_add_additional_info_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/filter"
                 android:layout_gravity="center"
-                android:drawableLeft="@drawable/ic_filter"
+                android:drawableStart="@drawable/ic_filter"
                 android:drawablePadding="@dimen/default_margin"
                 android:textColor="@color/white_color_text"
                 android:textSize="@dimen/text_size_sixteen"
@@ -88,14 +88,14 @@
             android:onClick="onClick"
             android:layout_weight="1">
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/product_by_category_sorting_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sorting"
                 android:layout_gravity="center"
                 android:drawablePadding="@dimen/default_margin"
-                android:drawableLeft="@drawable/ic_sorting"
+                android:drawableStart="@drawable/ic_sorting"
                 android:fontFamily="@font/roboto_regular"
                 android:textColor="@color/white_color_text"
                 android:textSize="@dimen/text_size_sixteen"
@@ -124,7 +124,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/ic_star_big" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/no_product_by_category_added"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -136,11 +136,18 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/product_by_category_recycler_view"
+        <com.bylancer.classified.bylancerclassified.widgets.pulltorefresh.WaveSwipeRefreshLayout
+            android:id="@+id/search_pull_to_refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/product_by_category_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        </com.bylancer.classified.bylancerclassified.widgets.pulltorefresh.WaveSwipeRefreshLayout>
 
     </FrameLayout>
 

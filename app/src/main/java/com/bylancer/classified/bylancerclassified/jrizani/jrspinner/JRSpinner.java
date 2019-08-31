@@ -6,16 +6,14 @@ import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.bylancer.classified.bylancerclassified.R;
-import com.bylancer.classified.bylancerclassified.jrizani.jrspinner.Dialog;
-import com.bylancer.classified.bylancerclassified.jrizani.jrspinner.MultipleDialog;
 
 /*=============================*/
 /*            AUTHOR           */
@@ -27,7 +25,7 @@ import com.bylancer.classified.bylancerclassified.jrizani.jrspinner.MultipleDial
 /**
  * custom view that used as spinner
  */
-public class JRSpinner extends android.support.v7.widget.AppCompatEditText {
+public class JRSpinner extends androidx.appcompat.widget.AppCompatEditText {
 
     /**
      * all items text to show in spinner dialog
@@ -112,7 +110,7 @@ public class JRSpinner extends android.support.v7.widget.AppCompatEditText {
     private void setIcon() {
         Drawable[] drawables = getCompoundDrawables();
 
-        setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], expandDrawable, drawables[3]);
+        setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, expandDrawable, null);
     }
 
     /**

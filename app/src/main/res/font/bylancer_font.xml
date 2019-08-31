@@ -24,4 +24,8 @@
         android:fontStyle="normal"
         android:fontWeight="100"
         android:font="@font/roboto_bold" />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="300"
+        android:font="@font/museo_bold" />
 </font-family>

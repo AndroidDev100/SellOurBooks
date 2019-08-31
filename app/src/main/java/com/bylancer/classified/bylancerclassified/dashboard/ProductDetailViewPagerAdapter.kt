@@ -1,8 +1,8 @@
 package com.bylancer.classified.bylancerclassified.dashboard
 
 import android.content.Context
-import android.support.v4.view.PagerAdapter
-import android.support.v7.widget.AppCompatTextView
+import androidx.viewpager.widget.PagerAdapter
+import androidx.appcompat.widget.AppCompatTextView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +13,7 @@ import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.utils.Utility
 
 class ProductDetailViewPagerAdapter(private val mContext: Context, private val images: List<String>, private val imagePath:String) : PagerAdapter() {
+
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(mContext)
         val layout = inflater.inflate(R.layout.product_detail_view_pager_adapter, collection, false) as ViewGroup

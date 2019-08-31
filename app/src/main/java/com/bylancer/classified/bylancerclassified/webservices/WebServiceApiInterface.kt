@@ -49,6 +49,10 @@ interface WebServiceApiInterface {
     fun fetchProducts(@Query("status") status: String, @Query("country_code") countryCode: String,
                       @Query("page") page:String, @Query("limit") limit:String): Call<List<ProductsData>>
 
+    @GET(AppConstants.FEATURED_URGENT_LIST_URL)
+    fun fetchFeaturedAndUrgentProducts(@Query("status") status: String, @Query("country_code") countryCode: String,
+                      @Query("page") page:String, @Query("limit") limit:String): Call<List<ProductsData>>
+
     @GET(AppConstants.PRODUCT_LIST_URL)
     fun fetchProductsForUser(@Query("page") page:String, @Query("limit") limit:String, @Query("user_id") user_id:String): Call<List<ProductsData>>
 

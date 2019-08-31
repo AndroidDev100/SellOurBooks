@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/dashboard_featured_card_view_layout"
+        android:layout_width="@dimen/dashboard_item_image_view_width"
+        android:layout_height="@dimen/dashboard_item_card_view_height"
+        android:layout_marginStart="@dimen/margin_twelve"
+        android:layout_marginTop="@dimen/default_margin"
+        app:cardUseCompatPadding="true"
+        android:background="@color/light_gray"
+        app:cardCornerRadius="@dimen/margin_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/dashboard_featured_item_parent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/dashboard_item_image_view_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dashboard_item_image_view_height">
+
+                <ImageView
+                    android:id="@+id/dashboard_item_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_demo_item" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/dashboard_item_urgent_tag_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/urgent"
+                        android:textColor="@color/white_background"
+                        android:textSize="@dimen/small_text_size"
+                        android:fontFamily="@font/roboto_bold"
+                        android:background="@color/denied_red"
+                        android:visibility="gone"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:padding="@dimen/margin_small"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/dashboard_item_featured_tag_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/featured"
+                        android:textColor="@color/white_background"
+                        android:textSize="@dimen/small_text_size"
+                        android:fontFamily="@font/roboto_bold"
+                        android:background="@color/denied_red"
+                        android:visibility="visible"
+                        android:padding="@dimen/margin_small"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/dashboard_item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:gravity="start"
+                android:textColor="@color/denied_red"
+                android:textSize="@dimen/text_size_normal"
+                android:visibility="invisible"
+                android:paddingStart="@dimen/margin_small"
+                android:paddingEnd="@dimen/margin_small"
+                app:layout_constraintEnd_toEndOf="@+id/dashboard_item_image_view_layout"
+                app:layout_constraintHorizontal_bias="0.04"
+                app:layout_constraintStart_toStartOf="@+id/dashboard_item_image_view_layout"
+                app:layout_constraintTop_toBottomOf="@+id/dashboard_item_image_view_layout" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/dashboard_item_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:textColor="@color/black_color_text"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:layout_gravity="start"
+                android:textAlignment="viewStart"
+                android:paddingStart="@dimen/margin_small"
+                android:paddingEnd="@dimen/margin_small"
+                android:textSize="@dimen/small_text_size"
+                app:layout_constraintEnd_toEndOf="@+id/dashboard_item_image_view_layout"
+                app:layout_constraintStart_toStartOf="@+id/dashboard_item_price"
+                app:layout_constraintTop_toBottomOf="@+id/dashboard_item_price" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/dashboard_item_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_xsmall"
+                android:text="27 km"
+                android:textColor="@color/dark_gray"
+                android:paddingStart="@dimen/margin_small"
+                android:paddingEnd="@dimen/margin_small"
+                android:textSize="@dimen/small_text_size"
+                app:layout_constraintEnd_toEndOf="@+id/dashboard_item_price"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/dashboard_item_description"
+                app:layout_constraintTop_toBottomOf="@+id/dashboard_item_description" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

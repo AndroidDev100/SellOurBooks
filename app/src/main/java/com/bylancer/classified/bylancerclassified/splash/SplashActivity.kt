@@ -1,12 +1,13 @@
-package com.bylancer.classified.bylancerclassified.activities
+package com.bylancer.classified.bylancerclassified.splash
 
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.bylancer.classified.bylancerclassified.R
+import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity
 import com.bylancer.classified.bylancerclassified.appconfig.AppConfigDetail
 import com.bylancer.classified.bylancerclassified.appconfig.AppConfigModel
 import com.bylancer.classified.bylancerclassified.dashboard.DashboardActivity
@@ -16,7 +17,6 @@ import com.bylancer.classified.bylancerclassified.utils.SessionState
 import com.bylancer.classified.bylancerclassified.utils.Utility
 import com.bylancer.classified.bylancerclassified.webservices.RetrofitController
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_manual_login.*
 import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,7 +41,12 @@ class SplashActivity : BylancerBuilderActivity() {
     }
 
     private fun saveAndLaunchScreen() {
-        if (LanguagePack.instance.languagePackData.isNullOrEmpty()) {
+        if (LanguagePack.instance.languagePackData.isNullOrEmpty()
+                || !SessionState.instance.appVersionFromServer.equals(AppConfigDetail.appVersionFromServer)) {
+            if (!AppConfigDetail.appVersionFromServer.isNullOrEmpty()) {
+                SessionState.instance.saveValuesToPreferences(this, AppConstants.Companion.PREFERENCES.APP_VERSION_FROM_SERVER.toString(), AppConfigDetail.appVersionFromServer)
+            }
+
             fetchLanguagePackDetails()
         } else {
             navigateToNextScreen()
@@ -134,7 +139,14 @@ class SplashActivity : BylancerBuilderActivity() {
 
     private fun navigateToNextScreen() {
         SessionState.instance.readValuesFromPreferences(this)
-        startActivity(DashboardActivity :: class.java, true)
+        if (SessionState.instance.isLoginFirstTime) {
+            SessionState.instance.isLoginFirstTime = false
+            SessionState.instance.saveBooleanToPreferences(this@SplashActivity,
+                    AppConstants.Companion.PREFERENCES.IS_FIRST_TIME_LOGIN.toString() ,false)
+            startActivity(LanguageSelectionActivity :: class.java, false)
+        } else {
+            startActivity(DashboardActivity :: class.java, false)
+        }
         finish()
     }
 }

@@ -5,6 +5,11 @@ import com.bylancer.classified.bylancerclassified.appconfig.AppConfigDetail
 
 class SessionState private constructor() {
     var isLogin: Boolean = false
+    var isGoogleBannerSupported: Boolean = false
+    var isGoogleInterstitialSupported: Boolean = false
+    var isFacebookInterstitialSupported: Boolean = false
+    var isPremiumAppSupported: Boolean = false
+    var isLoginFirstTime: Boolean = false
     var displayName: String = ""
     var email: String = ""
     var phoneNumber: String = ""
@@ -21,6 +26,7 @@ class SessionState private constructor() {
     var selectedCountry: String = ""
     var selectedCountryCode: String = ""
     var selectedLanguageCode: String = ""
+    var selectedLanguageDirection: String = ""
     var selectedState: String = ""
     var selectedCity: String = ""
     var selectedLanguage: String = ""
@@ -31,6 +37,7 @@ class SessionState private constructor() {
     var uploadedProductLatitude: String = ""
     var uploadedProductLongitude: String = ""
     var uploadedProductAdditionalInfo: String = ""
+    var appVersionFromServer : String = ""
 
     val isLoggedIn: Boolean
         get() = isLogin
@@ -39,31 +46,38 @@ class SessionState private constructor() {
         if (context != null) {
             val prefs = context.getSharedPreferences(AppConstants.PREF_FILE, Context.MODE_PRIVATE)
             this.isLogin = prefs.getBoolean(AppConstants.Companion.PREFERENCES.LOGIN_STATUS.toString(), false)
-            this.email = prefs.getString(AppConstants.Companion.PREFERENCES.EMAIL.toString(), "")
-            this.phoneNumber = prefs.getString(AppConstants.Companion.PREFERENCES.PHONE.toString(), "")
-            this.displayName = prefs.getString(AppConstants.Companion.PREFERENCES.DISPLAY_NAME.toString(), "")
-            this.userId = prefs.getString(AppConstants.Companion.PREFERENCES.USER_ID.toString(), "")
-            this.address = prefs.getString(AppConstants.Companion.PREFERENCES.ADDRESS.toString(), "")
-            this.token = prefs.getString(AppConstants.Companion.PREFERENCES.DEVICE_ID.toString(), "")
-            this.userName = prefs.getString(AppConstants.Companion.PREFERENCES.USERNAME.toString(), "")
-            this.profilePicUrl = prefs.getString(AppConstants.Companion.PREFERENCES.PROFILE_PIC.toString(), "")
-            this.appName = prefs.getString(AppConstants.Companion.PREFERENCES.APP_NAME.toString(), "")
-            this.termsConditionUrl = prefs.getString(AppConstants.Companion.PREFERENCES.TNC_URL.toString(), "")
-            this.privacyPolicyUrl = prefs.getString(AppConstants.Companion.PREFERENCES.PRIVACY_URL.toString(), "")
-            this.detectLiveLocation = prefs.getString(AppConstants.Companion.PREFERENCES.LIVE_LOCATION.toString(), "")
-            this.defaultCountry = prefs.getString(AppConstants.Companion.PREFERENCES.DEFAULT_COUNTRY.toString(), "")
-            this.selectedCountry = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY.toString(), "")
-            this.selectedCountryCode = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY_CODE.toString(), "")
-            this.selectedState = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_STATE.toString(), "")
-            this.selectedCity = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(), "")
-            this.selectedLanguage = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE.toString(), "")
-            this.continueBrowsingText = prefs.getString(AppConstants.Companion.PREFERENCES.CONTINUE_BROWSING_TEXT.toString(), "")
-            this.continueBrowsingCategoryId = prefs.getString(AppConstants.Companion.PREFERENCES.CONTINUE_BROWSING_CATEGORY_ID.toString(), "")
-            this.continueBrowsingSubCategoryId = prefs.getString(AppConstants.Companion.PREFERENCES.CONTINUE_BROWSING_SUB_CATEGORY_ID.toString(), "")
-            this.continueBrowsingImage = prefs.getString(AppConstants.Companion.PREFERENCES.CONTINUE_BROWSING_IMAGE.toString(), "")
-            this.selectedLanguageCode = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE_CODE.toString(), "")
-            LanguagePack.instance.setLanguageData(prefs.getString(AppConstants.Companion.PREFERENCES.LANGUAGE_PACK.toString(), ""))
-            AppConfigDetail.initialize(prefs.getString(AppConstants.Companion.PREFERENCES.APP_CONFIG.toString(), ""))
+            this.isFacebookInterstitialSupported = prefs.getBoolean(AppConstants.Companion.PREFERENCES.FACEBOOK_INTERSTITIAL.toString(), false)
+            this.isGoogleBannerSupported = prefs.getBoolean(AppConstants.Companion.PREFERENCES.GOOGLE_BANNER.toString(), false)
+            this.isGoogleInterstitialSupported = prefs.getBoolean(AppConstants.Companion.PREFERENCES.GOOGLE_INTERSTITIAL.toString(), false)
+            this.isPremiumAppSupported = prefs.getBoolean(AppConstants.Companion.PREFERENCES.PREMIUM_APP.toString(), false)
+            this.isLoginFirstTime = prefs.getBoolean(AppConstants.Companion.PREFERENCES.IS_FIRST_TIME_LOGIN.toString(), true)
+            this.email = prefs.getString(AppConstants.Companion.PREFERENCES.EMAIL.toString(), "")!!
+            this.phoneNumber = prefs.getString(AppConstants.Companion.PREFERENCES.PHONE.toString(), "")!!
+            this.displayName = prefs.getString(AppConstants.Companion.PREFERENCES.DISPLAY_NAME.toString(), "")!!
+            this.userId = prefs.getString(AppConstants.Companion.PREFERENCES.USER_ID.toString(), "")!!
+            this.address = prefs.getString(AppConstants.Companion.PREFERENCES.ADDRESS.toString(), "")!!
+            this.token = prefs.getString(AppConstants.Companion.PREFERENCES.DEVICE_ID.toString(), "")!!
+            this.userName = prefs.getString(AppConstants.Companion.PREFERENCES.USERNAME.toString(), "")!!
+            this.profilePicUrl = prefs.getString(AppConstants.Companion.PREFERENCES.PROFILE_PIC.toString(), "")!!
+            this.appName = prefs.getString(AppConstants.Companion.PREFERENCES.APP_NAME.toString(), "")!!
+            this.termsConditionUrl = prefs.getString(AppConstants.Companion.PREFERENCES.TNC_URL.toString(), "")!!
+            this.privacyPolicyUrl = prefs.getString(AppConstants.Companion.PREFERENCES.PRIVACY_URL.toString(), "")!!
+            this.detectLiveLocation = prefs.getString(AppConstants.Companion.PREFERENCES.LIVE_LOCATION.toString(), "")!!
+            this.defaultCountry = prefs.getString(AppConstants.Companion.PREFERENCES.DEFAULT_COUNTRY.toString(), "")!!
+            this.selectedCountry = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY.toString(), "")!!
+            this.selectedCountryCode = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY_CODE.toString(), "")!!
+            this.selectedState = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_STATE.toString(), "")!!
+            this.selectedCity = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(), "")!!
+            this.selectedLanguage = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE.toString(), "")!!
+            this.selectedLanguageDirection = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE_DIRECTION.toString(), "")!!
+            this.continueBrowsingText = prefs.getString(AppConstants.Companion.PREFERENCES.CONTINUE_BROWSING_TEXT.toString(), "")!!
+            this.continueBrowsingCategoryId = prefs.getString(AppConstants.Companion.PREFERENCES.CONTINUE_BROWSING_CATEGORY_ID.toString(), "")!!
+            this.continueBrowsingSubCategoryId = prefs.getString(AppConstants.Companion.PREFERENCES.CONTINUE_BROWSING_SUB_CATEGORY_ID.toString(), "")!!
+            this.continueBrowsingImage = prefs.getString(AppConstants.Companion.PREFERENCES.CONTINUE_BROWSING_IMAGE.toString(), "")!!
+            this.selectedLanguageCode = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE_CODE.toString(), "")!!
+            this.appVersionFromServer = prefs.getString(AppConstants.Companion.PREFERENCES.APP_VERSION_FROM_SERVER.toString(), "")!!
+            LanguagePack.instance.setLanguageData(prefs.getString(AppConstants.Companion.PREFERENCES.LANGUAGE_PACK.toString(), "")!!)
+            AppConfigDetail.initialize(prefs.getString(AppConstants.Companion.PREFERENCES.APP_CONFIG.toString(), "")!!)
         }
     }
 
@@ -105,6 +119,7 @@ class SessionState private constructor() {
         this.uploadedProductLatitude = ""
         this.uploadedProductLongitude = ""
         this.uploadedProductAdditionalInfo = ""
+        this.appVersionFromServer = ""
     }
 
     companion object {

@@ -7,24 +7,21 @@ package com.bylancer.classified.bylancerclassified.jrizani.jrspinner;
 /*=============================*/
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.DialogFragment;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bylancer.classified.bylancerclassified.R;
-import com.bylancer.classified.bylancerclassified.jrizani.jrspinner.Adapter;
-import com.bylancer.classified.bylancerclassified.jrizani.jrspinner.JRSpinner;
 
 /**
  * dialog that showed when use non multiple dialog

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/product_detail_dialog_box"
     android:background="@drawable/rounded_background_white"
     android:layout_height="wrap_content">
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/make_an_offer_title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/make_an_offer_title_sub_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/make_an_offer_title_text_view" />
 
-    <android.support.v7.widget.AppCompatEditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/user_bid_edit_text"
         android:layout_width="0dp"
         android:layout_height="@dimen/edit_text_height"
@@ -45,6 +45,8 @@
         android:imeOptions="actionDone"
         android:inputType="number"
         android:paddingEnd="@dimen/margin_ten"
+        android:layout_gravity="start"
+        android:textAlignment="viewStart"
         android:textColor="@color/shadow_black"
         android:background="@drawable/rounded_background_gray"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +66,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_bid_edit_text">
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bid_cancel_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -83,7 +85,7 @@
             android:layout_weight=".2"
             android:background="@android:color/transparent" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bid_confirm_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -98,4 +100,4 @@
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

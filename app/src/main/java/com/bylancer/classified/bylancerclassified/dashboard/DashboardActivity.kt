@@ -7,11 +7,12 @@ import android.app.NotificationManager
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.support.design.internal.BottomNavigationItemView
-import android.support.design.internal.BottomNavigationMenuView
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.content.ContextCompat
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.core.content.ContextCompat
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity
@@ -20,20 +21,24 @@ import com.bylancer.classified.bylancerclassified.chat.GroupChatFragment
 import com.bylancer.classified.bylancerclassified.login.LoginRequiredActivity
 import com.bylancer.classified.bylancerclassified.settings.SettingsFragment
 import com.bylancer.classified.bylancerclassified.uploadproduct.categoryselection.UploadCategorySelectionActivity
+import com.bylancer.classified.bylancerclassified.utils.AppConstants
 import com.bylancer.classified.bylancerclassified.utils.SessionState
 import com.bylancer.classified.bylancerclassified.utils.Utility
 import com.bylancer.classified.bylancerclassified.utils.getCurrentCountry
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import java.util.*
 
 
 class DashboardActivity : BylancerBuilderActivity() {
-    val dashboardFragment = DashboardFragment()
-    val notificationMessageFragment = NotificationMessagesFragment()
-    val groupChatFragment = GroupChatFragment()
-    val settingsFragment = SettingsFragment()
+    private val dashboardFragment = DashboardFragment()
+    private val notificationMessageFragment = NotificationMessagesFragment()
+    private val groupChatFragment = GroupChatFragment()
+    private val settingsFragment = SettingsFragment()
     val MY_PERMISSIONS_REQUEST_LOCATION = 88
 
     override fun setLayoutView() = R.layout.activity_dashboard
@@ -50,10 +55,19 @@ class DashboardActivity : BylancerBuilderActivity() {
 
         initializeNotification()
 
-        setUpTabListeners()
+        setUpListeners()
+
+        if (SessionState.instance.isGoogleBannerSupported) {
+            setBannerAdListener()
+            scheduleBannerAd()
+        }
     }
 
-    private fun setUpTabListeners() {
+    private fun setUpListeners() {
+        google_banner_ad_close.setOnClickListener() {
+            bylancer_ad_view_layout.visibility = View.GONE
+        }
+
         bottom_navigation_menu.setOnNavigationItemSelectedListener {
             menuItem ->
                 if (menuItem.itemId != R.id.action_upload_product) {
@@ -117,7 +131,7 @@ class DashboardActivity : BylancerBuilderActivity() {
             // [START handle_data_extras]
             intent.extras?.let {
                 for (key in it.keySet()) {
-                    val value = intent.extras.get(key)
+                    val value = intent.extras?.get(key)
                 }
             }
             // [END handle_data_extras]
@@ -196,6 +210,54 @@ class DashboardActivity : BylancerBuilderActivity() {
                             Toast.LENGTH_LONG).show()
                 }
                 return
+            }
+        }
+    }
+
+    private fun scheduleBannerAd() {
+        val timer = Timer()
+        val bannerTask = object : TimerTask() {
+            override fun run() {
+                this@DashboardActivity.runOnUiThread() {
+                    if (!this@DashboardActivity.isFinishing) {
+                        loadBannerAd()
+                    }
+                }
+            }
+        }
+        val delay = (1000 * 60 * AppConstants.BANNER_DELAY)
+        timer.schedule(bannerTask, 0L, delay.toLong())
+    }
+
+    private fun loadBannerAd() {
+        bylancer_ad_view?.loadAd(AdRequest.Builder().build())
+    }
+
+    private fun setBannerAdListener() {
+        bylancer_ad_view?.adListener = object: AdListener() {
+            override fun onAdLoaded() {
+                bylancer_ad_view_layout.visibility = View.VISIBLE
+            }
+
+            override fun onAdFailedToLoad(errorCode: Int) {
+                bylancer_ad_view_layout.visibility = View.GONE
+            }
+
+            override fun onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            override fun onAdClicked() {
+                bylancer_ad_view_layout.visibility = View.GONE
+            }
+
+            override fun onAdLeftApplication() {
+                bylancer_ad_view_layout.visibility = View.GONE
+            }
+
+            override fun onAdClosed() {
+                bylancer_ad_view_layout.visibility = View.GONE
             }
         }
     }

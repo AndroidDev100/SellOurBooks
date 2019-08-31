@@ -6,13 +6,13 @@
     android:orientation="vertical"
     android:layout_marginEnd="@dimen/margin_twenty">
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/top_layout_category_icon"
         android:layout_width="@dimen/category_layout_size_image_size"
         android:layout_height="@dimen/category_layout_size_image_size"
         android:layout_gravity="center_horizontal" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/top_layout_category_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dashboard_screen_parent_layout"
@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <android.support.design.widget.BottomNavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_menu"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/bottom_navigation_bar_height"
@@ -28,7 +28,7 @@
         app:itemIconTint="@color/bottom_navigation_menu_color"
         app:menu="@menu/bottom_nav_menu" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,4 +52,35 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
 
-</android.support.constraint.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/bylancer_ad_view_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/bylancer_ad_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/ad_mob_banner_ad_unit">
+        </com.google.android.gms.ads.AdView>
+
+        <ImageView
+            android:id="@+id/google_banner_ad_close"
+            android:layout_width="@dimen/margin_fifteen"
+            android:layout_height="@dimen/margin_fifteen"
+            android:layout_gravity="top|end"
+            android:tint="@color/denied_red"
+            android:src="@drawable/ic_close_24dp"/>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

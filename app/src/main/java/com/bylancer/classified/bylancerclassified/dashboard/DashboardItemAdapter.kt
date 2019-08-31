@@ -1,15 +1,24 @@
 package com.bylancer.classified.bylancerclassified.dashboard
 
-import android.support.v7.widget.AppCompatTextView
-import android.support.v7.widget.RecyclerView
+import android.content.Context
+import android.content.res.Resources
+import android.graphics.Typeface
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.LinearLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.utils.AppConstants
+import com.bylancer.classified.bylancerclassified.utils.LanguagePack
 import com.bylancer.classified.bylancerclassified.utils.Utility
 import com.bylancer.classified.bylancerclassified.utils.checkIfNumber
 import com.bylancer.classified.bylancerclassified.webservices.productlist.ProductsData
@@ -60,12 +69,59 @@ class DashboardItemAdapter(private val dashboardItemList : List<ProductsData>, p
                 } else {
                     dashboardListItemLayout.listItemPrice!!.text  = dataModel.price + symbol
                 }
-                Glide.with(dashboardListItemLayout.listItemImageView!!.context).load("https://www.advertwide.com/storage/products/1563537457_pom7.jpg").apply(RequestOptions().fitCenter()).into(dashboardListItemLayout.listItemImageView!!)
+
+                if (AppConstants.IS_ACTIVE.equals(dataModel.featured)) {
+                    dashboardListItemLayout.dashboardItemFeaturedTagTextView?.text = LanguagePack.getString("Featured")
+                    dashboardListItemLayout.dashboardItemFeaturedTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.new_ui_red_background)!!)
+                }
+
+                if (AppConstants.IS_ACTIVE.equals(dataModel.urgent)) {
+                    dashboardListItemLayout.dashboardItemFeaturedTagTextView?.visibility = View.VISIBLE
+                    if (dashboardListItemLayout.dashboardItemFeaturedTagTextView?.text!!.isEmpty()) {
+                        dashboardListItemLayout.dashboardItemFeaturedTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.denied_red)!!)
+                        dashboardListItemLayout.dashboardItemFeaturedTagTextView?.text = LanguagePack.getString("Urgent")
+                    } else {
+                        dashboardListItemLayout.dashboardItemFeaturedTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.new_ui_red_background)!!)
+                        dashboardListItemLayout.dashboardItemUrgentTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.denied_red)!!)
+                        dashboardListItemLayout.dashboardItemUrgentTagTextView?.text = LanguagePack.getString("Urgent")
+                        dashboardListItemLayout.dashboardItemUrgentTagTextView?.visibility = View.VISIBLE
+                    }
+
+                }
+
+                if (dashboardListItemLayout.dashboardItemFeaturedTagTextView?.text.isNullOrEmpty()) {
+                    dashboardListItemLayout.dashboardItemFeaturedTagTextView?.visibility = View.GONE
+                }
+
+                if (AppConstants.IS_ACTIVE.equals(dataModel.highlight)) {
+                    dashboardListItemLayout.dashboardItemCardView?.background = ContextCompat.getDrawable(dashboardListItemLayout.dashboardFeaturedItemParentLayout?.context!!, R.drawable.layout_shadow)
+                    dashboardListItemLayout.dashboardFeaturedItemParentLayout?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardFeaturedItemParentLayout?.resources, R.color.swipe_refresh_orange)!!)
+                    dashboardListItemLayout.listItemDescription?.setTextColor(getColor(dashboardListItemLayout.dashboardFeaturedItemParentLayout?.resources, R.color.list_drawer_background_pressed)!!)
+                    dashboardListItemLayout.listItemPrice?.setTextColor(getColor(dashboardListItemLayout.dashboardFeaturedItemParentLayout?.resources, R.color.dark_green)!!)
+                    dashboardListItemLayout.listItemDistance?.setTextColor(getColor(dashboardListItemLayout.dashboardFeaturedItemParentLayout?.resources, R.color.colorPrimary)!!)
+                    dashboardListItemLayout.listItemDescription?.setTypeface(getHighlightedTypeFace(dashboardListItemLayout.listItemDescription?.context!!), Typeface.BOLD)
+                    dashboardListItemLayout.listItemPrice?.setTypeface(getHighlightedTypeFace(dashboardListItemLayout.listItemPrice?.context!!), Typeface.BOLD)
+                    dashboardListItemLayout.listItemDistance?.setTypeface(getHighlightedTypeFace(dashboardListItemLayout.listItemDistance?.context!!), Typeface.BOLD)
+                } else {
+                    dashboardListItemLayout.dashboardFeaturedItemParentLayout?.setBackgroundColor(getColor(holder.dashboardFeaturedItemParentLayout?.resources, R.color.snow_color_background)!!)
+                    dashboardListItemLayout.dashboardItemCardView?.setCardBackgroundColor(getColor(holder.dashboardFeaturedItemParentLayout?.resources, R.color.snow_color_background)!!)
+                    dashboardListItemLayout.dashboardItemCardView?.background = ContextCompat.getDrawable(holder.dashboardFeaturedItemParentLayout?.context!!, R.drawable.layout_no_shadow)
+                    dashboardListItemLayout.dashboardItemCardView?.useCompatPadding = true
+                    dashboardListItemLayout.listItemDescription?.setTextColor(getColor(dashboardListItemLayout.listItemDescription?.resources, R.color.black_color_text)!!)
+                    dashboardListItemLayout.listItemPrice?.setTextColor(getColor(dashboardListItemLayout.listItemPrice?.resources, R.color.denied_red)!!)
+                    dashboardListItemLayout.listItemDistance?.setTextColor(getColor(dashboardListItemLayout.listItemDistance?.resources, R.color.dark_gray)!!)
+                    dashboardListItemLayout.listItemDescription?.setTypeface(getNormalTypeFace(dashboardListItemLayout.listItemDescription?.context!!), Typeface.NORMAL)
+                    dashboardListItemLayout.listItemPrice?.setTypeface(getNormalTypeFace(dashboardListItemLayout.listItemPrice?.context!!), Typeface.NORMAL)
+                    dashboardListItemLayout.listItemDistance?.setTypeface(getNormalTypeFace(dashboardListItemLayout.listItemDistance?.context!!), Typeface.NORMAL)
+                }
+
+                Glide.with(dashboardListItemLayout.listItemImageView!!.context).load(dataModel.picture).apply(RequestOptions().fitCenter()).into(dashboardListItemLayout.listItemImageView!!)
                 dashboardListItemLayout.itemView.setOnClickListener {
                     if(onProductItemClickListener != null) {
                         onProductItemClickListener.onProductItemClicked(dataModel.id, dataModel.productName, dataModel.username)
                     }
                 }
+
             }
         }
     }
@@ -85,11 +141,19 @@ class DashboardItemAdapter(private val dashboardItemList : List<ProductsData>, p
         var listItemPrice : AppCompatTextView? = null
         var listItemDescription : AppCompatTextView? = null
         var listItemDistance : AppCompatTextView? = null
+        var dashboardItemFeaturedTagTextView : AppCompatTextView? = null
+        var dashboardItemUrgentTagTextView : AppCompatTextView? = null
+        var dashboardFeaturedItemParentLayout : LinearLayout? = null
+        var dashboardItemCardView : CardView? = null
         init {
             listItemImageView = findViewById(R.id.dashboard_item_image_view)
             listItemPrice = findViewById(R.id.dashboard_item_price)
             listItemDescription = findViewById(R.id.dashboard_item_description)
             listItemDistance = findViewById(R.id.dashboard_item_distance)
+            dashboardFeaturedItemParentLayout = findViewById(R.id.dashboard_featured_item_parent_layout)
+            dashboardItemFeaturedTagTextView = findViewById(R.id.dashboard_item_featured_tag_text_view)
+            dashboardItemUrgentTagTextView = findViewById(R.id.dashboard_item_urgent_tag_text_view)
+            dashboardItemCardView = findViewById(R.id.dashboard_item_card_view_layout)
         }
     }
 
@@ -114,4 +178,10 @@ class DashboardItemAdapter(private val dashboardItemList : List<ProductsData>, p
             }
         }
     }
+
+    private fun getColor(resources: Resources?, colorCode: Int) = resources?.getColor(colorCode)
+
+    private fun getHighlightedTypeFace(context: Context) : Typeface? = ResourcesCompat.getFont(context, R.font.museo_bold)
+
+    private fun getNormalTypeFace(context: Context) : Typeface? = ResourcesCompat.getFont(context, R.font.roboto_regular)
 }

@@ -1,7 +1,7 @@
 package com.bylancer.classified.bylancerclassified.settings
 
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import android.view.View
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity

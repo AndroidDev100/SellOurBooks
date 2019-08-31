@@ -72,6 +72,7 @@
     <color name="taken_white">#B3ffffff</color>
     <color name="denied_red">#CA0009</color>
     <color name="waiting_yellow">#B3ffff00</color>
+    <color name="dark_green">#006400</color>
 
     <color name="black_overlay">#66000000</color>
     <color name="shadow_black">#313C3F</color>

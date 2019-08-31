@@ -90,6 +90,12 @@ class RetrofitController {
             call.enqueue(fetchProductsCallBack)
         }
 
+        fun fetchFeaturedAndUrgentProducts(productInputData: ProductInputData, fetchProductsCallBack: Callback<List<ProductsData>>) {
+            val call = webserviceApi.fetchFeaturedAndUrgentProducts(productInputData.status, productInputData.countryCode, productInputData.pageNumber,
+                    productInputData.limit)
+            call.enqueue(fetchProductsCallBack)
+        }
+
         fun fetchProductsForUser(productInputData: ProductInputData, fetchProductsCallBack: Callback<List<ProductsData>>) {
             val call = webserviceApi.fetchProductsForUser(productInputData.pageNumber,
                     productInputData.limit, productInputData.userId)

@@ -7,12 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.constraint.ConstraintSet
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.AppCompatButton
-import android.support.v7.widget.AppCompatEditText
-import android.support.v7.widget.AppCompatTextView
+import android.os.Handler
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +15,12 @@ import android.view.WindowManager
 import android.view.animation.Animation
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity
 import com.bylancer.classified.bylancerclassified.chat.ChatActivity
@@ -39,6 +40,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.facebook.ads.*;
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_dashboard_product_detail.*
 import retrofit2.Call
@@ -48,14 +50,15 @@ import retrofit2.Response
 class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<DashboardDetailModel>, View.OnClickListener,
         OnMapReadyCallback {
 
-    var mCurrLocationMarker: Marker? = null
+    private var mCurrLocationMarker: Marker? = null
     private var mMap: GoogleMap? = null
-    var animUpDown: Animation? = null
+    private var animUpDown: Animation? = null
     val MY_PERMISSIONS_REQUEST_LOCATION = 87
-    var phoneNumber: String? = null
-    var ownerEmail: String? = null
+    private var phoneNumber: String? = null
+    private var ownerEmail: String? = null
     var mDashboardDetailModel:DashboardDetailModel? = null
     var iosDialog: IOSDialog? = null
+    private var facebookInterstitialAd : InterstitialAd? = null
 
     override fun setLayoutView() = R.layout.activity_dashboard_product_detail
 
@@ -66,12 +69,15 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
             login_required_product_detail_card_view.visibility = View.VISIBLE
         }
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission()
         }
 
-        iosDialog = Utility.showProgressView(this@DashboardProductDetailActivity, LanguagePack.getString("Sending..."))
+        if (SessionState.instance.isFacebookInterstitialSupported) {
+            loadFacebookInterstitialAd()
+        }
 
+        iosDialog = Utility.showProgressView(this@DashboardProductDetailActivity, LanguagePack.getString("Sending..."))
         product_detail_screen_sms_text_view.text = LanguagePack.getString(getString(R.string.sms))
         product_detail_screen_email_text_view.text = LanguagePack.getString(getString(R.string.email_id))
         product_detail_screen_call_text_view.text = LanguagePack.getString(getString(R.string.call))
@@ -96,6 +102,12 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
             product_detail_title_text_view.text = bundle.getString(AppConstants.PRODUCT_NAME, "")
             getProductDetails(bundle.getString(AppConstants.PRODUCT_ID, ""))
         }
+    }
+
+    private fun loadFacebookInterstitialAd() {
+        facebookInterstitialAd = InterstitialAd(this, AppConstants.FACEBOOK_INTERSTITIAL_PLACEMENT)
+        facebookInterstitialAd?.loadAd()
+        showFacebookAdWithDelay()
     }
 
     private fun getProductDetails(productId: String) {
@@ -130,8 +142,8 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
 
     private fun initializeUI(dashboardDetailModel: DashboardDetailModel) {
         parent_scroll_view.visibility = View.VISIBLE
-        if(dashboardDetailModel.images != null && dashboardDetailModel.images!!.size > 0 && dashboardDetailModel.originalImagesPath != null) {
-            product_detail_image_view_pager.adapter = ProductDetailViewPagerAdapter(this, dashboardDetailModel.images!!, dashboardDetailModel.originalImagesPath!!)
+        if(dashboardDetailModel.productImages != null && dashboardDetailModel.productImages!!.size > 0 && dashboardDetailModel.originalImagesPath != null) {
+            product_detail_image_view_pager.adapter = ProductDetailViewPagerAdapter(this, dashboardDetailModel.productImages!!, dashboardDetailModel.originalImagesPath!!)
         }
 
         if(SessionState.instance.isLoggedIn) {
@@ -308,7 +320,7 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
                         emailIntent.putExtra(Intent.EXTRA_TEXT, "Hi, \n \n"+ LanguagePack.getString("I am interested in your property") + " " + product_detail_title_text_view.text + ".\n "+ LanguagePack.getString("We can have discussion on") +" \n\n" + LanguagePack.getString("Regards")+",\n"+ SessionState.instance.displayName)
                         startActivityForResult(Intent.createChooser(emailIntent,  LanguagePack.getString("Send email...")), 0);
                     } else {
-                        Utility.showSnackBar(dashboard_product_detail_parent_layout, LanguagePack.getString("Looks like owner has not shared his email id"), this)
+                        Utility.showSnackBar(dashboard_product_detail_parent_layout, LanguagePack.getString("Looks like owner has not shared his email productId"), this)
                     }
                 } else {
                     startActivity(LoginRequiredActivity::class.java, false)
@@ -322,10 +334,10 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
                                             permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             MY_PERMISSIONS_REQUEST_LOCATION -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ContextCompat.checkSelfPermission(this,
                                     Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        mMap?.setMyLocationEnabled(true)
+                        mMap?.isMyLocationEnabled = true
                     }
                 } else {
                     Toast.makeText(this, "permission denied",
@@ -359,7 +371,7 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
     }
 
     private fun addCustomDataDynamically(parentLayoutId: Int, captionText: String, detailText: String): Int {
-        val set =  ConstraintSet()
+        val set = ConstraintSet()
 
         val captionTextView = TextView(this)
         captionTextView.id = View.generateViewId()
@@ -416,8 +428,8 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
     private fun makeAnOffer(askingPrice: String) {
         val makeAnOfferDialog = CustomAlertDialog(this, R.style.custom_login_dialog)
         makeAnOfferDialog.setContentView(R.layout.make_an_offer)
-        makeAnOfferDialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-        makeAnOfferDialog.getWindow().setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
+        makeAnOfferDialog.window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        makeAnOfferDialog.window?.setBackgroundDrawable(ColorDrawable(resources.getColor(android.R.color.transparent)))
         makeAnOfferDialog.setCanceledOnTouchOutside(true)
         makeAnOfferDialog.show()
 
@@ -455,7 +467,7 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
             makeAnOfferData.email = getFormattedValue(mDashboardDetailModel?.sellerEmail)
             makeAnOfferData.message = SessionState.instance.displayName + " " + LanguagePack.getString("is interested to buy") + " ${getFormattedValue(mDashboardDetailModel?.title)} " + LanguagePack.getString("at") + " " + Utility.decodeUnicode(getFormattedValue(mDashboardDetailModel?.currency))+ " $offer "
             makeAnOfferData.ownerName = getFormattedValue(mDashboardDetailModel?.sellerName)
-            makeAnOfferData.productId = getFormattedValue(mDashboardDetailModel?.id)
+            makeAnOfferData.productId = getFormattedValue(mDashboardDetailModel?.productId)
             makeAnOfferData.productName = getFormattedValue(mDashboardDetailModel?.title)
             makeAnOfferData.userId = getFormattedValue(mDashboardDetailModel?.sellerEmail)
             makeAnOfferData.type = "make_offer"
@@ -487,5 +499,25 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
 
     private fun removeProgressBar() {
         if (iosDialog != null) iosDialog?.dismiss()
+    }
+
+    private fun showFacebookAdWithDelay() {
+        Handler().postDelayed( Runnable() {
+                // Check if interstitialAd has been loaded successfully
+             if(!this@DashboardProductDetailActivity.isFinishing &&
+                        facebookInterstitialAd != null && facebookInterstitialAd?.isAdLoaded!!
+                        && !facebookInterstitialAd?.isAdInvalidated!!) {
+                    facebookInterstitialAd?.show()
+                } else {
+                    showFacebookAdWithDelay()
+                }
+        }, (1000 * 5)) // Show the ad after 5 sec
+    }
+
+    override fun onDestroy() {
+        if (facebookInterstitialAd != null) {
+            facebookInterstitialAd?.destroy();
+        }
+        super.onDestroy();
     }
 }

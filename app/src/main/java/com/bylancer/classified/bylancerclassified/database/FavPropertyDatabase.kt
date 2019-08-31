@@ -1,7 +1,7 @@
 package com.bylancer.classified.bylancerclassified.database
 
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.Database
 import com.bylancer.classified.bylancerclassified.dashboard.DashboardDetailModel
 import com.bylancer.classified.bylancerclassified.utils.AppConstants
 

@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/filter_title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,13 +23,13 @@
         android:layout_height="1dp"
         android:background="@color/light_gray"/>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/filter_additional_info_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_gray">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/filter_additional_info_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,19 +54,19 @@
             android:tint="@color/shadow_black"
             app:srcCompat="@drawable/ic_filter_by_additional_info" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/light_gray"/>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/filter_keyword_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/filter_keyword_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,6 +90,6 @@
             android:tint="@color/shadow_black"
             app:srcCompat="@drawable/ic_filter_by_keyword" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

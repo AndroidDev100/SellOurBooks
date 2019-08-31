@@ -6,21 +6,24 @@
     android:layout_height="wrap_content"
     android:background="@color/white_background">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dashboard_category_menu_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/category_layout_size"
             android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="8dp"
             android:paddingTop="@dimen/margin_small"
             android:paddingBottom="@dimen/margin_small"
+            android:paddingStart="@dimen/margin_small"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <!--<LinearLayout
             android:id="@+id/dashboard_category_menu_layout"
@@ -183,7 +186,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dashboard_category_menu_recycler_view" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/continue_browsing_parent_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -199,12 +202,12 @@
                 android:layout_width="@dimen/dashboard_continue_browsing_image_layout_size"
                 android:layout_height="@dimen/dashboard_continue_browsing_image_layout_size"
                 android:background="@drawable/rounded_background_gray"
-                android:layout_marginLeft="@dimen/margin_ten"
+                android:layout_marginStart="@dimen/margin_ten"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/continue_browsing_item_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -219,14 +222,14 @@
                 android:id="@+id/continue_browsing_text_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_ten"
+                android:layout_marginStart="@dimen/margin_ten"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/continue_browsing_item_image_layout"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/continue_browsing_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -236,12 +239,12 @@
                     android:textSize="@dimen/text_size_normal"
                     android:textStyle="bold" />
 
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/browsing_path_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_small"
-                    android:layout_marginRight="@dimen/margin_fifteen"
+                    android:layout_marginEnd="@dimen/margin_fifteen"
                     android:fontFamily="@font/roboto_regular"
                     android:text="@string/continue_browsing_path_demo"
                     android:textColor="@color/dark_gray"
@@ -259,30 +262,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/continue_browsing_item_image_layout" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
+            android:id="@+id/featured_text_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin_twenty"
+            android:padding="@dimen/margin_twelve"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/continue_browsing_parent_layout">
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/top_picks_in_classified"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/featured_in_classified"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
                 android:fontFamily="@font/roboto_regular"
                 android:textStyle="bold"
                 android:layout_gravity="center"
-                android:text="@string/top_picks_in_classified"
+                android:text="@string/featured_ads"
                 android:textColor="@color/black_color_text"
                 android:textSize="@dimen/text_size_sixteen" />
 
         </FrameLayout>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

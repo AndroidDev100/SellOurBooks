@@ -3,7 +3,7 @@ package com.bylancer.classified.bylancerclassified.uploadproduct.subcategorysele
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import android.view.View
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity

@@ -5,7 +5,8 @@ import android.app.Fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import android.se.omapi.Session
+import androidx.appcompat.app.AlertDialog
 import android.view.View
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
@@ -91,6 +92,8 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
                         "")
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(),
                         "")
+                stateList?.clear()
+                saveStateDetailData()
                 fetchStateList(countryList.get(position).lowercaseCode!!)
             }
         }
@@ -107,6 +110,8 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
             SessionState.instance.selectedCity = ""
             SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(),
                     "")
+            cityList?.clear()
+            saveCityDetailData()
             fetchCityList(stateList.get(position).code!!)
         }
 
@@ -172,16 +177,26 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
     }
 
     private fun initializeLanguagePack() {
-        settings_language_spinner.setHint(LanguagePack.getString(getString(R.string.select_language)))
+        settings_language_spinner.hint = LanguagePack.getString(getString(R.string.select_language))
         settings_language_spinner.setOnItemClickListener{ position ->
-            if(AppConfigDetail.languageList != null) {
-                SessionState.instance.selectedLanguage = if (AppConfigDetail.languageList?.get(position)?.name != null) AppConfigDetail.languageList?.get(position)?.name!! else ""
-                SessionState.instance.selectedLanguageCode = if (AppConfigDetail.languageList?.get(position)?.code != null) AppConfigDetail.languageList?.get(position)?.code!! else ""
+            if(LanguagePack.instance.languagePackData != null) {
+                SessionState.instance.selectedLanguage = if (LanguagePack.instance.languagePackData?.get(position)?.language != null) LanguagePack.instance.languagePackData?.get(position)?.language!! else ""
+                SessionState.instance.selectedLanguageCode = if (LanguagePack.instance.languagePackData?.get(position)?.languageCode != null) LanguagePack.instance.languagePackData?.get(position)?.languageCode!! else ""
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE.toString(),
                         SessionState.instance.selectedLanguage)
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE_CODE.toString(),
                         SessionState.instance.selectedLanguageCode)
-                initializeTextViewsWithLanguagePack(SessionState.instance.selectedLanguageCode)
+                if (SessionState.instance.selectedLanguageDirection.equals(LanguagePack.instance.languagePackData?.get(position)?.direction)) {
+                    initializeTextViewsWithLanguagePack(SessionState.instance.selectedLanguageCode)
+                } else {
+                    SessionState.instance.selectedLanguageDirection = if (LanguagePack.instance.languagePackData?.get(position)?.direction != null) LanguagePack.instance.languagePackData?.get(position)?.direction!! else ""
+                    SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE_DIRECTION.toString(),
+                            SessionState.instance.selectedLanguageDirection)
+                    if (!SessionState.instance.selectedLanguageCode.isNullOrEmpty()) {
+                        refreshCategoriesWithLanguageCode(SessionState.instance.selectedLanguageCode, true)
+                    }
+                }
+
             } else  {
                 SessionState.instance.selectedLanguage = "English"
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE.toString(),
@@ -193,10 +208,10 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
             settings_language_spinner.setText(SessionState.instance.selectedLanguage)
         }
 
-        var languageList = arrayListOf<String>()
-        if (AppConfigDetail.languageList != null) {
-            for (x in AppConfigDetail.languageList !!) {
-                languageList.add(x.name!!)
+        var languageList = arrayListOf<String?>()
+        if (LanguagePack.instance.languagePackData != null) {
+            for (x in LanguagePack.instance.languagePackData!!) {
+                languageList.add(x.language)
             }
         } else  {
             languageList.add("English")
@@ -208,6 +223,23 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
 
         if (settings_country_spinner.text.isNullOrEmpty()) {
             fetchCountryList() // To load only first time
+        } else {
+            AppConfigDetail.loadLocationDetail(mContext)
+            if (!AppConfigDetail.countryList.isNullOrEmpty()) {
+                countryList?.clear()
+                countryList?.addAll(AppConfigDetail.countryList!!)
+                addCountryNameToCountrySpinner()
+            }
+            if (!AppConfigDetail.stateList.isNullOrEmpty()) {
+                stateList?.clear()
+                stateList?.addAll(AppConfigDetail.stateList!!)
+                addStateNameToStateSpinner()
+            }
+            if (!AppConfigDetail.cityList.isNullOrEmpty()) {
+                cityList?.clear()
+                cityList?.addAll(AppConfigDetail.cityList!!)
+                addCityNameToCitySpinner()
+            }
         }
     }
 
@@ -217,9 +249,7 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
             override fun onResponse(call: Call<List<CountryListModel>>?, response: Response<List<CountryListModel>>?) {
                 if (response != null && response.isSuccessful && settings_country_spinner != null) {
                     countryList.addAll(response.body())
-                    val listOfCountry = arrayListOf<String>()
-                    countryList.forEach { listOfCountry.add(it.name!!)}
-                    settings_country_spinner.setItems(listOfCountry.toArray(arrayOfNulls<String>(countryList.size)))
+                    saveCountryDetailData()
                 }
                 dismissProgressDialog()
             }
@@ -238,9 +268,7 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
                 dismissProgressDialog()
                 if (response != null && response.isSuccessful && settings_state_spinner != null) {
                     stateList.addAll(response.body())
-                    val listOfState = arrayListOf<String>()
-                    stateList.forEach { listOfState.add(it.name!!)}
-                    settings_state_spinner.setItems(listOfState.toArray(arrayOfNulls<String>(stateList.size)))
+                    saveStateDetailData()
                 }
             }
 
@@ -258,9 +286,7 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
                 dismissProgressDialog()
                 if (response != null && response.isSuccessful && settings_city_spinner != null) {
                     cityList.addAll(response.body())
-                    val listOfCity = arrayListOf<String>()
-                    cityList.forEach { listOfCity.add(it.name!!)}
-                    settings_city_spinner.setItems(listOfCity.toArray(arrayOfNulls<String>(cityList.size)))
+                    saveCityDetailData()
                 }
             }
 
@@ -341,11 +367,11 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         val builder = AlertDialog.Builder(context!!)
         builder.setTitle("")
         builder.setMessage(LanguagePack.getString("Are you sure you want to log out"))
-        builder.setPositiveButton(LanguagePack.getString("YES")){dialog, which ->
+        builder.setPositiveButton(LanguagePack.getString("YES")){dialog, _ ->
             dialog.dismiss()
             logoutUser()
         }
-        builder.setNegativeButton(LanguagePack.getString("No")){dialog, which ->
+        builder.setNegativeButton(LanguagePack.getString("NO")){dialog, _ ->
             dialog.dismiss()
         }
         builder.create().show()
@@ -393,7 +419,7 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         }
     }
 
-    private fun refreshCategoriesWithLanguageCode(languageCode: String) {
+    private fun refreshCategoriesWithLanguageCode(languageCode: String, isRecreateActivityRequired : Boolean = false) {
         showProgressDialog(getString(R.string.loading))
         RetrofitController.fetchAppConfig(languageCode, object : Callback<AppConfigModel> {
             override fun onFailure(call: Call<AppConfigModel>?, t: Throwable?) {
@@ -410,9 +436,68 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
                     AppConfigDetail.saveAppConfigData(context!!, Gson().toJson(appConfigUrl))
                     AppConfigDetail.initialize(Gson().toJson(appConfigUrl))
                     dismissProgressDialog()
+                    if (isRecreateActivityRequired) {
+                        this@SettingsFragment.activity?.recreate()
+                    }
                 }
             }
 
         })
+    }
+
+    private fun saveCountryDetailData() {
+        if (!countryList.isNullOrEmpty() && isAdded && isVisible && mContext != null) {
+            AppConfigDetail.countryList = countryList
+            AppConfigDetail.saveCountryListData(mContext!!, Gson().toJson(countryList))
+            addCountryNameToCountrySpinner()
+        }
+    }
+
+    private fun addCountryNameToCountrySpinner() {
+        if (countryList != null) {
+            val listOfCountry = arrayListOf<String>()
+            countryList.forEach { listOfCountry.add(it.name!!)}
+            settings_country_spinner.setItems(listOfCountry.toArray(arrayOfNulls<String>(countryList.size)))
+        }
+    }
+
+    private fun saveStateDetailData() {
+        if (!stateList.isNullOrEmpty() && isAdded && isVisible && mContext != null) {
+            AppConfigDetail.stateList = stateList
+            AppConfigDetail.saveSateListData(mContext!!, Gson().toJson(stateList))
+            addStateNameToStateSpinner()
+        } else {
+            AppConfigDetail.stateList = null
+            AppConfigDetail.saveSateListData(mContext!!, "")
+            addStateNameToStateSpinner()
+        }
+    }
+
+    private fun addStateNameToStateSpinner() {
+        if (stateList != null) {
+            val listOfState = arrayListOf<String>()
+            stateList.forEach { listOfState.add(it.name!!)}
+            settings_state_spinner.setItems(listOfState.toArray(arrayOfNulls<String>(stateList.size)))
+        }
+    }
+
+    private fun saveCityDetailData() {
+        if (!cityList.isNullOrEmpty() && isAdded && isVisible && mContext != null) {
+            AppConfigDetail.cityList = cityList
+            AppConfigDetail.saveCityListData(mContext!!, Gson().toJson(cityList))
+            addCityNameToCitySpinner()
+        } else {
+            AppConfigDetail.cityList = null
+            AppConfigDetail.saveCityListData(mContext!!, "")
+            addCityNameToCitySpinner()
+        }
+    }
+
+    private fun addCityNameToCitySpinner() {
+        if (cityList != null) {
+            val listOfCity = arrayListOf<String>()
+            cityList.forEach { listOfCity.add(it.name!!)}
+            settings_city_spinner.setItems(listOfCity.toArray(arrayOfNulls<String>(cityList.size)))
+        }
     }
 }

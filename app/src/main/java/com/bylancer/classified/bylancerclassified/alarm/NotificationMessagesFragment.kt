@@ -1,7 +1,7 @@
 package com.bylancer.classified.bylancerclassified.alarm
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.fragments.BylancerBuilderFragment
 import com.bylancer.classified.bylancerclassified.utils.LanguagePack

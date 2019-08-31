@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bylancer Classified</string>
+    <string name="app_name">QuickAd Classified</string>
     <string name="divider_for_splash">--------------------------X--------------------------</string>
     <string name="search_text">What are you looking for?</string>
     <string name="motors">Motors</string>
@@ -10,6 +10,7 @@
     <string name="continue_browsing">Continue last Search</string>
     <string name="continue_browsing_path_demo">Musical Instruments | Wind Instruments | Other | Woodwind</string>
     <string name="top_picks_in_classified">Top Picks in Classifieds</string>
+    <string name="featured_ads">Featured and Urgent Ads</string>
     <string name="login_required">Login required</string>
     <string name="must_login">You must be logged in to use this feature</string>
     <string name="sign_up_to_continue">Log in or sign up to continue</string>
@@ -30,6 +31,8 @@
     <string name="phone_no">Phone number</string>
     <string name="price">Price</string>
     <string name="salary_text">Salary</string>
+    <string name="featured">Featured</string>
+    <string name="urgent">Urgent</string>
 
     <string name="place_ad">Place an Ad</string>
     <string name="add_more_info">Add More Info</string>
@@ -107,6 +110,7 @@
     <string name="select_state">Select state</string>
     <string name="select_city">Select city</string>
     <string name="select_language">Select language</string>
+    <string name="choose_language">Choose your language</string>
     <string name="english">English</string>
     <string name="fetch_country">Loading countries..</string>
     <string name="fetch_state">Loading states..</string>
@@ -126,5 +130,11 @@
     <string name="default_notification_channel_id">"1009876676335"</string>
     <string name="default_notification_channel_name">"9883345445653"</string>
     <string name="default_notification_topic">"QuickAdClassified"</string>
+
+
+    <!-- AD CONFIG -->
+    <string name="ad_mob_banner">"ca-app-pub-6370111532336036~5661435384"</string>
+    <string name="ad_mob_banner_ad_unit">"ca-app-pub-6370111532336036/4512005249"</string>
+    <string name="ad_mob_interstitial_ad_unit">"ca-app-pub-6370111532336036/7079943350"</string>
 
 </resources>

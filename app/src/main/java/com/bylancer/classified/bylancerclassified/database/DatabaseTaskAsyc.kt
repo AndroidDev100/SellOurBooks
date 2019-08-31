@@ -2,7 +2,7 @@ package com.bylancer.classified.bylancerclassified.database
 
 import android.content.Context
 import android.os.AsyncTask
-import android.support.v7.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatImageView
 import android.view.View
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.dashboard.DashboardDetailModel
@@ -14,8 +14,8 @@ class DatabaseTaskAsyc(val context: Context, val mDashboardDetailModel: Dashboar
                        val isForValidating: Boolean): AsyncTask<Void, Void, Boolean>() {
 
     override fun doInBackground(vararg p0: Void): Boolean {
-        if (DBUtil.getDatabaseInstance(context).daoAccess().
-                        checkPropertyExist(mDashboardDetailModel.id!!) > 0) {
+        if (mDashboardDetailModel?.productId != null && DBUtil.getDatabaseInstance(context)?.daoAccess()?.
+                        checkPropertyExist(mDashboardDetailModel?.productId!!) > 0) {
             if (!isForValidating) {
                 DBUtil.getDatabaseInstance(context).daoAccess().
                         deleteProperty(mDashboardDetailModel!!)
@@ -23,14 +23,16 @@ class DatabaseTaskAsyc(val context: Context, val mDashboardDetailModel: Dashboar
             } else {
                 return true
             }
-        } else  {
+        } else {
             if(isForValidating) {
                 return false
             }
-            DBUtil.getDatabaseInstance(context).daoAccess().
+            DBUtil.getDatabaseInstance(context)?.daoAccess()?.
                     insertProperty(mDashboardDetailModel!!)
            return true
         }
+
+        return false
     }
 
     override fun onPostExecute(result: Boolean) {

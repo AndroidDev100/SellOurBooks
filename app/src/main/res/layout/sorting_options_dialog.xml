@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sorting_title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,13 +23,13 @@
         android:layout_height="1dp"
         android:background="@color/light_gray"/>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sorting_new_to_old_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_gray">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/sorting_new_to_old_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,19 +54,19 @@
             android:tint="@color/shadow_black"
             app:srcCompat="@drawable/ic_desc_date" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/light_gray"/>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sorting_old_to_new_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/sorting_old_to_to_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,19 +90,19 @@
             android:tint="@color/shadow_black"
             android:src="@drawable/ic_asc_date" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/light_gray"/>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sorting_price_high_to_low_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/sorting_price_high_to_low_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,19 +126,19 @@
             android:tint="@color/shadow_black"
             app:srcCompat="@drawable/ic_desc_price" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/light_gray"/>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sorting_price_low_to_high_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/sorting_price_low_to_high_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -162,6 +162,6 @@
             android:tint="@color/shadow_black"
             app:srcCompat="@drawable/ic_asc_price" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

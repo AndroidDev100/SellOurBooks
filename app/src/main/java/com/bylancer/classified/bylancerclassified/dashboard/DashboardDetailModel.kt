@@ -1,9 +1,9 @@
 package com.bylancer.classified.bylancerclassified.dashboard
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
-import android.arch.persistence.room.TypeConverters
-import android.support.annotation.NonNull
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import androidx.annotation.NonNull
 import com.bylancer.classified.bylancerclassified.database.DataConverterCustomData
 import com.bylancer.classified.bylancerclassified.database.DataConverterListImages
 import com.google.gson.annotations.Expose
@@ -15,7 +15,7 @@ class DashboardDetailModel {
     @PrimaryKey
     @SerializedName("id")
     @Expose
-    var id: String? = null
+    var productId: String? = null
     @SerializedName("title")
     @Expose
     var title: String? = null
@@ -115,7 +115,7 @@ class DashboardDetailModel {
     @TypeConverters(DataConverterListImages::class)
     @SerializedName("images")
     @Expose
-    var images: List<String>? = null
+    var productImages: List<String>? = null
     @SerializedName("tag")
     @Expose
     var tag: String? = null
