@@ -60,6 +60,7 @@
     <dimen name="login_title_top_margin">60dp</dimen>
     <dimen name="sign_in_button_text_size">18sp</dimen>
     <dimen name="sign_in_button_height">36dp</dimen>
+    <dimen name="social_button_height">55dp</dimen>
 
     <!-- Dashboard -->
     <dimen name="search_bar_height">48dp</dimen>

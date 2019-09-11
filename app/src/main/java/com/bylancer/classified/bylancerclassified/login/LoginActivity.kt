@@ -1,6 +1,6 @@
 package com.bylancer.classified.bylancerclassified.login
 
-import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -25,6 +25,14 @@ import com.bylancer.classified.bylancerclassified.webservices.registration.UserR
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.gmail.samehadar.iosdialog.IOSDialog
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONArray
 import retrofit2.Call
@@ -36,6 +44,10 @@ import java.util.*
 
 class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<UserRegistrationStatus> {
     private var callbackManager: CallbackManager? = null
+    private lateinit var mGoogleSignInClient : GoogleSignInClient
+    companion object {
+        const val RC_SIGN_IN = 9001
+    }
 
     override fun setLayoutView() = R.layout.activity_login
 
@@ -45,11 +57,23 @@ class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<
             intent.getBundleExtra(AppConstants.BUNDLE).getString(AppConstants.MESSAGE)?.let { Utility.showSnackBar(login_screen_parent_layout, it, this) }
         }
 
+        setUpGoogleLogin()
+
         app_name_login_text_view.text = if (SessionState.instance.appName != null) SessionState.instance.appName else getString(R.string.app_name)
         sign_up_to_continue_text_view.text = LanguagePack.getString(getString(R.string.sign_up_to_continue))
         login_with_email_text_view.text = LanguagePack.getString(getString(R.string.login_with_email))
         sign_up_with_email_text_view.text = LanguagePack.getString(getString(R.string.sign_up_with_email))
         setTermsAndCondition()
+    }
+
+    private fun setUpGoogleLogin() {
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
+        google_sign_in_button?.setOnClickListener {
+            googleSignIn()
+        }
     }
 
     override fun onClick(view: View?) {
@@ -80,7 +104,7 @@ class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<
                                  userData.name = if (jsonObject.has("name")) jsonObject.getString("name") else ""
                                  userData.password = UUID.randomUUID().toString()
                                  userData.fbLogin = "1"
-                                if (userData.email!!.length > 0) {
+                                if (userData.email!!.isNotEmpty()) {
                                     logoutFromFacebook()
                                     registerUser(userData)
                                 }
@@ -104,8 +128,16 @@ class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        callbackManager?.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == Activity.RESULT_OK) {
+                var task : Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data);
+                handleGoogleSignInResult(task)
+            } else {
+                Utility.showSnackBar(login_screen_parent_layout, LanguagePack.getString("You have cancelled Google login, please login to continue"), this@LoginActivity)
+            }
+        } else {
+            callbackManager?.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     private fun logoutFromFacebook() {
@@ -218,8 +250,45 @@ class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<
         startActivity(TermsAndConditionWebView ::class.java, false, bundle)
     }
 
-   @Suppress("DEPRECATION")
-   private fun printHashKey() {
+    private fun googleSignIn() {
+        val signInIntent = mGoogleSignInClient.signInIntent;
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private fun googleSignOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this) {
+                    fun onComplete(task : Task<Void>) {
+                        // [START_EXCLUDE]
+                        // [END_EXCLUDE]
+                    }
+                }
+    }
+
+    private fun handleGoogleSignInResult(completedTask: Task<GoogleSignInAccount> ) {
+        if (!this.isFinishing) {
+            try {
+                val account = completedTask.getResult(ApiException::class.java)
+                val email = account?.email
+                val userData = UserRegistrationData()
+                userData.email = email ?: ""
+                userData.username = if (email != null && email.isNotEmpty()) email.split("@")[0] else ""
+                userData.name = account?.displayName
+                userData.password = UUID.randomUUID().toString()
+                userData.fbLogin = "1"
+                if (userData.email!!.isNotEmpty()) {
+                    register_user_sliding_progress_indicator.visibility = View.VISIBLE
+                    googleSignOut()
+                    registerUser(userData)
+                }
+            } catch (e: ApiException) {
+                val ee = e.message
+            }
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun printHashKey() {
         try {
             val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
             for (signature in info.signatures) {
@@ -229,7 +298,7 @@ class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<
                 Log.i("Facebook Hash Key",  hashKey)
             }
         } catch (e: NoSuchAlgorithmException) {
-           // Log.e(FragmentActivity.TAG, "printHashKey()", e)
+            // Log.e(FragmentActivity.TAG, "printHashKey()", e)
         } catch (e: Exception) {
             //Log.e(FragmentActivity.TAG, "printHashKey()", e)
         }
