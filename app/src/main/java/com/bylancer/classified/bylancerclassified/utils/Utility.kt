@@ -39,6 +39,7 @@ import android.widget.TextView
 import com.agrawalsuneet.dotsloader.loaders.SlidingLoader
 import com.asksira.bsimagepicker.BSImagePicker
 import com.asksira.bsimagepicker.Utils
+import com.bylancer.classified.bylancerclassified.BuildConfig
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.webservices.RetrofitController
 import com.bylancer.classified.bylancerclassified.webservices.notificationmessage.AddTokenStatus
@@ -474,7 +475,7 @@ fun Context.getCurrentCountry(): String {
 }
 
 fun getSingleImagePickerDialog(tag: String) : BSImagePicker {
-    return BSImagePicker.Builder("com.bylancer.classified.bylancerclassified.fileprovider")
+    return BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".fileprovider")
             .setMaximumDisplayingImages(Integer.MAX_VALUE) //Default: Integer.MAX_VALUE. Don't worry about performance :)
             .setSpanCount(3) //Default: 3. This is the number of columns
             .setGridSpacing(Utils.dp2px(2)) //Default: 2dp. Remember to pass in a value in pixel.

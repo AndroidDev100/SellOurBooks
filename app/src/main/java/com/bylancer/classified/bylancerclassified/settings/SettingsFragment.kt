@@ -362,7 +362,7 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         if (fragment_settings_user_parent_layout != null) Utility.showSnackBar(fragment_settings_user_parent_layout, "Please check your internet connection", context!!)
     }
 
-    fun showProgressDialog(message: String) {
+    private fun showProgressDialog(message: String) {
         mProgressDialog = Utility.showProgressView(context!!, message)
         mProgressDialog?.show()
     }

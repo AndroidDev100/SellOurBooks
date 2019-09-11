@@ -8,6 +8,7 @@
 
     <!--Facebook -->
     <string name="facebook_app_id">750790928669914</string>
+    <string name="fb_login_protocol_scheme">fb750790928669914</string>
 
-    <string name="google_api_key">"AIzaSyDINBBvnIrstksUcztPKoRl2GDPquiv5cI"</string>
+    <string name="google_api_key">"AIzaSyA0PhNa1oFAMx8XBDrvz1qCFaiD9OL_Rf8"</string>
 </resources>

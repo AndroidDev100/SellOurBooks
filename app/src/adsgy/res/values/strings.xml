@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Adsgy</string>
+    <string name="app_name">ADSGY</string>
 
     <!-- AD CONFIG -->
     <string name="ad_mob_banner">"ca-app-pub-5018942487031180~7190599890"</string>
@@ -8,6 +8,7 @@
 
     <!--Facebook -->
     <string name="facebook_app_id">1136886139829629</string>
+    <string name="fb_login_protocol_scheme">fb1136886139829629</string>
 
     <string name="google_api_key">"AIzaSyBZK2wn3DdLNs1DKzUrF1KZQBqkHjglAaY"</string>
 </resources>

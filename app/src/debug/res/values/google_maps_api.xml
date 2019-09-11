@@ -21,7 +21,7 @@
     string in this file.
     -->
     <!--DEV -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyACiHMCIYbSeMj3D4n7d9PsU20vuw9XyOc</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">@string/google_api_key</string>
     <!--Release -->
     <!--<string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDWprw08ljbc_qZ_r5f6np2VUk5TzGUMEU</string>-->
 </resources>

@@ -11,8 +11,8 @@ android {
         applicationId "com.bylancer.classified.bylancerclassified"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 11
-        versionName "9.2"
+        versionCode 12
+        versionName "9.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     productFlavors {
@@ -42,6 +42,9 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 

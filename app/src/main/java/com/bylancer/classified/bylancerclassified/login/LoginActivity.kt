@@ -25,13 +25,11 @@ import com.bylancer.classified.bylancerclassified.webservices.registration.UserR
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.gmail.samehadar.iosdialog.IOSDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONArray
@@ -251,12 +249,12 @@ class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<
     }
 
     private fun googleSignIn() {
-        val signInIntent = mGoogleSignInClient.signInIntent;
+        val signInIntent = mGoogleSignInClient?.signInIntent;
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     private fun googleSignOut() {
-        mGoogleSignInClient.signOut()
+        mGoogleSignInClient?.signOut()
                 .addOnCompleteListener(this) {
                     fun onComplete(task : Task<Void>) {
                         // [START_EXCLUDE]
