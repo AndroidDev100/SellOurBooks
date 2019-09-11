@@ -26,23 +26,23 @@ class LanguagePack private constructor() {
         }
 
         fun getString(key: String?): String {
-            if (LanguagePack.instance.languagePackData != null && key != null) {
-                if (LanguagePack.instance.currentLanguagePackData == null) {
-                    for (languagePack in LanguagePack.instance.languagePackData!!) {
+            if (this.instance.languagePackData != null && key != null) {
+                if (this.instance.currentLanguagePackData == null) {
+                    for (languagePack in this.instance.languagePackData!!) {
                         if (SessionState.instance.selectedLanguage.equals(languagePack.language, true)) {
-                            LanguagePack.instance.currentLanguagePackData = languagePack
+                            this.instance.currentLanguagePackData = languagePack
                             break
                         }
                     }
                 }
 
-                if (LanguagePack.instance.currentLanguagePackData != null
-                        && SessionState.instance.selectedLanguage.equals(LanguagePack.instance.currentLanguagePackData?.language)
-                        && LanguagePack.instance.currentLanguagePackData?.text!!.containsKey(key)) {
-                    return  LanguagePack.instance.currentLanguagePackData!!.text!!.get(key)!!
-                } else if(LanguagePack.instance.currentLanguagePackData == null) {
+                if (instance.currentLanguagePackData != null
+                        && SessionState.instance.selectedLanguage.equals(this.instance.currentLanguagePackData?.language)
+                        && this.instance.currentLanguagePackData?.text!!.containsKey(key)) {
+                    return  this.instance.currentLanguagePackData!!.text!![key] ?: ""
+                } else if(this.instance.currentLanguagePackData == null) {
                     return updateLanguagePack(key, languagePack)
-                } else if (!SessionState.instance.selectedLanguage.equals(LanguagePack.instance.currentLanguagePackData?.language)) {
+                } else if (!SessionState.instance.selectedLanguage.equals(this.instance.currentLanguagePackData?.language)) {
                     return updateLanguagePack(key, languagePack)
                 }
             }
@@ -51,11 +51,11 @@ class LanguagePack private constructor() {
         }
 
         private fun updateLanguagePack(key: String, languagePack: LanguagePack?): String {
-            for (languagePack in LanguagePack.instance.languagePackData!!) {
+            for (languagePack in this.instance.languagePackData!!) {
                 if (SessionState.instance.selectedLanguage.equals(languagePack.language)) {
-                    LanguagePack.instance.currentLanguagePackData = languagePack
+                    this.instance.currentLanguagePackData = languagePack
                     if (languagePack.text!!.containsKey(key)) {
-                        return languagePack.text!!.get(key)!!
+                        return languagePack.text!![key] ?: ""
                     }
                 }
             }

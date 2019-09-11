@@ -25,6 +25,7 @@ class SessionState private constructor() {
     var defaultCountry: String = ""
     var selectedCountry: String = ""
     var selectedCountryCode: String = ""
+    var selectedStateCode: String = ""
     var selectedLanguageCode: String = ""
     var selectedLanguageDirection: String = ""
     var selectedState: String = ""
@@ -66,6 +67,7 @@ class SessionState private constructor() {
             this.defaultCountry = prefs.getString(AppConstants.Companion.PREFERENCES.DEFAULT_COUNTRY.toString(), "")!!
             this.selectedCountry = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY.toString(), "")!!
             this.selectedCountryCode = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY_CODE.toString(), "")!!
+            this.selectedStateCode = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_STATE_CODE.toString(), "")!!
             this.selectedState = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_STATE.toString(), "")!!
             this.selectedCity = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(), "")!!
             this.selectedLanguage = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE.toString(), "")!!

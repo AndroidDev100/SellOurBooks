@@ -14,22 +14,24 @@ class DatabaseTaskAsyc(val context: Context, val mDashboardDetailModel: Dashboar
                        val isForValidating: Boolean): AsyncTask<Void, Void, Boolean>() {
 
     override fun doInBackground(vararg p0: Void): Boolean {
-        if (mDashboardDetailModel?.productId != null && DBUtil.getDatabaseInstance(context)?.daoAccess()?.
-                        checkPropertyExist(mDashboardDetailModel?.productId!!) > 0) {
-            if (!isForValidating) {
-                DBUtil.getDatabaseInstance(context).daoAccess().
-                        deleteProperty(mDashboardDetailModel!!)
-                return false
+        if (context != null && mDashboardDetailModel != null) {
+            if (mDashboardDetailModel?.productId != null && DBUtil.getDatabaseInstance(context)?.daoAccess()?.
+                            checkPropertyExist(mDashboardDetailModel?.productId!!) > 0) {
+                if (!isForValidating) {
+                    DBUtil.getDatabaseInstance(context).daoAccess().
+                            deleteProperty(mDashboardDetailModel!!)
+                    return false
+                } else {
+                    return true
+                }
             } else {
+                if(isForValidating) {
+                    return false
+                }
+                DBUtil.getDatabaseInstance(context)?.daoAccess()?.
+                        insertProperty(mDashboardDetailModel!!)
                 return true
             }
-        } else {
-            if(isForValidating) {
-                return false
-            }
-            DBUtil.getDatabaseInstance(context)?.daoAccess()?.
-                    insertProperty(mDashboardDetailModel!!)
-           return true
         }
 
         return false

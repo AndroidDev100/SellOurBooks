@@ -1,12 +1,16 @@
 package com.bylancer.classified.bylancerclassified.login
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Spannable
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
@@ -26,6 +30,8 @@ import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.util.*
 
 class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<UserRegistrationStatus> {
@@ -34,6 +40,7 @@ class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<
     override fun setLayoutView() = R.layout.activity_login
 
     override fun initialize(savedInstanceState: Bundle?) {
+        //printHashKey()
         if (intent != null && intent.hasExtra(AppConstants.BUNDLE)) {
             intent.getBundleExtra(AppConstants.BUNDLE).getString(AppConstants.MESSAGE)?.let { Utility.showSnackBar(login_screen_parent_layout, it, this) }
         }
@@ -209,5 +216,23 @@ class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<
         bundle.putString(AppConstants.TERMS_CONDITION_TITLE, LanguagePack.getString(getString(titleId)))
         bundle.putString(AppConstants.TERMS_CONDITION_URL, url)
         startActivity(TermsAndConditionWebView ::class.java, false, bundle)
+    }
+
+   @Suppress("DEPRECATION")
+   private fun printHashKey() {
+        try {
+            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                val md = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                val hashKey = String(Base64.encode(md.digest(), 0))
+                Log.i("Facebook Hash Key",  hashKey)
+            }
+        } catch (e: NoSuchAlgorithmException) {
+           // Log.e(FragmentActivity.TAG, "printHashKey()", e)
+        } catch (e: Exception) {
+            //Log.e(FragmentActivity.TAG, "printHashKey()", e)
+        }
+
     }
 }

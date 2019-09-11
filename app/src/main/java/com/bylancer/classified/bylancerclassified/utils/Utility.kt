@@ -518,3 +518,6 @@ fun Context.isOver600dp(): Boolean {
     val displayMetrics = resources.displayMetrics
     return displayMetrics.widthPixels / displayMetrics.density >= 600
 }
+
+fun Context.getDefaultFont() = ResourcesCompat.getFont(this, R.font.roboto_regular)
+

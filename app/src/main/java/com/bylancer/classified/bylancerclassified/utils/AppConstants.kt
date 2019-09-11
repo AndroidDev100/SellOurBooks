@@ -7,6 +7,7 @@ import com.bylancer.classified.bylancerclassified.BuildConfig
  * Created by Ani on 3/24/18.
  */
 class AppConstants {
+
     companion object {
         const val DETAIL_ACTIVITY_PARCELABLE = "DETAIL_ACTIVITY_PARCELABLE"
         const val BUNDLE = "bundle"
@@ -40,11 +41,12 @@ class AppConstants {
         const val IS_ADMIN_APP = false
         const val IS_APP_CONFIG_RELOAD_REQUIRED = true // UPDATE IT TO FALSE IF YOU DON'T WANT TO RELOAD YOUR CATEGORIES EVERY LAUNCH
         val CURRENT_VERSION = "1.0"
-        val CURRENCY_IN_LEFT= "0"
-        val PREF_FILE = "bylancer_appsgeek"
-        val SUPPORT_EMAIL = "apps.bylancer@gmail.com"
-        val PRODUCT_LOADING_LIMIT = "36"
-        val PRODUCT_STATUS = "active"
+        const val CURRENCY_IN_LEFT= "1"
+        const val PREF_FILE = "bylancer_appsgeek"
+        const val SUPPORT_EMAIL = "apps.bylancer@gmail.com"
+        const val PRODUCT_LOADING_LIMIT = "36"
+        const val PRODUCT_LOADING_OFFSET = 20
+        const val PRODUCT_STATUS = "active"
 
         const val ERROR = "error"
         const val SUCCESS = "success"
@@ -69,10 +71,14 @@ class AppConstants {
         const val SUB_CATEGORY = "sub_category"
         const val DATABASE_NAME = "property_app_db"
         const val DATABASE_VERSION = 5
+        const val COUNTRY_PAGER_POSITION = 0
+        const val STATE_PAGER_POSITION = 1
+        const val CITY_PAGER_POSITION = 2
         const val IMAGE_PICKER_FRAGMENT = "picker"
         const val SELECTED_CATEGORY_POSITION = "selected_category_position"
         const val SELECTED_SUB_CATEGORY_ID = "selected_sub_category_id"
         const val SELECTED_CATEGORY_ID = "selected_category_id"
+        const val SELECTED_KEYWORD = "selected_keywords"
         const val SELECTED_PRODUCT_LONGITUDE = "selected_product_longitude"
         const val SELECTED_PRODUCT_LATITUDE = "selected_product_latitude"
         const val UPLOAD_PRODUCT_SELECTED_TITLE = "UPLOAD_PRODUCT_SELECTED_TITLE"
@@ -101,6 +107,7 @@ class AppConstants {
             DEFAULT_COUNTRY("default_country"),
             SELECTED_COUNTRY("selected_country"),
             SELECTED_COUNTRY_CODE("selected_country_code"),
+            SELECTED_STATE_CODE("selected_state_code"),
             SELECTED_STATE("selected_state"),
             SELECTED_CITY("selected_city"),
             SELECTED_LANGUAGE("selected_Language"),

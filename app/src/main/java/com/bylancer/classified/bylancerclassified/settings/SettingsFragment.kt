@@ -5,9 +5,8 @@ import android.app.Fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.se.omapi.Session
-import androidx.appcompat.app.AlertDialog
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -247,16 +246,20 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         showProgressDialog(getString(R.string.fetch_country))
         RetrofitController.fetchCountryDetails(object: Callback<List<CountryListModel>> {
             override fun onResponse(call: Call<List<CountryListModel>>?, response: Response<List<CountryListModel>>?) {
-                if (response != null && response.isSuccessful && settings_country_spinner != null) {
-                    countryList.addAll(response.body())
-                    saveCountryDetailData()
+                if(isAdded && isVisible) {
+                    if (response != null && response.isSuccessful && settings_country_spinner != null) {
+                        countryList.addAll(response.body())
+                        saveCountryDetailData()
+                    }
+                    dismissProgressDialog()
                 }
-                dismissProgressDialog()
             }
 
             override fun onFailure(call: Call<List<CountryListModel>>?, t: Throwable?) {
-                dismissProgressDialog()
-                showNetworkErrorSnackBar()
+                if(isAdded && isVisible) {
+                    dismissProgressDialog()
+                    showNetworkErrorSnackBar()
+                }
             }
         })
     }
@@ -265,16 +268,20 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         showProgressDialog(getString(R.string.fetch_state))
         RetrofitController.fetchStateDetails(countryId, object: Callback<List<StateListModel>> {
             override fun onResponse(call: Call<List<StateListModel>>?, response: Response<List<StateListModel>>?) {
-                dismissProgressDialog()
-                if (response != null && response.isSuccessful && settings_state_spinner != null) {
-                    stateList.addAll(response.body())
-                    saveStateDetailData()
+                if (isAdded && isVisible) {
+                    dismissProgressDialog()
+                    if (response != null && response.isSuccessful && settings_state_spinner != null) {
+                        stateList.addAll(response.body())
+                        saveStateDetailData()
+                    }
                 }
             }
 
             override fun onFailure(call: Call<List<StateListModel>>?, t: Throwable?) {
-                dismissProgressDialog()
-                showNetworkErrorSnackBar()
+                if (isAdded && isVisible) {
+                    dismissProgressDialog()
+                    showNetworkErrorSnackBar()
+                }
             }
         })
     }
@@ -283,16 +290,20 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         showProgressDialog(getString(R.string.fetch_city))
         RetrofitController.fetchCityDetails(stateId, object: Callback<List<CityListModel>> {
             override fun onResponse(call: Call<List<CityListModel>>?, response: Response<List<CityListModel>>?) {
-                dismissProgressDialog()
-                if (response != null && response.isSuccessful && settings_city_spinner != null) {
-                    cityList.addAll(response.body())
-                    saveCityDetailData()
+                if (isAdded && isVisible) {
+                    dismissProgressDialog()
+                    if (response != null && response.isSuccessful && settings_city_spinner != null) {
+                        cityList.addAll(response.body())
+                        saveCityDetailData()
+                    }
                 }
             }
 
             override fun onFailure(call: Call<List<CityListModel>>?, t: Throwable?) {
-                dismissProgressDialog()
-                showNetworkErrorSnackBar()
+                if (isAdded && isVisible) {
+                    dismissProgressDialog()
+                    showNetworkErrorSnackBar()
+                }
             }
         })
     }
@@ -395,22 +406,26 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
                 val body = MultipartBody.Part.createFormData("fileToUpload", file.getName(), requestFile)
                 RetrofitController.updateUserProfilePic(body, object: Callback<ProductUploadProductModel> {
                     override fun onFailure(call: Call<ProductUploadProductModel>?, t: Throwable?) {
-                        dismissProgressDialog()
-                        Utility.showSnackBar(fragment_settings_user_parent_layout, getString(R.string.internet_issue), context!!)
+                        if (isAdded && isVisible) {
+                            dismissProgressDialog()
+                            Utility.showSnackBar(fragment_settings_user_parent_layout, getString(R.string.internet_issue), context!!)
+                        }
                     }
 
                     override fun onResponse(call: Call<ProductUploadProductModel>?, response: Response<ProductUploadProductModel>?) {
-                        if (response != null && response.isSuccessful) {
-                            val responseBody = response.body()
-                            if (responseBody != null && AppConstants.SUCCESS.equals(responseBody.status) && context != null) {
-                                SessionState.instance.profilePicUrl = responseBody.url!!
-                                SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.PROFILE_PIC.toString(),
-                                        SessionState.instance.profilePicUrl)
+                        if (isAdded && isVisible) {
+                            if (response != null && response.isSuccessful) {
+                                val responseBody = response.body()
+                                if (responseBody != null && AppConstants.SUCCESS.equals(responseBody.status) && context != null) {
+                                    SessionState.instance.profilePicUrl = responseBody.url!!
+                                    SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.PROFILE_PIC.toString(),
+                                            SessionState.instance.profilePicUrl)
+                                }
+                            } else {
+                                Utility.showSnackBar(fragment_settings_user_parent_layout, getString(R.string.some_wrong), context!!)
                             }
-                        } else {
-                            Utility.showSnackBar(fragment_settings_user_parent_layout, getString(R.string.some_wrong), context!!)
+                            dismissProgressDialog()
                         }
-                        dismissProgressDialog()
                     }
                 })
             } else {
@@ -423,21 +438,25 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         showProgressDialog(getString(R.string.loading))
         RetrofitController.fetchAppConfig(languageCode, object : Callback<AppConfigModel> {
             override fun onFailure(call: Call<AppConfigModel>?, t: Throwable?) {
-                if (context != null && Utility.isNetworkAvailable(context!!)) {
-                    refreshCategoriesWithLanguageCode(languageCode)
-                } else {
-                    dismissProgressDialog()
+                if (isAdded && isVisible) {
+                    if (context != null && Utility.isNetworkAvailable(context!!)) {
+                        refreshCategoriesWithLanguageCode(languageCode)
+                    } else {
+                        dismissProgressDialog()
+                    }
                 }
             }
 
             override fun onResponse(call: Call<AppConfigModel>?, response: Response<AppConfigModel>?) {
-                if (context != null && response != null && response.isSuccessful) {
-                    val appConfigUrl: AppConfigModel = response.body()
-                    AppConfigDetail.saveAppConfigData(context!!, Gson().toJson(appConfigUrl))
-                    AppConfigDetail.initialize(Gson().toJson(appConfigUrl))
-                    dismissProgressDialog()
-                    if (isRecreateActivityRequired) {
-                        this@SettingsFragment.activity?.recreate()
+                if (isAdded && isVisible) {
+                    if (context != null && response != null && response.isSuccessful) {
+                        val appConfigUrl: AppConfigModel = response.body()
+                        AppConfigDetail.saveAppConfigData(context!!, Gson().toJson(appConfigUrl))
+                        AppConfigDetail.initialize(Gson().toJson(appConfigUrl))
+                        dismissProgressDialog()
+                        if (isRecreateActivityRequired) {
+                            this@SettingsFragment.activity?.recreate()
+                        }
                     }
                 }
             }

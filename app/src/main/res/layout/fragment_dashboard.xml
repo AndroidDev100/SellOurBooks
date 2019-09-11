@@ -9,12 +9,46 @@
     android:orientation="vertical"
     tools:context=".dashboard.DashboardFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_margin">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/location_selector_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:drawablePadding="@dimen/margin_small"
+            android:clickable="true"
+            android:paddingStart="@dimen/default_margin"
+            android:drawableStart="@drawable/ic_marker"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/light_gray_color_text"
+            android:textSize="@dimen/text_size_normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/my_notifications_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_my_property"
+            android:background="@null"
+            android:paddingEnd="@dimen/default_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/dashboard_search_button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_bar_height"
         android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginTop="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         android:drawableEnd="@drawable/ic_search_small"
         android:text="@string/search_text"

@@ -20,7 +20,11 @@ class ProductDetailViewPagerAdapter(private val mContext: Context, private val i
         val productImage = layout.findViewById(R.id.product_image_view_pager) as ImageView
         val productImageCounter = layout.findViewById(R.id.product_image_counter_text_view) as AppCompatTextView
         productImageCounter.text = ((position + 1).toString() + "/" + (images.size).toString())
-        Glide.with(mContext).load(imagePath + images[position]).apply(RequestOptions().placeholder(Utility.getCircularProgressDrawable(mContext))).into(productImage)
+        if (images[position].isNullOrEmpty()) {
+            Glide.with(mContext).load(imagePath + images[position]).apply(RequestOptions().placeholder(R.drawable.image_not_available)).into(productImage)
+        } else {
+            Glide.with(mContext).load(imagePath + images[position]).apply(RequestOptions().placeholder(Utility.getCircularProgressDrawable(mContext))).into(productImage)
+        }
         collection.addView(layout)
         return layout
     }

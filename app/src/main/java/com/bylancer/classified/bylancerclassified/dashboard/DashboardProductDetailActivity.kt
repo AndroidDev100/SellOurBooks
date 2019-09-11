@@ -3,11 +3,15 @@ package com.bylancer.classified.bylancerclassified.dashboard
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.text.Html
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +36,7 @@ import com.bylancer.classified.bylancerclassified.webservices.RetrofitController
 import com.bylancer.classified.bylancerclassified.webservices.makeanoffer.MakeAnOfferData
 import com.bylancer.classified.bylancerclassified.webservices.makeanoffer.MakeAnOfferStatus
 import com.bylancer.classified.bylancerclassified.widgets.CustomAlertDialog
+import com.bylancer.classified.bylancerclassified.widgets.htmlcontent.URLImageParser
 import com.gmail.samehadar.iosdialog.IOSDialog
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -118,26 +123,30 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
     }
 
     override fun onResponse(call: Call<DashboardDetailModel>?, response: Response<DashboardDetailModel>?) {
-        progress_view_dashboard_detail_frame.visibility = View.GONE
-        progress_view_dashboard_detail.clearAnimation()
-        animUpDown = null
+        if (!this.isFinishing) {
+            progress_view_dashboard_detail_frame.visibility = View.GONE
+            progress_view_dashboard_detail.clearAnimation()
+            animUpDown = null
 
-        if(response != null && response.isSuccessful) {
-            mDashboardDetailModel =  response.body()
-            if (mDashboardDetailModel != null) {
-                initializeUI(mDashboardDetailModel!!)
-            } else {
-                Utility.showSnackBar(dashboard_product_detail_parent_layout, LanguagePack.getString(getString(R.string.some_wrong)), this@DashboardProductDetailActivity)
+            if(response != null && response.isSuccessful) {
+                mDashboardDetailModel =  response.body()
+                if (mDashboardDetailModel != null) {
+                    initializeUI(mDashboardDetailModel!!)
+                } else {
+                    Utility.showSnackBar(dashboard_product_detail_parent_layout, LanguagePack.getString(getString(R.string.some_wrong)), this@DashboardProductDetailActivity)
+                }
             }
         }
     }
 
     override fun onFailure(call: Call<DashboardDetailModel>?, t: Throwable?) {
-        progress_view_dashboard_detail_frame.visibility = View.GONE
-        progress_view_dashboard_detail.visibility = View.GONE
-        progress_view_dashboard_detail.clearAnimation()
-        animUpDown = null
-        Utility.showSnackBar(dashboard_product_detail_parent_layout, LanguagePack.getString(getString(R.string.internet_issue)), this@DashboardProductDetailActivity)
+        if (!this.isFinishing) {
+            progress_view_dashboard_detail_frame.visibility = View.GONE
+            progress_view_dashboard_detail.visibility = View.GONE
+            progress_view_dashboard_detail.clearAnimation()
+            animUpDown = null
+            Utility.showSnackBar(dashboard_product_detail_parent_layout, LanguagePack.getString(getString(R.string.internet_issue)), this@DashboardProductDetailActivity)
+        }
     }
 
     private fun initializeUI(dashboardDetailModel: DashboardDetailModel) {
@@ -164,13 +173,19 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
         if (!dashboardDetailModel.price.isNullOrEmpty() && checkIfNumber(dashboardDetailModel.price!!)) {
             product_detail_price_text_view.visibility = View.VISIBLE
         } else {
-            product_detail_price_text_view.visibility = View.GONE
+            product_detail_price_text_view.visibility = View.INVISIBLE
         }
 
         product_detail_timeline_text_view.text = dashboardDetailModel.createdAt
-        product_details_category_text_view.text = dashboardDetailModel.tag
+        product_details_category_text_view.text = dashboardDetailModel.categoryName
         product_detail_age_desc.text = dashboardDetailModel.updatedAt
-        product_detail_description_detail.text = dashboardDetailModel.description
+
+        product_detail_description_detail.linksClickable = true
+        product_detail_description_detail.movementMethod = LinkMovementMethod.getInstance()
+        val urlImageParser = URLImageParser(product_detail_description_detail, this)
+        val descriptionHtmlSpan = getDescription(dashboardDetailModel.description, urlImageParser)
+        product_detail_description_detail.text = descriptionHtmlSpan
+
         product_detail_product_status_desc.text = dashboardDetailModel.status
         product_detail_phone_number_desc.text = if(AppConstants.HIDE_PHONE.equals(dashboardDetailModel.hidePhone)) dashboardDetailModel.phone else getString(R.string.hidden)
         product_detail_posted_by_desc.text = dashboardDetailModel.sellerName
@@ -192,7 +207,7 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
         }
 
         if(mMap != null) {
-            if (dashboardDetailModel.mapLatitude != null && dashboardDetailModel.mapLongitude != null) {
+            if (!dashboardDetailModel.mapLatitude.isNullOrEmpty() && !dashboardDetailModel.mapLongitude.isNullOrEmpty()) {
                 val latLng = LatLng((dashboardDetailModel.mapLatitude)!!.toDouble(), (dashboardDetailModel.mapLongitude)!!.toDouble())
                 val markerOptions = MarkerOptions()
                 markerOptions.position(latLng)
@@ -201,6 +216,14 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
                 mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
                 mMap?.animateCamera(CameraUpdateFactory.zoomTo(15.0F))
             }
+        }
+    }
+
+    private fun getDescription(description: String?, urlImageParser: URLImageParser): Spanned {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(description, Html.FROM_HTML_SEPARATOR_LINE_BREAK_HEADING, urlImageParser, null)
+        } else {
+            Html.fromHtml(description, urlImageParser, null)
         }
     }
 
@@ -377,16 +400,18 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
         captionTextView.id = View.generateViewId()
         captionTextView.text = LanguagePack.getString(captionText)
         captionTextView.setTextColor(resources.getColor(R.color.disable_icon_color))
+        captionTextView.typeface = getDefaultFont()
         captionTextView.setPadding(Utility.valueInDp(10, this), Utility.valueInDp(10, this), Utility.valueInDp(10, this), Utility.valueInDp(10, this));
         post_login_product_detail_layout.addView(captionTextView, 0)
         set.clone(post_login_product_detail_layout)
-        set.connect(captionTextView.getId(), ConstraintSet.LEFT,
+        set.connect(captionTextView.id, ConstraintSet.LEFT,
                 post_login_product_detail_layout.id, ConstraintSet.LEFT, 15)
-        set.connect(captionTextView.getId(), ConstraintSet.TOP,
+        set.connect(captionTextView.id, ConstraintSet.TOP,
                 parentLayoutId, ConstraintSet.BOTTOM, 10)
         set.applyTo(post_login_product_detail_layout)
 
         val detailTextView = TextView(this)
+        detailTextView.typeface = getDefaultFont()
         detailTextView.id = View.generateViewId()
         detailTextView.layoutParams = ViewGroup.LayoutParams(
                 0,
@@ -397,13 +422,13 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
         detailTextView.setPadding(Utility.valueInDp(15, this), Utility.valueInDp(10, this), Utility.valueInDp(10, this), Utility.valueInDp(10, this));
         post_login_product_detail_layout.addView(detailTextView, 0)
         set.clone(post_login_product_detail_layout)
-        set.connect(detailTextView.getId(), ConstraintSet.RIGHT,
+        set.connect(detailTextView.id, ConstraintSet.RIGHT,
                 post_login_product_detail_layout.id, ConstraintSet.RIGHT, 15)
-        set.connect(detailTextView.getId(), ConstraintSet.TOP,
+        set.connect(detailTextView.id, ConstraintSet.TOP,
                 parentLayoutId, ConstraintSet.BOTTOM, 10)
-        set.connect(detailTextView.getId(), ConstraintSet.LEFT,
+        set.connect(detailTextView.id, ConstraintSet.LEFT,
                 captionTextView.id, ConstraintSet.RIGHT, 10)
-        set.setHorizontalBias(detailTextView.getId(), 1f);
+        set.setHorizontalBias(detailTextView.id, 1f);
         set.applyTo(post_login_product_detail_layout)
 
         val separatorView = View(this)
@@ -414,11 +439,11 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
         separatorView.setBackgroundColor(resources.getColor(R.color.button_disabled_color))
         post_login_product_detail_layout.addView(separatorView, 0)
         set.clone(post_login_product_detail_layout)
-        set.connect(separatorView.getId(), ConstraintSet.LEFT,
+        set.connect(separatorView.id, ConstraintSet.LEFT,
                 post_login_product_detail_layout.id, ConstraintSet.LEFT, 0)
-        set.connect(separatorView.getId(), ConstraintSet.RIGHT,
+        set.connect(separatorView.id, ConstraintSet.RIGHT,
                 post_login_product_detail_layout.id, ConstraintSet.RIGHT, 0)
-        set.connect(separatorView.getId(), ConstraintSet.TOP,
+        set.connect(separatorView.id, ConstraintSet.TOP,
                 detailTextView.id, ConstraintSet.BOTTOM, 10)
         set.applyTo(post_login_product_detail_layout)
 
