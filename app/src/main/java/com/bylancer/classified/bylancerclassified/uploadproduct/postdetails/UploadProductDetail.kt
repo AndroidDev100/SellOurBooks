@@ -315,8 +315,8 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
             cityId = cityListModel.id!!
 
             //if (SessionState.instance.uploadedProductLongitude.isNullOrEmpty()) {
-                SessionState.instance.uploadedProductLatitude = if (cityListModel.lat.isNullOrEmpty()) SessionState.instance.uploadedProductLatitude else cityListModel.lat!!
-                SessionState.instance.uploadedProductLongitude = if (cityListModel.long.isNullOrEmpty()) SessionState.instance.uploadedProductLongitude else cityListModel.long!!
+                SessionState.instance.uploadedProductLatitude = if (cityListModel.long.isNullOrEmpty()) SessionState.instance.uploadedProductLatitude else cityListModel.long!!
+                SessionState.instance.uploadedProductLongitude = if (cityListModel.lat.isNullOrEmpty()) SessionState.instance.uploadedProductLongitude else cityListModel.lat!!
                 if (!SessionState.instance.uploadedProductLongitude.isNullOrEmpty() && googleMap != null) {
                     addMarker(SessionState.instance.uploadedProductLatitude.toDouble(),
                             SessionState.instance.uploadedProductLongitude.toDouble())

@@ -77,16 +77,22 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         settings_country_spinner.setExpandTint(R.color.transparent)
         settings_country_spinner.setOnItemClickListener{ position ->
             if (countryList.get(position) != null) {
-                SessionState.instance.selectedCountry = countryList.get(position).name!!
-                SessionState.instance.selectedCountryCode = countryList.get(position).lowercaseCode!!
+                SessionState.instance.selectedCountry = countryList[position].name!!
+                SessionState.instance.selectedCountryCode = countryList[position].lowercaseCode!!
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY.toString(),
-                        countryList.get(position).name!!)
+                        countryList[position].name!!)
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY_CODE.toString(),
-                        countryList.get(position).lowercaseCode!!)
+                        countryList[position].lowercaseCode!!)
                 SessionState.instance.selectedState = ""
                 SessionState.instance.selectedCity = ""
+                SessionState.instance.selectedStateCode = ""
+                SessionState.instance.selectedCityId = ""
                 settings_state_spinner.setText("")
                 settings_city_spinner.setText("")
+                SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_STATE_CODE.toString(),
+                        "")
+                SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY_CODE.toString(),
+                        "")
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_STATE.toString(),
                         "")
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(),
@@ -102,12 +108,18 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         }
 
         settings_state_spinner.setOnItemClickListener{ position ->
-            SessionState.instance.selectedState = if (stateList.get(position) != null) stateList.get(position).name!! else ""
+            SessionState.instance.selectedState = if (stateList[position] != null) stateList[position].name!! else ""
             SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_STATE.toString(),
-                    if (stateList.get(position) != null) stateList.get(position).name!! else "")
+                    SessionState.instance.selectedState)
+            SessionState.instance.selectedStateCode = if (stateList[position] != null) stateList[position].code!! else ""
+            SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_STATE_CODE.toString(),
+                    SessionState.instance.selectedStateCode)
             settings_city_spinner.setText("")
             SessionState.instance.selectedCity = ""
+            SessionState.instance.selectedCityId = ""
             SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(),
+                    "")
+            SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY_CODE.toString(),
                     "")
             cityList?.clear()
             saveCityDetailData()
@@ -119,9 +131,12 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         }
 
         settings_city_spinner.setOnItemClickListener{ position ->
-            SessionState.instance.selectedCity = if (cityList.get(position) != null) cityList.get(position).name!! else ""
+            SessionState.instance.selectedCityId = if (cityList[position] != null) cityList[position].id!! else ""
+            SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY_CODE.toString(),
+                    SessionState.instance.selectedCityId )
+            SessionState.instance.selectedCity = if (cityList[position] != null) cityList[position].name!! else ""
             SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(),
-                    if (cityList.get(position) != null) cityList.get(position).name!! else "")
+                    SessionState.instance.selectedCity)
         }
 
         if (LanguagePack.instance.languagePackData == null) {

@@ -342,22 +342,29 @@ class LocationSelectorFragment : BylancerBuilderFragment(), LocationSelectedList
         when (mViewPagerPosition) {
             0 -> {
                 if (countryList[position] != null) {
-                    SessionState.instance.selectedCountry = countryList.get(position).name!!
-                    SessionState.instance.selectedCountryCode = countryList.get(position).lowercaseCode!!
+                    SessionState.instance.selectedCountry = countryList[position].name!!
+                    SessionState.instance.selectedCountryCode = countryList[position].lowercaseCode!!
                     SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY.toString(),
                             countryList[position].name!!)
                     SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY_CODE.toString(),
                             countryList[position].lowercaseCode!!)
                     SessionState.instance.selectedState = ""
                     SessionState.instance.selectedCity = ""
+                    SessionState.instance.selectedStateCode = ""
+                    SessionState.instance.selectedCityId = ""
                     SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_STATE.toString(),
                             "")
                     SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(),
+                            "")
+                    SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_STATE_CODE.toString(),
+                            "")
+                    SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY_CODE.toString(),
                             "")
                     stateList?.clear()
                     saveStateDetailData()
                     AppConfigDetail.stateList = null
                     refresh(AppConstants.STATE_PAGER_POSITION)
+                    updateViewPagerPosition(1)
                 }
             }
             1 -> {
@@ -368,13 +375,19 @@ class LocationSelectorFragment : BylancerBuilderFragment(), LocationSelectedList
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_STATE_CODE.toString(),
                         if (stateList[position] != null) stateList[position].code!! else "")
                 SessionState.instance.selectedCity = ""
+                SessionState.instance.selectedCityId
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(),
+                        "")
+                SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY_CODE.toString(),
                         "")
                 saveCityDetailData()
                 AppConfigDetail.cityList = null
                 refresh(AppConstants.CITY_PAGER_POSITION)
             }
             else -> {
+                SessionState.instance.selectedCityId = if (cityList[position] != null) cityList[position].id!! else ""
+                SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY_CODE.toString(),
+                        SessionState.instance.selectedCityId )
                 SessionState.instance.selectedCity = if (cityList[position] != null) cityList[position].name!! else ""
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(),
                         if (cityList[position] != null) cityList[position].name!! else "")

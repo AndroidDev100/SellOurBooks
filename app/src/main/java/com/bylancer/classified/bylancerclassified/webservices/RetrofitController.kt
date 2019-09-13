@@ -85,13 +85,13 @@ class RetrofitController {
         }
 
         fun fetchProducts(productInputData: ProductInputData, fetchProductsCallBack: Callback<List<ProductsData>>) {
-            val call = webserviceApi.fetchProducts(productInputData.status, productInputData.countryCode, productInputData.pageNumber,
+            val call = webserviceApi.fetchProducts(productInputData.status, productInputData.countryCode, productInputData.stateCode, productInputData.cityId, productInputData.pageNumber,
                     productInputData.limit)
             call.enqueue(fetchProductsCallBack)
         }
 
         fun fetchFeaturedAndUrgentProducts(productInputData: ProductInputData, fetchProductsCallBack: Callback<List<ProductsData>>) {
-            val call = webserviceApi.fetchFeaturedAndUrgentProducts(productInputData.status, productInputData.countryCode, productInputData.pageNumber,
+            val call = webserviceApi.fetchFeaturedAndUrgentProducts(productInputData.status, productInputData.countryCode, productInputData.stateCode, productInputData.cityId, productInputData.pageNumber,
                     productInputData.limit)
             call.enqueue(fetchProductsCallBack)
         }
@@ -108,7 +108,7 @@ class RetrofitController {
         }
 
         fun fetchProductDetailsByCategory(productInputData: ProductInputData, fetchProductsByCategoryCallBack: Callback<List<ProductsData>>) {
-            val call = webserviceApi.fetchProductsByCategory(productInputData.status, productInputData.countryCode, productInputData.pageNumber,
+            val call = webserviceApi.fetchProductsByCategory(productInputData.status, productInputData.countryCode, productInputData.stateCode, productInputData.cityId, productInputData.pageNumber,
                     productInputData.limit, productInputData.categoryId, productInputData.subCategoryId, productInputData.keywords, productInputData.additionalSearchInfo)
             call.enqueue(fetchProductsByCategoryCallBack)
         }

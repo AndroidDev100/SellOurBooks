@@ -46,19 +46,19 @@ interface WebServiceApiInterface {
     fun forgetPassword(@Query("email") name: String): Call<UserForgetPasswordStatus>
 
     @GET(AppConstants.PRODUCT_LIST_URL)
-    fun fetchProducts(@Query("status") status: String, @Query("country_code") countryCode: String,
-                      @Query("page") page:String, @Query("limit") limit:String): Call<List<ProductsData>>
+    fun fetchProducts(@Query("status") status: String, @Query("country_code") countryCode: String, @Query("state") stateCode: String,
+                      @Query("city") cityId: String, @Query("page") page:String, @Query("limit") limit:String): Call<List<ProductsData>>
 
     @GET(AppConstants.FEATURED_URGENT_LIST_URL)
-    fun fetchFeaturedAndUrgentProducts(@Query("status") status: String, @Query("country_code") countryCode: String,
-                      @Query("page") page:String, @Query("limit") limit:String): Call<List<ProductsData>>
+    fun fetchFeaturedAndUrgentProducts(@Query("status") status: String, @Query("country_code") countryCode: String, @Query("state") stateCode: String,
+                                       @Query("city") cityId: String, @Query("page") page:String, @Query("limit") limit:String): Call<List<ProductsData>>
 
     @GET(AppConstants.PRODUCT_LIST_URL)
     fun fetchProductsForUser(@Query("page") page:String, @Query("limit") limit:String, @Query("user_id") user_id:String): Call<List<ProductsData>>
 
     @GET(AppConstants.SEARCH_LIST_URL)
-    fun fetchProductsByCategory(@Query("status") status: String, @Query("country_code") countryCode: String,
-                                @Query("page") page:String, @Query("limit") limit:String, @Query("category_id") categoryId: String, @Query("subcategory_id") subcategoryId: String, @Query("keywords") keywords: String, @Query("additionalinfo") additionalInfo: String): Call<List<ProductsData>>
+    fun fetchProductsByCategory(@Query("status") status: String, @Query("country_code") countryCode: String, @Query("state") stateCode: String,
+                                @Query("city") cityId: String, @Query("page") page:String, @Query("limit") limit:String, @Query("category_id") categoryId: String, @Query("subcategory_id") subcategoryId: String, @Query("keywords") keywords: String, @Query("additionalinfo") additionalInfo: String): Call<List<ProductsData>>
 
     @GET(AppConstants.PRODUCT_DETAIL_URL)
     fun fetchProductsDetails(@Query("item_id") itemID: String): Call<DashboardDetailModel>

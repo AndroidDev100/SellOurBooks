@@ -108,6 +108,7 @@ class AppConstants {
             SELECTED_COUNTRY("selected_country"),
             SELECTED_COUNTRY_CODE("selected_country_code"),
             SELECTED_STATE_CODE("selected_state_code"),
+            SELECTED_CITY_CODE("selected_city_code_id"),
             SELECTED_STATE("selected_state"),
             SELECTED_CITY("selected_city"),
             SELECTED_LANGUAGE("selected_Language"),

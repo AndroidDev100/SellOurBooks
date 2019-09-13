@@ -50,8 +50,9 @@ class LocationSelectorActivity : BylancerBuilderActivity(), ViewPagerUpdateListe
 
     override fun updateViewPagerPosition(position: Int) {
         if (!this.isFinishing) {
-            if (position >= 0) {
-                location_selector_view_pager?.currentItem = position
+            if (position > 0) {
+                //location_selector_view_pager?.currentItem = position
+                location_selector_back_image_view?.setImageResource(R.drawable.ic_ok)
             } else {
                 finish()
             }

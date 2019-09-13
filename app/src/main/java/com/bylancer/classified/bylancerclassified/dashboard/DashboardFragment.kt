@@ -25,6 +25,7 @@ import com.bylancer.classified.bylancerclassified.utils.*
 import com.bylancer.classified.bylancerclassified.webservices.RetrofitController
 import com.bylancer.classified.bylancerclassified.webservices.productlist.ProductInputData
 import com.bylancer.classified.bylancerclassified.webservices.productlist.ProductsData
+import com.gmail.samehadar.iosdialog.IOSDialog
 import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat
 import ir.mirrajabi.searchdialog.core.SearchResultListener
 import kotlinx.android.synthetic.main.dashboard_top_item_layout.*
@@ -43,6 +44,7 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
     private var featuredProductPageNumber = 1
     private var lastFeaturedProductPageNumber = 1
     private var isProductDataLoading = false
+    private lateinit var iOSDialog: IOSDialog
     private var animUpDown: Animation? = null
     private val productDataList: ArrayList<ProductsData> = arrayListOf()
     private val featuredDataList: ArrayList<ProductsData> = arrayListOf()
@@ -57,6 +59,7 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
         initializingRecyclerViewScrollListener()
         setUpMyAds()
 
+        iOSDialog = Utility.showProgressView(context!!, getString(R.string.loading))
         featured_in_classified.text = LanguagePack.getString(getString(R.string.featured_ads))
         dashboard_search_button.text = LanguagePack.getString(getString(R.string.search_text))
         top_picks_in_classified.text = LanguagePack.getString(getString(R.string.top_picks_in_classified))
@@ -94,9 +97,10 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
             }
         }
         if (null != location_selector_text_view) {
-            if (!location_selector_text_view.text.isNullOrEmpty() && !newLocation.equals(location_selector_text_view.text)
+            if (isAdded && isVisible && !location_selector_text_view.text.isNullOrEmpty() && !newLocation.equals(location_selector_text_view.text)
                     && dashboard_pull_to_refresh != null) {
                 dashboard_pull_to_refresh?.isRefreshing = true
+                showProgressDialog()
                 fetchFeaturedAndUrgentProductList()
             }
             location_selector_text_view.text = newLocation
@@ -323,7 +327,6 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
         if (isAdded && isVisible) {
             isProductDataLoading = true
             val productInputData = ProductInputData()
-            productInputData.countryCode = SessionState.instance.selectedCountryCode
             productInputData.limit = AppConstants.PRODUCT_LOADING_LIMIT
             if (dashboard_pull_to_refresh != null && dashboard_pull_to_refresh.isRefreshing) {
                 lastFeaturedProductPageNumber = featuredProductPageNumber
@@ -331,6 +334,13 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
             }
             productInputData.pageNumber = featuredProductPageNumber.toString()
             productInputData.status = AppConstants.PRODUCT_STATUS
+            productInputData.countryCode = SessionState.instance.selectedCountryCode
+            if (!SessionState.instance.selectedStateCode.isNullOrEmpty()) {
+                productInputData.stateCode = SessionState.instance.selectedStateCode
+            }
+            if (!SessionState.instance.selectedCityId.isNullOrEmpty()) {
+                productInputData.cityId = SessionState.instance.selectedCityId
+            }
 
             RetrofitController.fetchFeaturedAndUrgentProducts(productInputData, object : Callback<List<ProductsData>> {
                 override fun onFailure(call: Call<List<ProductsData>>?, t: Throwable?) {
@@ -374,7 +384,6 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
         if (isAdded && isVisible) {
             isProductDataLoading = true
             val productInputData = ProductInputData()
-            productInputData.countryCode = SessionState.instance.selectedCountryCode
             productInputData.limit = AppConstants.PRODUCT_LOADING_LIMIT
             if (dashboard_pull_to_refresh != null && dashboard_pull_to_refresh.isRefreshing) {
                 lastProductPageNumber = productPageNumber
@@ -382,6 +391,13 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
             }
             productInputData.pageNumber = productPageNumber.toString()
             productInputData.status = AppConstants.PRODUCT_STATUS
+            productInputData.countryCode = SessionState.instance.selectedCountryCode
+            if (!SessionState.instance.selectedStateCode.isNullOrEmpty()) {
+                productInputData.stateCode = SessionState.instance.selectedStateCode
+            }
+            if (!SessionState.instance.selectedCityId.isNullOrEmpty()) {
+                productInputData.cityId = SessionState.instance.selectedCityId
+            }
 
             RetrofitController.fetchProducts(productInputData, this@DashboardFragment)
         }
@@ -415,6 +431,7 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
                 }
             }
             dashboard_pull_to_refresh?.isRefreshing = false
+            dismissProgressDialog()
         }
 
         isProductDataLoading = false
@@ -425,6 +442,7 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
             if (progress_view_dashboard_frame != null) progress_view_dashboard_frame.visibility = View.GONE
             if (progress_view_dashboard != null) progress_view_dashboard.clearAnimation()
             animUpDown = null
+            dismissProgressDialog()
             if (dashboard_pull_to_refresh != null && dashboard_pull_to_refresh.isRefreshing) {
                 productPageNumber = lastProductPageNumber
                 dashboard_pull_to_refresh?.isRefreshing = false
@@ -462,6 +480,16 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
                 }
             }
         })
+    }
+
+    private fun showProgressDialog() {
+        iOSDialog?.show()
+    }
+
+    private fun dismissProgressDialog() {
+        if (iOSDialog != null && iOSDialog.isShowing) {
+            iOSDialog?.dismiss()
+        }
     }
 
     private fun resetAdsData() {

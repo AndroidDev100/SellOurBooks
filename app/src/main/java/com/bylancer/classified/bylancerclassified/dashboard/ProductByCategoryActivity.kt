@@ -101,7 +101,6 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
         if (isProgressViewRequired) iosDialog?.show()
         isProductDataLoading = true
         val productInputData = ProductInputData()
-        productInputData.countryCode = SessionState.instance.selectedCountryCode
         productInputData.limit = AppConstants.PRODUCT_LOADING_LIMIT
 
         if (search_pull_to_refresh != null && search_pull_to_refresh.isRefreshing) {
@@ -118,6 +117,13 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
         productInputData.keywords = keywords
         if ("0".equals(productInputData.subCategoryId)) {
             productInputData.subCategoryId = ""
+        }
+        productInputData.countryCode = SessionState.instance.selectedCountryCode
+        if (!SessionState.instance.selectedStateCode.isNullOrEmpty()) {
+            productInputData.stateCode = SessionState.instance.selectedStateCode
+        }
+        if (!SessionState.instance.selectedCityId.isNullOrEmpty()) {
+            productInputData.cityId = SessionState.instance.selectedCityId
         }
 
         RetrofitController.fetchProductDetailsByCategory(productInputData, this)
