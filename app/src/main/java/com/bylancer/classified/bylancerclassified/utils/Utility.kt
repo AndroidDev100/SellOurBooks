@@ -349,17 +349,25 @@ class Utility {
             if (ContextCompat.checkSelfPermission(activity,
                             Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                     ContextCompat.checkSelfPermission(activity,
-                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(activity,
+                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(activity,
+                            Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
                 if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                                 Manifest.permission.ACCESS_FINE_LOCATION) || ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                                Manifest.permission.CALL_PHONE) ) {
+                                Manifest.permission.CALL_PHONE) || ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                                Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                                Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     ActivityCompat.requestPermissions(activity,
-                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CALL_PHONE),
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CALL_PHONE,
+                                    Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE),
                             MY_PERMISSIONS_REQUEST_LOCATION)
                 } else {
                     ActivityCompat.requestPermissions(activity,
-                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CALL_PHONE),
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CALL_PHONE,
+                                    Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE),
                             MY_PERMISSIONS_REQUEST_LOCATION)
                 }
                 return false
