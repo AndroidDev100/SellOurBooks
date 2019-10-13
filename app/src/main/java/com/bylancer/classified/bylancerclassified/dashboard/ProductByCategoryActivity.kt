@@ -59,19 +59,22 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
 
         if (intent != null && intent.getBundleExtra(AppConstants.BUNDLE) != null) {
             var receivedBundle = intent.getBundleExtra(AppConstants.BUNDLE)
-            productCategoryId = receivedBundle.getString(AppConstants.SELECTED_CATEGORY_ID, "1")
-            productSubCategoryId = receivedBundle.getString(AppConstants.SELECTED_SUB_CATEGORY_ID, "0")
+            productCategoryId = receivedBundle.getString(AppConstants.SELECTED_CATEGORY_ID, "")
+            productSubCategoryId = receivedBundle.getString(AppConstants.SELECTED_SUB_CATEGORY_ID, "")
+            keywords = receivedBundle.getString(AppConstants.SELECTED_KEYWORD, "")
         }
 
         fetchProductList(true)
     }
 
     private fun setUpPullToRefresh() {
-        search_pull_to_refresh.setWaveColor(AppConstants.SEARCH_PULL_TO_REFRESH_COLOR.toInt())
-        search_pull_to_refresh.setColorSchemeColors(AppConstants.PULL_TO_REFRESH_COLOR_SCHEME, AppConstants.PULL_TO_REFRESH_COLOR_SCHEME)
-        search_pull_to_refresh.setOnRefreshListener {
-            search_pull_to_refresh?.isRefreshing = true
-            fetchProductList(false)
+        search_pull_to_refresh?.apply {
+            setWaveColor(AppConstants.SEARCH_PULL_TO_REFRESH_COLOR.toInt())
+            setColorSchemeColors(AppConstants.PULL_TO_REFRESH_COLOR_SCHEME, AppConstants.PULL_TO_REFRESH_COLOR_SCHEME)
+            setOnRefreshListener {
+                isRefreshing = true
+                fetchProductList(false)
+            }
         }
     }
 
@@ -80,7 +83,7 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
         product_by_category_recycler_view.setHasFixedSize(false)
         product_by_category_recycler_view.itemAnimator = DefaultItemAnimator()
         product_by_category_recycler_view.isNestedScrollingEnabled = false
-        product_by_category_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 10, false))
+        product_by_category_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 0, true))
         initializingRecyclerViewScrollListener()
     }
 
@@ -98,10 +101,9 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
         if (isProgressViewRequired) iosDialog?.show()
         isProductDataLoading = true
         val productInputData = ProductInputData()
-        productInputData.countryCode = SessionState.instance.selectedCountryCode
         productInputData.limit = AppConstants.PRODUCT_LOADING_LIMIT
 
-        if (search_pull_to_refresh.isRefreshing) {
+        if (search_pull_to_refresh != null && search_pull_to_refresh.isRefreshing) {
             lastProductPageNumber = productPageNumber
             productPageNumber = 1
         }
@@ -116,12 +118,19 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
         if ("0".equals(productInputData.subCategoryId)) {
             productInputData.subCategoryId = ""
         }
+        productInputData.countryCode = SessionState.instance.selectedCountryCode
+        if (!SessionState.instance.selectedStateCode.isNullOrEmpty()) {
+            productInputData.stateCode = SessionState.instance.selectedStateCode
+        }
+        if (!SessionState.instance.selectedCityId.isNullOrEmpty()) {
+            productInputData.cityId = SessionState.instance.selectedCityId
+        }
 
         RetrofitController.fetchProductDetailsByCategory(productInputData, this)
     }
 
     override fun onResponse(call: Call<List<ProductsData>>?, response: Response<List<ProductsData>>?) {
-        if(!this.isFinishing) {
+        if (!this.isFinishing) {
             iosDialog?.dismiss()
             if(response != null && response.isSuccessful) {
                 if (search_pull_to_refresh != null && search_pull_to_refresh.isRefreshing) {
@@ -149,15 +158,17 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
     }
 
     override fun onFailure(call: Call<List<ProductsData>>?, t: Throwable?) {
-        iosDialog?.dismiss()
-        no_product_by_category_frame.visibility = View.VISIBLE
-        product_by_category_recycler_view.visibility = View.GONE
-        if (search_pull_to_refresh != null && search_pull_to_refresh.isRefreshing) {
-            search_pull_to_refresh.isRefreshing = false
-            productPageNumber = lastProductPageNumber
+        if (!this.isFinishing) {
+            iosDialog?.dismiss()
+            no_product_by_category_frame.visibility = View.VISIBLE
+            product_by_category_recycler_view.visibility = View.GONE
+            if (search_pull_to_refresh != null && search_pull_to_refresh.isRefreshing) {
+                search_pull_to_refresh.isRefreshing = false
+                productPageNumber = lastProductPageNumber
+            }
+            isProductDataLoading = false
+            Utility.showSnackBar(product_by_category_parent_layout, LanguagePack.getString(getString(R.string.internet_issue)), this)
         }
-        isProductDataLoading = false
-        Utility.showSnackBar(product_by_category_parent_layout, LanguagePack.getString(getString(R.string.internet_issue)), this)
     }
 
     override fun onProductItemClicked(productId: String?, productName: String?, userName: String?) {
@@ -171,7 +182,7 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
     private fun initializingRecyclerViewScrollListener() {
         product_by_category_recycler_view.initScrollListener(object : LazyProductLoading {
             override fun onProductLoadRequired(currentVisibleItem: Int) {
-                val itemSizeForLazyLoading = productDataList.size / 2
+                val itemSizeForLazyLoading = productDataList.size - AppConstants.PRODUCT_LOADING_OFFSET
                 if (!isProductDataLoading && productDataList != null && currentVisibleItem >= itemSizeForLazyLoading) {
                     productPageNumber += 1
                     fetchProductList(false)

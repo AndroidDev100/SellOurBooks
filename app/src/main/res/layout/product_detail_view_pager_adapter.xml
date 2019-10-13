@@ -20,4 +20,14 @@
         android:fontFamily="@font/roboto_bold"
         android:textColor="@color/white_color_text" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/product_view_counter_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:padding="@dimen/margin_fifteen"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/white_color_text" />
+
 </FrameLayout>
+

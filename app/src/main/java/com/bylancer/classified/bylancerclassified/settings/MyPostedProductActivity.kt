@@ -20,7 +20,11 @@ import retrofit2.Response
 
 class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickListener, View.OnClickListener, Callback<List<ProductsData>> {
     val SPAN_COUNT = 2
-    var iosDialog:IOSDialog? = null
+    private var iosDialog:IOSDialog? = null
+    val productDataList: ArrayList<ProductsData> = arrayListOf()
+    var productPageNumber = 1
+    var lastProductPageNumber = 1
+    var isProductDataLoading = false
 
     override fun setLayoutView() = R.layout.activity_my_posted_product
 
@@ -38,15 +42,18 @@ class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickLis
         my_products_recycler_view.layoutManager = GridLayoutManager(this, SPAN_COUNT)
         my_products_recycler_view.setHasFixedSize(false)
         my_products_recycler_view.isNestedScrollingEnabled = false
-        my_products_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 10, false))
+        my_products_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 20, true))
+        initializingRecyclerViewScrollListener()
     }
 
     private fun setUpPullToRefresh() {
-        my_posted_property_pull_to_refresh.setWaveColor(AppConstants.SEARCH_PULL_TO_REFRESH_COLOR.toInt())
-        my_posted_property_pull_to_refresh.setColorSchemeColors(AppConstants.PULL_TO_REFRESH_COLOR_SCHEME, AppConstants.PULL_TO_REFRESH_COLOR_SCHEME)
-        my_posted_property_pull_to_refresh.setOnRefreshListener {
-            my_posted_property_pull_to_refresh?.isRefreshing = true
-            fetchProductList(false)
+        my_posted_property_pull_to_refresh?.apply {
+            setWaveColor(AppConstants.SEARCH_PULL_TO_REFRESH_COLOR.toInt())
+            setColorSchemeColors(AppConstants.PULL_TO_REFRESH_COLOR_SCHEME, AppConstants.PULL_TO_REFRESH_COLOR_SCHEME)
+            setOnRefreshListener {
+                isRefreshing = true
+                fetchProductList(false)
+            }
         }
     }
 
@@ -60,9 +67,14 @@ class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickLis
         if (isLoadingRequired) {
             iosDialog?.show()
         }
+        isProductDataLoading = true
         val productInputData = ProductInputData()
-        productInputData.limit = "300"
-        productInputData.pageNumber = "1"
+        productInputData.limit = AppConstants.PRODUCT_LOADING_LIMIT
+        if (my_posted_property_pull_to_refresh != null && my_posted_property_pull_to_refresh.isRefreshing) {
+            lastProductPageNumber = productPageNumber
+            productPageNumber = 1
+        }
+        productInputData.pageNumber = productPageNumber.toString()
         productInputData.userId = SessionState.instance.userId
 
         RetrofitController.fetchProductsForUser(productInputData, this)
@@ -72,11 +84,18 @@ class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickLis
         if(!this.isFinishing) {
             iosDialog?.dismiss()
             if(response != null && response.isSuccessful) {
-                val productList: List<ProductsData> = response.body()
-                if(!productList.isNullOrEmpty()) {
+                if (my_posted_property_pull_to_refresh != null && my_posted_property_pull_to_refresh.isRefreshing) {
+                    productDataList.clear()
+                }
+                productDataList.addAll(response.body())
+                if(!productDataList.isNullOrEmpty()) {
                     no_my_products_frame.visibility = View.GONE
                     my_products_recycler_view.visibility = View.VISIBLE
-                    my_products_recycler_view.adapter = DashboardItemAdapter(productList, this)
+                    if (my_products_recycler_view.adapter != null) {
+                        my_products_recycler_view.adapter?.notifyDataSetChanged()
+                    } else  {
+                        my_products_recycler_view.adapter = DashboardItemAdapter(productDataList, this, true)
+                    }
                 } else {
                     no_my_products_frame.visibility = View.VISIBLE
                     my_products_recycler_view.visibility = View.GONE
@@ -85,14 +104,23 @@ class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickLis
                 my_posted_property_pull_to_refresh?.isRefreshing = false
             }
         }
+        isProductDataLoading = false
     }
 
     override fun onFailure(call: Call<List<ProductsData>>?, t: Throwable?) {
-        iosDialog?.dismiss()
-        no_my_products_frame.visibility = View.VISIBLE
-        my_products_recycler_view.visibility = View.GONE
-        my_posted_property_pull_to_refresh?.isRefreshing = false
-        Utility.showSnackBar(my_posted_product_parent_layout, LanguagePack.getString(getString(R.string.internet_issue)), this)
+        if (!this.isFinishing) {
+            iosDialog?.dismiss()
+            isProductDataLoading = false
+            if (productDataList.isNullOrEmpty()) {
+                no_my_products_frame.visibility = View.VISIBLE
+                my_products_recycler_view.visibility = View.GONE
+                Utility.showSnackBar(my_posted_product_parent_layout, LanguagePack.getString(getString(R.string.internet_issue)), this)
+            }
+            if (my_posted_property_pull_to_refresh != null && my_posted_property_pull_to_refresh.isRefreshing) {
+                productPageNumber = lastProductPageNumber
+                my_posted_property_pull_to_refresh?.isRefreshing = false
+            }
+        }
     }
 
     override fun onProductItemClicked(productId: String?, productName: String?, userName: String?) {
@@ -101,5 +129,18 @@ class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickLis
         bundle.putString(AppConstants.PRODUCT_NAME, productName)
         bundle.putString(AppConstants.PRODUCT_OWNER_NAME, userName)
         startActivity(DashboardProductDetailActivity::class.java, false, bundle)
+    }
+
+    private fun initializingRecyclerViewScrollListener() {
+        my_products_recycler_view.initScrollListener(object : LazyProductLoading {
+            override fun onProductLoadRequired(currentVisibleItem: Int) {
+                val itemSizeForLazyLoading = productDataList.size - AppConstants.PRODUCT_LOADING_OFFSET
+                if (!isProductDataLoading && productDataList != null && currentVisibleItem >= itemSizeForLazyLoading) {
+                    isProductDataLoading = true
+                    productPageNumber += 1
+                    fetchProductList(false)
+                }
+            }
+        })
     }
 }

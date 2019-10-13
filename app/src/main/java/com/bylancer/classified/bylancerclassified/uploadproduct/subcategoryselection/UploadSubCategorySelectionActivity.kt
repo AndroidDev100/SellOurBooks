@@ -29,7 +29,6 @@ class UploadSubCategorySelectionActivity : BylancerBuilderActivity(), OnUploadCa
         sub_category_selection_sub_title_text_view.text = LanguagePack.getString(getString(R.string.choose_sub_category_in_upload))
         sub_category_selection_recycler_view.layoutManager = GridLayoutManager(this, SPAN_COUNT)
         sub_category_selection_recycler_view.setHasFixedSize(false)
-        sub_category_selection_recycler_view.isNestedScrollingEnabled = false
         sub_category_selection_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 10, false))
 
         if (AppConfigDetail.category != null && intent != null) {

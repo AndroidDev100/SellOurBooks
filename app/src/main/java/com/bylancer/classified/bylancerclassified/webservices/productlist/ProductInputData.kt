@@ -4,6 +4,8 @@ class ProductInputData {
     var pageNumber: String = ""
     var limit: String = ""
     var countryCode: String = ""
+    var stateCode: String = ""
+    var cityId: String = ""
     var status: String = ""
     var userId: String = ""
     var categoryId: String = ""

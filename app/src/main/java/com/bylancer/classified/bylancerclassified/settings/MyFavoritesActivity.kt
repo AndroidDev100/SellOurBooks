@@ -26,7 +26,7 @@ class MyFavoritesActivity : BylancerBuilderActivity(), OnProductItemClickListene
         my_fav_recycler_view.layoutManager = GridLayoutManager(this, SPAN_COUNT)
         my_fav_recycler_view.setHasFixedSize(false)
         my_fav_recycler_view.isNestedScrollingEnabled = false
-        my_fav_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 10, false))
+        my_fav_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 10, true))
     }
 
     override fun onResume() {

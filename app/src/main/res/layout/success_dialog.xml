@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:cardCornerRadius="@dimen/margin_ten"
+        app:cardElevation="@dimen/margin_sixteen"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="@android:color/white"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/relativelayout1">
+
+                <View
+                    android:id="@+id/success_dialog_top_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_50dp"
+                    android:background="@color/dark_green" />
+
+                <ImageView
+                    android:id="@+id/success_dialog_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:tint="@color/white_color_text"
+                    android:src="@drawable/ic_ok" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayout1"
+                android:padding="@dimen/margin_sixteen">
+
+                <TextView
+                    android:id="@+id/success_dialog_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/shadow_black"
+                    android:textSize="@dimen/text_size_sixteen"
+                    android:paddingRight="@dimen/margin_sixteen"
+                    android:paddingLeft="@dimen/margin_sixteen"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:text="Payment Successful" />
+
+                <TextView
+                    android:id="@+id/success_dialog_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_marginTop="@dimen/margin_sixteen"
+                    android:paddingRight="@dimen/margin_sixteen"
+                    android:paddingLeft="@dimen/margin_sixteen"
+                    android:gravity="center"
+                    android:text="Congratulations your payment is successful"
+                    android:textSize="@dimen/text_size_normal"
+                    android:layout_below="@+id/success_dialog_title" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/success_dialog_message"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dimen_35dp">
+
+                    <Button
+                        android:id="@+id/success_dialog_ok_button"
+                        android:layout_width="@dimen/success_dialog_button_with"
+                        android:layout_height="wrap_content"
+                        android:text="OK"
+                        android:paddingTop="@dimen/default_margin"
+                        android:paddingBottom="@dimen/default_margin"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/rounded_background_green"
+                        android:textColor="@color/white_color_text" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

@@ -34,6 +34,8 @@
     <string name="featured">Featured</string>
     <string name="urgent">Urgent</string>
 
+    <string name="pay_stack">Pay using PayStack</string>
+
     <string name="place_ad">Place an Ad</string>
     <string name="add_more_info">Add More Info</string>
     <string name="tap_to_pin_location">Tap on map to Pin Location</string>
@@ -56,6 +58,7 @@
     <string name="log_out">Log out</string>
     <string name="my_ads">My Ads</string>
     <string name="my_favorites">My Favorites</string>
+    <string name="sell">Sell</string>
     <string name="filter">Filter</string>
     <string name="sorting">Sorting</string>
     <string name="sort_by">Sort by</string>
@@ -67,6 +70,7 @@
     <string name="price_low_high">Price Lowest to Highest</string>
     <string name="filter_by_keyword">Filter by Keyword</string>
     <string name="offline">Offline</string>
+    <string name="location_selector">Location</string>
     <string name="what_listing">What are you listing?</string>
     <string name="select_sub_category">Select sub category</string>
     <string name="enter_short_title">First, enter a short title to describe your listing</string>
@@ -107,11 +111,15 @@
     <string name="share_using">Share using</string>
     <string name="title_activity_maps">Map</string>
     <string name="select_country">Select country</string>
+    <string name="default_country">United State</string>
     <string name="select_state">Select state</string>
     <string name="select_city">Select city</string>
     <string name="select_language">Select language</string>
     <string name="choose_language">Choose your language</string>
     <string name="english">English</string>
+    <string name="rupees">₹</string>
+    <string name="premium">Upgrade To Premium</string>
+    <string name="premium_dialog_title">Awesome!! You are just one step away from Premium</string>
     <string name="fetch_country">Loading countries..</string>
     <string name="fetch_state">Loading states..</string>
     <string name="fetch_city">Loading cities..</string>
@@ -125,6 +133,7 @@
     <string name="map_initializing">Please wait, map is getting initialized</string>
     <string name="posted_by_you">This product belong to you.</string>
     <string name="facebook_app_id">2244587745860156</string>
+    <string name="fb_login_protocol_scheme">fb2244587745860156</string>
     <string name="privacy_policy">"By signing up you agree to our Terms &amp; Conditions and Privacy Policy"</string>
     <string name="privacy_text">"Privacy Policy"</string>
     <string name="default_notification_channel_id">"1009876676335"</string>
@@ -136,5 +145,36 @@
     <string name="ad_mob_banner">"ca-app-pub-6370111532336036~5661435384"</string>
     <string name="ad_mob_banner_ad_unit">"ca-app-pub-6370111532336036/4512005249"</string>
     <string name="ad_mob_interstitial_ad_unit">"ca-app-pub-6370111532336036/7079943350"</string>
+
+    <!-- PREMIUM APP STRINGS-->
+    <string name="no_advertisement_add">Ads Free</string>
+    <string name="no_advertisement_add_description">No third party ads. Ex Google Ads</string>
+    <string name="priority_support">Priority Support</string>
+    <string name="priority_support_description">Your issues will be solved at the earliest</string>
+    <string name="all_ads_premium">All Ads Premium</string>
+    <string name="all_ads_premium_description">Your all posted ads will become premium for 30 days</string>
+    <string name="featured_ad_premium">Featured</string>
+    <string name="featured_ad_premium_description">Featured ads attract higher-quality viewer and are displayed prominently in the Featured ads section home page</string>
+    <string name="urgent_ad_premium_">Urgent</string>
+    <string name="urgent_ad_premium_description">Make your ad stand out and let viewer know that your advertise is time sensitive</string>
+    <string name="highlighted_ad_premium">Highlighted</string>
+    <string name="highlighted_ad_premium_description">Make your ad highlighted with border in listing search result page. Easy to focus</string>
+    <string name="select_one_feature">Please select at least one premium feature to continue, click + button to add</string>
+
+    <!-- Credit Card entry detail -->
+    <string name="title_action_reset">Reset</string>
+
+    <string name="label_card_number">XXXX XXXX XXXX XXXX</string>
+    <string name="label_expired_date">MM/YY</string>
+    <string name="label_card_holder">CARD HOLDER</string>
+    <string name="label_cvv_code">CVV CODE</string>
+
+    <string name="hint_card_number">ENTER YOUR CARD NUMBER</string>
+    <string name="hint_expired_date">ENTER EXPIRED DATE</string>
+    <string name="hint_card_holder">ENTER CARD HOLDER</string>
+    <string name="hint_cvv_code">ENTER CVV CODE</string>
+    <string name="enter_card_details_err">Please enter the card details to proceed</string>
+
+    <string name="label_secure_submission">Secure Submission</string>
 
 </resources>

@@ -81,7 +81,16 @@
     <color name="jrspinner_color_line">#E0E0E0</color>
     <color name="jrspinner_color_default">#99000000</color>
     <color name="jrspinner_black_transparent">#80000000</color>
-    
-    
-    
+
+    <color name="off_red">#E74C47</color>
+    <color name="off_yellow">#ED820F</color>
+
+    <color name="light_gray">#F0F5F5</color>
+    <color name="translucent_white">#80FFFFFF</color>
+    <color name="dark_gray">#243037</color>
+
+    <color name="light_blue">#59AAFF</color>
+    <color name="blue">#2C7DE3</color>
+    <color name="dark_blue">#1C6AC9</color>
+
 </resources>

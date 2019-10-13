@@ -3,7 +3,6 @@ package com.bylancer.classified.bylancerclassified.appconfig
 import android.content.Context
 import com.bylancer.classified.bylancerclassified.utils.AppConstants
 import com.bylancer.classified.bylancerclassified.utils.SessionState
-import com.bylancer.classified.bylancerclassified.webservices.languagepack.LanguagePackModel
 import com.bylancer.classified.bylancerclassified.webservices.settings.CityListModel
 import com.bylancer.classified.bylancerclassified.webservices.settings.CountryListModel
 import com.bylancer.classified.bylancerclassified.webservices.settings.StateListModel
@@ -33,9 +32,11 @@ class AppConfigDetail {
                 SessionState.instance.detectLiveLocation = if (appConfig.detectLiveLocation != null) appConfig.detectLiveLocation!! else ""
                 SessionState.instance.defaultCountry = if (appConfig.defaultCountry != null) appConfig.defaultCountry!! else ""
                 SessionState.instance.isGoogleInterstitialSupported = if (appConfig.googleInterstitial != null) appConfig.googleInterstitial!! else true
-                SessionState.instance.isPremiumAppSupported = if (appConfig.premiumApp != null) appConfig.premiumApp!! else true
+                SessionState.instance.isUserHasPremiumApp = if (appConfig.premiumApp != null) appConfig.premiumApp!! else true
                 SessionState.instance.isGoogleBannerSupported = if (appConfig.googleBanner != null) appConfig.googleBanner!! else true
                 SessionState.instance.isFacebookInterstitialSupported = if (appConfig.facebookInterstitial != null) appConfig.facebookInterstitial!! else true
+                SessionState.instance.paymentCurrencyCode = if (appConfig.currencyCode != null) appConfig.currencyCode!! else "INR"
+                SessionState.instance.paymentCurrencySign = if (appConfig.currencySign != null) appConfig.currencySign!! else "₹"
                 appVersionFromServer = if (appConfig.appVersion != null) appConfig.appVersion!! else ""
                 if (SessionState.instance.selectedLanguage.isNullOrEmpty() && !appConfig.defaultLang.isNullOrEmpty()) {
                     SessionState.instance.selectedLanguage = appConfig.defaultLang!!

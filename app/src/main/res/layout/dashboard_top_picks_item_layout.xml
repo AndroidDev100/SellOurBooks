@@ -9,7 +9,7 @@
         android:id="@+id/dashboard_item_card_view_layout"
         android:layout_width="@dimen/dashboard_item_view_width"
         android:layout_height="@dimen/dashboard_item_card_view_height"
-        android:layout_marginStart="@dimen/margin_twelve"
+        android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
         app:cardBackgroundColor="@color/light_gray_background"
         app:cardUseCompatPadding="true"
@@ -69,6 +69,18 @@
                         android:padding="@dimen/margin_small"/>
 
                 </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/dashboard_item_status_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:textColor="@color/white_background"
+                    android:textSize="@dimen/small_text_size"
+                    android:fontFamily="@font/roboto_bold"
+                    android:background="@color/denied_red"
+                    android:visibility="visible"
+                    android:padding="@dimen/margin_small"/>
 
             </FrameLayout>
 

@@ -8,7 +8,7 @@ class SessionState private constructor() {
     var isGoogleBannerSupported: Boolean = false
     var isGoogleInterstitialSupported: Boolean = false
     var isFacebookInterstitialSupported: Boolean = false
-    var isPremiumAppSupported: Boolean = false
+    var isUserHasPremiumApp: Boolean = true
     var isLoginFirstTime: Boolean = false
     var displayName: String = ""
     var email: String = ""
@@ -25,6 +25,8 @@ class SessionState private constructor() {
     var defaultCountry: String = ""
     var selectedCountry: String = ""
     var selectedCountryCode: String = ""
+    var selectedStateCode: String = ""
+    var selectedCityId: String = ""
     var selectedLanguageCode: String = ""
     var selectedLanguageDirection: String = ""
     var selectedState: String = ""
@@ -38,6 +40,8 @@ class SessionState private constructor() {
     var uploadedProductLongitude: String = ""
     var uploadedProductAdditionalInfo: String = ""
     var appVersionFromServer : String = ""
+    var paymentCurrencyCode : String = ""
+    var paymentCurrencySign : String = ""
 
     val isLoggedIn: Boolean
         get() = isLogin
@@ -49,7 +53,7 @@ class SessionState private constructor() {
             this.isFacebookInterstitialSupported = prefs.getBoolean(AppConstants.Companion.PREFERENCES.FACEBOOK_INTERSTITIAL.toString(), false)
             this.isGoogleBannerSupported = prefs.getBoolean(AppConstants.Companion.PREFERENCES.GOOGLE_BANNER.toString(), false)
             this.isGoogleInterstitialSupported = prefs.getBoolean(AppConstants.Companion.PREFERENCES.GOOGLE_INTERSTITIAL.toString(), false)
-            this.isPremiumAppSupported = prefs.getBoolean(AppConstants.Companion.PREFERENCES.PREMIUM_APP.toString(), false)
+            //this.isUserHasPremiumApp = prefs.getBoolean(AppConstants.Companion.PREFERENCES.PREMIUM_APP.toString(), false)
             this.isLoginFirstTime = prefs.getBoolean(AppConstants.Companion.PREFERENCES.IS_FIRST_TIME_LOGIN.toString(), true)
             this.email = prefs.getString(AppConstants.Companion.PREFERENCES.EMAIL.toString(), "")!!
             this.phoneNumber = prefs.getString(AppConstants.Companion.PREFERENCES.PHONE.toString(), "")!!
@@ -66,6 +70,8 @@ class SessionState private constructor() {
             this.defaultCountry = prefs.getString(AppConstants.Companion.PREFERENCES.DEFAULT_COUNTRY.toString(), "")!!
             this.selectedCountry = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY.toString(), "")!!
             this.selectedCountryCode = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY_CODE.toString(), "")!!
+            this.selectedStateCode = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_STATE_CODE.toString(), "")!!
+            this.selectedCityId = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_CITY_CODE.toString(), "")!!
             this.selectedState = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_STATE.toString(), "")!!
             this.selectedCity = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(), "")!!
             this.selectedLanguage = prefs.getString(AppConstants.Companion.PREFERENCES.SELECTED_LANGUAGE.toString(), "")!!

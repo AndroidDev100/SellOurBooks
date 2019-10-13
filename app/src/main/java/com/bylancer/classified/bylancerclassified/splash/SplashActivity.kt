@@ -100,18 +100,20 @@ class SplashActivity : BylancerBuilderActivity() {
     }
 
     private fun showLogoutAlertDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setCancelable(false)
-        builder.setTitle("")
-        builder.setMessage(LanguagePack.getString("Internet is required to configure your application"))
-        builder.setPositiveButton(LanguagePack.getString("OK")){dialog, which ->
-            dialog.dismiss()
-            finish()
-        }
-        builder.setNegativeButton(LanguagePack.getString("")){dialog, which ->
+        if (!this.isFinishing) {
+            val builder = AlertDialog.Builder(this)
+            builder.setCancelable(false)
+            builder.setTitle("")
+            builder.setMessage(LanguagePack.getString("Internet is required to configure your application"))
+            builder.setPositiveButton(LanguagePack.getString("OK")){dialog, which ->
+                dialog.dismiss()
+                finish()
+            }
+            builder.setNegativeButton(LanguagePack.getString("")){dialog, which ->
 
+            }
+            builder.create().show()
         }
-        builder.create().show()
     }
 
     private fun fetchLanguagePackDetails() {

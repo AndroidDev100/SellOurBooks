@@ -36,10 +36,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.agrawalsuneet.dotsloader.loaders.SlidingLoader
 import com.asksira.bsimagepicker.BSImagePicker
 import com.asksira.bsimagepicker.Utils
+import com.bylancer.classified.bylancerclassified.BuildConfig
 import com.bylancer.classified.bylancerclassified.R
+import com.bylancer.classified.bylancerclassified.premium.PremiumObjectDetails
 import com.bylancer.classified.bylancerclassified.webservices.RetrofitController
 import com.bylancer.classified.bylancerclassified.webservices.notificationmessage.AddTokenStatus
 import com.gmail.samehadar.iosdialog.IOSDialog
@@ -348,17 +351,25 @@ class Utility {
             if (ContextCompat.checkSelfPermission(activity,
                             Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                     ContextCompat.checkSelfPermission(activity,
-                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(activity,
+                            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(activity,
+                            Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
                 if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                                 Manifest.permission.ACCESS_FINE_LOCATION) || ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                                Manifest.permission.CALL_PHONE) ) {
+                                Manifest.permission.CALL_PHONE) || ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                                Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                                Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     ActivityCompat.requestPermissions(activity,
-                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CALL_PHONE),
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CALL_PHONE,
+                                    Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE),
                             MY_PERMISSIONS_REQUEST_LOCATION)
                 } else {
                     ActivityCompat.requestPermissions(activity,
-                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CALL_PHONE),
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CALL_PHONE,
+                                    Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE),
                             MY_PERMISSIONS_REQUEST_LOCATION)
                 }
                 return false
@@ -474,12 +485,28 @@ fun Context.getCurrentCountry(): String {
 }
 
 fun getSingleImagePickerDialog(tag: String) : BSImagePicker {
-    return BSImagePicker.Builder("com.bylancer.classified.bylancerclassified.fileprovider")
+    return BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".fileprovider")
             .setMaximumDisplayingImages(Integer.MAX_VALUE) //Default: Integer.MAX_VALUE. Don't worry about performance :)
             .setSpanCount(3) //Default: 3. This is the number of columns
             .setGridSpacing(Utils.dp2px(2)) //Default: 2dp. Remember to pass in a value in pixel.
             .setPeekHeight(Utils.dp2px(360)) //Default: 360dp. This is the initial height of the dialog.
             //.hideCameraTile() //Default: show. Set this if you don't want user to take photo.
+            .hideGalleryTile() //Default: show. Set this if you don't want to further let user select from a gallery app. In such case, I suggest you to set maximum displaying images to Integer.MAX_VALUE.
+            .setTag(tag) //Default: null. Set this if you need to identify which picker is calling back your fragment / activity.
+            //.dismissOnSelect(true) //Default: true. Set this if you do not want the picker to dismiss right after selection. But then you will have to dismiss by yourself.
+            .build()
+}
+
+fun getMultiImagePickerDialog(tag: String) : BSImagePicker {
+    return BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".fileprovider")
+            .isMultiSelect()
+            .setMaximumDisplayingImages(Integer.MAX_VALUE) //Default: Integer.MAX_VALUE. Don't worry about performance :)
+            .setSpanCount(3) //Default: 3. This is the number of columns
+            .setGridSpacing(Utils.dp2px(2)) //Default: 2dp. Remember to pass in a value in pixel.
+            .setPeekHeight(Utils.dp2px(360)) //Default: 360dp. This is the initial height of the dialog.
+            .setMinimumMultiSelectCount(1)
+            .setMultiSelectDoneTextColor(R.color.dark_green)
+            .hideCameraTile() //Default: show. Set this if you don't want user to take photo.
             .hideGalleryTile() //Default: show. Set this if you don't want to further let user select from a gallery app. In such case, I suggest you to set maximum displaying images to Integer.MAX_VALUE.
             .setTag(tag) //Default: null. Set this if you need to identify which picker is calling back your fragment / activity.
             //.dismissOnSelect(true) //Default: true. Set this if you do not want the picker to dismiss right after selection. But then you will have to dismiss by yourself.
@@ -518,3 +545,24 @@ fun Context.isOver600dp(): Boolean {
     val displayMetrics = resources.displayMetrics
     return displayMetrics.widthPixels / displayMetrics.density >= 600
 }
+
+fun Context.getDefaultFont() = ResourcesCompat.getFont(this, R.font.roboto_regular)
+
+fun Context.getPremiumAdItemsList() : ArrayList<PremiumObjectDetails> {
+    val list = arrayListOf<PremiumObjectDetails>()
+    list.add(PremiumObjectDetails(LanguagePack.getString(getString(R.string.featured_ad_premium)), LanguagePack.getString(getString(R.string.featured_ad_premium_description)), AppConstants.PREMIUM_ADS_FEATURED_COST, canCancelSelection = true, isSelected = false))
+    list.add(PremiumObjectDetails(LanguagePack.getString(getString(R.string.urgent_ad_premium_)), LanguagePack.getString(getString(R.string.urgent_ad_premium_description)), AppConstants.PREMIUM_ADS_URGENT_COST, canCancelSelection = true, isSelected = false))
+    list.add(PremiumObjectDetails(LanguagePack.getString(getString(R.string.highlighted_ad_premium)), LanguagePack.getString(getString(R.string.highlighted_ad_premium_description)), AppConstants.PREMIUM_ADS_HIGHLIGHTED_COST, canCancelSelection = true, isSelected = false))
+    return list
+}
+
+fun Context.showToast(message: String?) {
+    Toast.makeText(this, message ?: LanguagePack.getString(getString(R.string.some_wrong)), Toast.LENGTH_LONG).show()
+}
+
+fun Context.calculateNoOfColumns(columnWidthDp: Float): Int {
+    val displayMetrics = resources.displayMetrics
+    val screenWidthDp = displayMetrics.widthPixels / displayMetrics.density
+    return (screenWidthDp / columnWidthDp + 0.5).toInt()
+}
+

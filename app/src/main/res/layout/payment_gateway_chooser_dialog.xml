@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_background_white"
+    android:padding="@dimen/margin_fifteen">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/payment_gateway_chooser_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_eighteen"
+        android:textColor="@color/shadow_black"
+        android:fontFamily="@font/roboto_bold"
+        android:padding="@dimen/margin_ten"
+        android:layout_gravity="center_horizontal"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/pay_u_money_gateway"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_payumoney_button"
+        android:layout_margin="@dimen/margin_ten"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/pay_stack_gateway"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="@dimen/margin_ten"
+        android:layout_marginStart="@dimen/margin_ten"
+        android:layout_marginEnd="@dimen/margin_ten"
+        android:layout_marginBottom="@dimen/margin_ten"
+        android:src="@drawable/paystack_button"/>
+
+</LinearLayout>

@@ -8,6 +8,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.text.Html
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -27,11 +30,15 @@ import com.bylancer.classified.bylancerclassified.chat.ChatActivity
 import com.bylancer.classified.bylancerclassified.database.DatabaseTaskAsyc
 import com.bylancer.classified.bylancerclassified.login.LoginActivity
 import com.bylancer.classified.bylancerclassified.login.LoginRequiredActivity
+import com.bylancer.classified.bylancerclassified.premium.OnPremiumDoneButtonClicked
+import com.bylancer.classified.bylancerclassified.premium.PremiumAlertDialog
 import com.bylancer.classified.bylancerclassified.utils.*
 import com.bylancer.classified.bylancerclassified.webservices.RetrofitController
 import com.bylancer.classified.bylancerclassified.webservices.makeanoffer.MakeAnOfferData
 import com.bylancer.classified.bylancerclassified.webservices.makeanoffer.MakeAnOfferStatus
 import com.bylancer.classified.bylancerclassified.widgets.CustomAlertDialog
+import com.bylancer.classified.bylancerclassified.widgets.htmlcontent.URLImageParser
+import com.facebook.ads.InterstitialAd
 import com.gmail.samehadar.iosdialog.IOSDialog
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -40,7 +47,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
-import com.facebook.ads.*;
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_dashboard_product_detail.*
 import retrofit2.Call
@@ -104,6 +110,26 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
         }
     }
 
+    private fun togglePremiumAndMakeOfferButton() {
+        if (SessionState.instance.email.equals(mDashboardDetailModel?.sellerEmail)) {
+            go_premium_ad_button?.text = LanguagePack.getString(getString(R.string.premium))
+            if (AppConstants.IS_ACTIVE.equals(mDashboardDetailModel?.featured) ||
+                    AppConstants.IS_ACTIVE.equals(mDashboardDetailModel?.urgent) ||
+                    AppConstants.IS_ACTIVE.equals(mDashboardDetailModel?.highlight) ||
+                            !AppConstants.PRODUCT_ACTIVE.equals(mDashboardDetailModel?.status)) {
+                go_premium_ad_button?.visibility = View.GONE
+                make_an_offer_text_view?.visibility = View.VISIBLE
+            } else {
+                go_premium_ad_button.visibility = View.VISIBLE
+                make_an_offer_text_view?.visibility = View.GONE
+                go_premium_ad_button.text = LanguagePack.getString(getString(R.string.premium))
+            }
+        } else {
+            go_premium_ad_button?.visibility = View.GONE
+            make_an_offer_text_view?.visibility = View.VISIBLE
+        }
+    }
+
     private fun loadFacebookInterstitialAd() {
         facebookInterstitialAd = InterstitialAd(this, AppConstants.FACEBOOK_INTERSTITIAL_PLACEMENT)
         facebookInterstitialAd?.loadAd()
@@ -118,32 +144,36 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
     }
 
     override fun onResponse(call: Call<DashboardDetailModel>?, response: Response<DashboardDetailModel>?) {
-        progress_view_dashboard_detail_frame.visibility = View.GONE
-        progress_view_dashboard_detail.clearAnimation()
-        animUpDown = null
+        if (!this.isFinishing) {
+            progress_view_dashboard_detail_frame.visibility = View.GONE
+            progress_view_dashboard_detail.clearAnimation()
+            animUpDown = null
 
-        if(response != null && response.isSuccessful) {
-            mDashboardDetailModel =  response.body()
-            if (mDashboardDetailModel != null) {
-                initializeUI(mDashboardDetailModel!!)
-            } else {
-                Utility.showSnackBar(dashboard_product_detail_parent_layout, LanguagePack.getString(getString(R.string.some_wrong)), this@DashboardProductDetailActivity)
+            if(response != null && response.isSuccessful) {
+                mDashboardDetailModel =  response.body()
+                if (mDashboardDetailModel != null) {
+                    initializeUI(mDashboardDetailModel!!)
+                } else {
+                    Utility.showSnackBar(dashboard_product_detail_parent_layout, LanguagePack.getString(getString(R.string.some_wrong)), this@DashboardProductDetailActivity)
+                }
             }
         }
     }
 
     override fun onFailure(call: Call<DashboardDetailModel>?, t: Throwable?) {
-        progress_view_dashboard_detail_frame.visibility = View.GONE
-        progress_view_dashboard_detail.visibility = View.GONE
-        progress_view_dashboard_detail.clearAnimation()
-        animUpDown = null
-        Utility.showSnackBar(dashboard_product_detail_parent_layout, LanguagePack.getString(getString(R.string.internet_issue)), this@DashboardProductDetailActivity)
+        if (!this.isFinishing) {
+            progress_view_dashboard_detail_frame.visibility = View.GONE
+            progress_view_dashboard_detail.visibility = View.GONE
+            progress_view_dashboard_detail.clearAnimation()
+            animUpDown = null
+            Utility.showSnackBar(dashboard_product_detail_parent_layout, LanguagePack.getString(getString(R.string.internet_issue)), this@DashboardProductDetailActivity)
+        }
     }
 
     private fun initializeUI(dashboardDetailModel: DashboardDetailModel) {
         parent_scroll_view.visibility = View.VISIBLE
         if(dashboardDetailModel.productImages != null && dashboardDetailModel.productImages!!.size > 0 && dashboardDetailModel.originalImagesPath != null) {
-            product_detail_image_view_pager.adapter = ProductDetailViewPagerAdapter(this, dashboardDetailModel.productImages!!, dashboardDetailModel.originalImagesPath!!)
+            product_detail_image_view_pager.adapter = ProductDetailViewPagerAdapter(this, dashboardDetailModel.productImages!!, dashboardDetailModel.originalImagesPath!!, dashboardDetailModel.view)
         }
 
         if(SessionState.instance.isLoggedIn) {
@@ -164,13 +194,19 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
         if (!dashboardDetailModel.price.isNullOrEmpty() && checkIfNumber(dashboardDetailModel.price!!)) {
             product_detail_price_text_view.visibility = View.VISIBLE
         } else {
-            product_detail_price_text_view.visibility = View.GONE
+            product_detail_price_text_view.visibility = View.INVISIBLE
         }
 
         product_detail_timeline_text_view.text = dashboardDetailModel.createdAt
-        product_details_category_text_view.text = dashboardDetailModel.tag
+        product_details_category_text_view.text = LanguagePack.getString("Ad Views") + " - " + dashboardDetailModel.view
         product_detail_age_desc.text = dashboardDetailModel.updatedAt
-        product_detail_description_detail.text = dashboardDetailModel.description
+
+        product_detail_description_detail.linksClickable = true
+        product_detail_description_detail.movementMethod = LinkMovementMethod.getInstance()
+        val urlImageParser = URLImageParser(product_detail_description_detail, this)
+        val descriptionHtmlSpan = getDescription(dashboardDetailModel.description, urlImageParser)
+        product_detail_description_detail.text = descriptionHtmlSpan
+
         product_detail_product_status_desc.text = dashboardDetailModel.status
         product_detail_phone_number_desc.text = if(AppConstants.HIDE_PHONE.equals(dashboardDetailModel.hidePhone)) dashboardDetailModel.phone else getString(R.string.hidden)
         product_detail_posted_by_desc.text = dashboardDetailModel.sellerName
@@ -183,16 +219,15 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
 
         var parentLayoutIdToMatchConstraint = product_detail_product_status_separator.id
         if(dashboardDetailModel.customData != null) {
-            for(i in 0..(dashboardDetailModel.customData!!.size - 1)) {
-                val customDataElement = dashboardDetailModel.customData!![i]
-                if (customDataElement != null && customDataElement.title != null && customDataElement.value != null) {
+            for(customDataElement in dashboardDetailModel.customData!!) {
+                if (customDataElement?.title != null && customDataElement.value != null) {
                     parentLayoutIdToMatchConstraint = addCustomDataDynamically(parentLayoutIdToMatchConstraint, customDataElement.title!!, customDataElement.value!!)
                 }
             }
         }
 
         if(mMap != null) {
-            if (dashboardDetailModel.mapLatitude != null && dashboardDetailModel.mapLongitude != null) {
+            if (!dashboardDetailModel.mapLatitude.isNullOrEmpty() && !dashboardDetailModel.mapLongitude.isNullOrEmpty()) {
                 val latLng = LatLng((dashboardDetailModel.mapLatitude)!!.toDouble(), (dashboardDetailModel.mapLongitude)!!.toDouble())
                 val markerOptions = MarkerOptions()
                 markerOptions.position(latLng)
@@ -202,23 +237,33 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
                 mMap?.animateCamera(CameraUpdateFactory.zoomTo(15.0F))
             }
         }
+
+        togglePremiumAndMakeOfferButton()
+    }
+
+    private fun getDescription(description: String?, urlImageParser: URLImageParser): Spanned {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(description, Html.FROM_HTML_SEPARATOR_LINE_BREAK_HEADING, urlImageParser, null)
+        } else {
+            Html.fromHtml(description, urlImageParser, null)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        mMap?.setMapType(GoogleMap.MAP_TYPE_NORMAL)
-        mMap?.getUiSettings()?.setZoomControlsEnabled(true)
-        mMap?.getUiSettings()?.setZoomGesturesEnabled(true)
-        mMap?.getUiSettings()?.setCompassEnabled(true)
+        mMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
+        mMap?.uiSettings?.isZoomControlsEnabled = true
+        mMap?.uiSettings?.isZoomGesturesEnabled = true
+        mMap?.uiSettings?.isCompassEnabled = true
         //Initialize Google Play Services
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
-                mMap?.setMyLocationEnabled(true)
+                mMap?.isMyLocationEnabled = true
             }
         } else {
-            mMap?.setMyLocationEnabled(true)
+            mMap?.isMyLocationEnabled = true
         }
     }
 
@@ -326,6 +371,24 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
                     startActivity(LoginRequiredActivity::class.java, false)
                 }
             }
+            R.id.go_premium_ad_button_layout -> {
+                startPremiumFlow()
+            }
+            else -> {}
+        }
+    }
+
+    private fun startPremiumFlow() {
+        if (!this.isFinishing) {
+            val premiumDialog = PremiumAlertDialog(this, getPremiumAdItemsList(), R.style.premium_dialog)
+            premiumDialog.showDialog(AppConstants.GO_FOR_PREMIUM_AD, object : OnPremiumDoneButtonClicked {
+                override fun onPremiumDoneButtonClicked(totalCost: String, premiumFeatures: Array<String>) {
+                    if (mDashboardDetailModel?.productId != null) {
+                        showPaymentGatewayOptions(mDashboardDetailModel?.title
+                                ?: getString(R.string.app_name), ("$totalCost.00"), AppConstants.GO_FOR_PREMIUM_AD, mDashboardDetailModel?.productId!!, premiumFeatures)
+                    }
+                }
+            })
         }
     }
 
@@ -377,16 +440,18 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
         captionTextView.id = View.generateViewId()
         captionTextView.text = LanguagePack.getString(captionText)
         captionTextView.setTextColor(resources.getColor(R.color.disable_icon_color))
+        captionTextView.typeface = getDefaultFont()
         captionTextView.setPadding(Utility.valueInDp(10, this), Utility.valueInDp(10, this), Utility.valueInDp(10, this), Utility.valueInDp(10, this));
         post_login_product_detail_layout.addView(captionTextView, 0)
         set.clone(post_login_product_detail_layout)
-        set.connect(captionTextView.getId(), ConstraintSet.LEFT,
+        set.connect(captionTextView.id, ConstraintSet.LEFT,
                 post_login_product_detail_layout.id, ConstraintSet.LEFT, 15)
-        set.connect(captionTextView.getId(), ConstraintSet.TOP,
+        set.connect(captionTextView.id, ConstraintSet.TOP,
                 parentLayoutId, ConstraintSet.BOTTOM, 10)
         set.applyTo(post_login_product_detail_layout)
 
         val detailTextView = TextView(this)
+        detailTextView.typeface = getDefaultFont()
         detailTextView.id = View.generateViewId()
         detailTextView.layoutParams = ViewGroup.LayoutParams(
                 0,
@@ -397,13 +462,13 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
         detailTextView.setPadding(Utility.valueInDp(15, this), Utility.valueInDp(10, this), Utility.valueInDp(10, this), Utility.valueInDp(10, this));
         post_login_product_detail_layout.addView(detailTextView, 0)
         set.clone(post_login_product_detail_layout)
-        set.connect(detailTextView.getId(), ConstraintSet.RIGHT,
+        set.connect(detailTextView.id, ConstraintSet.RIGHT,
                 post_login_product_detail_layout.id, ConstraintSet.RIGHT, 15)
-        set.connect(detailTextView.getId(), ConstraintSet.TOP,
+        set.connect(detailTextView.id, ConstraintSet.TOP,
                 parentLayoutId, ConstraintSet.BOTTOM, 10)
-        set.connect(detailTextView.getId(), ConstraintSet.LEFT,
+        set.connect(detailTextView.id, ConstraintSet.LEFT,
                 captionTextView.id, ConstraintSet.RIGHT, 10)
-        set.setHorizontalBias(detailTextView.getId(), 1f);
+        set.setHorizontalBias(detailTextView.id, 1f);
         set.applyTo(post_login_product_detail_layout)
 
         val separatorView = View(this)
@@ -414,11 +479,11 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
         separatorView.setBackgroundColor(resources.getColor(R.color.button_disabled_color))
         post_login_product_detail_layout.addView(separatorView, 0)
         set.clone(post_login_product_detail_layout)
-        set.connect(separatorView.getId(), ConstraintSet.LEFT,
+        set.connect(separatorView.id, ConstraintSet.LEFT,
                 post_login_product_detail_layout.id, ConstraintSet.LEFT, 0)
-        set.connect(separatorView.getId(), ConstraintSet.RIGHT,
+        set.connect(separatorView.id, ConstraintSet.RIGHT,
                 post_login_product_detail_layout.id, ConstraintSet.RIGHT, 0)
-        set.connect(separatorView.getId(), ConstraintSet.TOP,
+        set.connect(separatorView.id, ConstraintSet.TOP,
                 detailTextView.id, ConstraintSet.BOTTOM, 10)
         set.applyTo(post_login_product_detail_layout)
 
@@ -501,12 +566,19 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
         if (iosDialog != null) iosDialog?.dismiss()
     }
 
+    override fun onProductBecamePremium(productId: String) {
+        if (!this.isFinishing && productId.equals(mDashboardDetailModel?.productId)) {
+            go_premium_ad_button?.visibility = View.GONE
+            make_an_offer_text_view?.visibility = View.VISIBLE
+        }
+    }
+
     private fun showFacebookAdWithDelay() {
         Handler().postDelayed( Runnable() {
                 // Check if interstitialAd has been loaded successfully
              if(!this@DashboardProductDetailActivity.isFinishing &&
                         facebookInterstitialAd != null && facebookInterstitialAd?.isAdLoaded!!
-                        && !facebookInterstitialAd?.isAdInvalidated!!) {
+                        && !facebookInterstitialAd?.isAdInvalidated!! && !isPaymentActive) {
                     facebookInterstitialAd?.show()
                 } else {
                     showFacebookAdWithDelay()

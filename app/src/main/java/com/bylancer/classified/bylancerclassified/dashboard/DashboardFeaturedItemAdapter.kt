@@ -56,16 +56,22 @@ class DashboardFeaturedItemAdapter(private val dashboardItemList : List<Products
             holder.listItemPrice!!.text  = dataModel.price + symbol
         }
 
+        holder.dashboardItemUrgentTagTextView?.visibility = View.GONE
+
         if (AppConstants.IS_ACTIVE.equals(dataModel.featured)) {
+            holder.dashboardItemFeaturedTagTextView?.visibility = View.VISIBLE
             holder.dashboardItemFeaturedTagTextView?.text = LanguagePack.getString("Featured")
             holder.dashboardItemFeaturedTagTextView?.setBackgroundColor(getColor(holder.dashboardItemFeaturedTagTextView?.resources, R.color.new_ui_red_background)!!)
+        } else {
+            holder.dashboardItemFeaturedTagTextView?.visibility = View.GONE
         }
 
         if (AppConstants.IS_ACTIVE.equals(dataModel.urgent)) {
-            holder.dashboardItemFeaturedTagTextView?.visibility = View.VISIBLE
             if (holder.dashboardItemFeaturedTagTextView?.text!!.isEmpty()) {
+                holder.dashboardItemFeaturedTagTextView?.visibility = View.VISIBLE
                 holder.dashboardItemFeaturedTagTextView?.setBackgroundColor(getColor(holder.dashboardItemFeaturedTagTextView?.resources, R.color.denied_red)!!)
                 holder.dashboardItemFeaturedTagTextView?.text = LanguagePack.getString("Urgent")
+                holder.dashboardItemUrgentTagTextView?.visibility = View.GONE
             } else {
                 holder.dashboardItemFeaturedTagTextView?.setBackgroundColor(getColor(holder.dashboardItemFeaturedTagTextView?.resources, R.color.new_ui_red_background)!!)
                 holder.dashboardItemUrgentTagTextView?.setBackgroundColor(getColor(holder.dashboardItemFeaturedTagTextView?.resources, R.color.denied_red)!!)

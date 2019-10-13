@@ -53,10 +53,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/category_selection_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="@dimen/margin_twenty"
-        app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/white_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/category_selection_sub_title_text_view">
 

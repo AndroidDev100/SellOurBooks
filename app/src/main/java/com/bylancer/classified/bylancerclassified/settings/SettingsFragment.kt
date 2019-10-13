@@ -5,9 +5,8 @@ import android.app.Fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.se.omapi.Session
-import androidx.appcompat.app.AlertDialog
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -21,6 +20,9 @@ import com.bylancer.classified.bylancerclassified.fragments.BylancerBuilderFragm
 import com.bylancer.classified.bylancerclassified.login.LoginActivity
 import com.bylancer.classified.bylancerclassified.login.LoginRequiredActivity
 import com.bylancer.classified.bylancerclassified.login.TermsAndConditionWebView
+import com.bylancer.classified.bylancerclassified.premium.OnPremiumDoneButtonClicked
+import com.bylancer.classified.bylancerclassified.premium.PremiumAlertDialog
+import com.bylancer.classified.bylancerclassified.premium.PremiumObjectDetails
 import com.bylancer.classified.bylancerclassified.utils.*
 import com.bylancer.classified.bylancerclassified.webservices.RetrofitController
 import com.bylancer.classified.bylancerclassified.webservices.settings.CityListModel
@@ -43,11 +45,10 @@ import java.io.File
  *
  */
 class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImagePicker.OnSingleImageSelectedListener {
-    var mProgressDialog: IOSDialog? = null
+    private var mProgressDialog: IOSDialog? = null
     val countryList = arrayListOf<CountryListModel>()
     val stateList = arrayListOf<StateListModel>()
     val cityList = arrayListOf<CityListModel>()
-    var isKeyboardOpen: Boolean = false
     val PROFILE_IMAGE_PICKER = "profile_image_picker"
 
     override fun setLayoutView() = R.layout.fragment_settings
@@ -61,12 +62,17 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         settings_my_ads_frame.setOnClickListener(this)
         settings_support_frame.setOnClickListener(this)
         profile_icon_image_view.setOnClickListener(this)
+        go_premium_button.setOnClickListener(this)
         if (SessionState.instance.isLoggedIn) {
             settings_login_sign_up_icon.setImageResource(R.drawable.ic_settings_logout)
             settings_login_sign_up_text.text = LanguagePack.getString(getString(R.string.log_out))
             if (!SessionState.instance.profilePicUrl.isNullOrEmpty()) {
                 Glide.with(profile_icon_image_view.context).load(SessionState.instance.profilePicUrl).apply(RequestOptions().circleCrop()).into(profile_icon_image_view);
             }
+            /*if (!SessionState.instance.isUserHasPremiumApp) {
+                go_premium_button.visibility = View.VISIBLE
+                go_premium_button.text = LanguagePack.getString(getString(R.string.premium))
+            }*/
         } else {
             settings_login_sign_up_text.text = LanguagePack.getString(getString(R.string.login_sign_up))
         }
@@ -78,16 +84,22 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         settings_country_spinner.setExpandTint(R.color.transparent)
         settings_country_spinner.setOnItemClickListener{ position ->
             if (countryList.get(position) != null) {
-                SessionState.instance.selectedCountry = countryList.get(position).name!!
-                SessionState.instance.selectedCountryCode = countryList.get(position).lowercaseCode!!
+                SessionState.instance.selectedCountry = countryList[position].name!!
+                SessionState.instance.selectedCountryCode = countryList[position].lowercaseCode!!
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY.toString(),
-                        countryList.get(position).name!!)
+                        countryList[position].name!!)
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_COUNTRY_CODE.toString(),
-                        countryList.get(position).lowercaseCode!!)
+                        countryList[position].lowercaseCode!!)
                 SessionState.instance.selectedState = ""
                 SessionState.instance.selectedCity = ""
+                SessionState.instance.selectedStateCode = ""
+                SessionState.instance.selectedCityId = ""
                 settings_state_spinner.setText("")
                 settings_city_spinner.setText("")
+                SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_STATE_CODE.toString(),
+                        "")
+                SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY_CODE.toString(),
+                        "")
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_STATE.toString(),
                         "")
                 SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(),
@@ -103,12 +115,18 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         }
 
         settings_state_spinner.setOnItemClickListener{ position ->
-            SessionState.instance.selectedState = if (stateList.get(position) != null) stateList.get(position).name!! else ""
+            SessionState.instance.selectedState = if (stateList[position] != null) stateList[position].name!! else ""
             SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_STATE.toString(),
-                    if (stateList.get(position) != null) stateList.get(position).name!! else "")
+                    SessionState.instance.selectedState)
+            SessionState.instance.selectedStateCode = if (stateList[position] != null) stateList[position].code!! else ""
+            SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_STATE_CODE.toString(),
+                    SessionState.instance.selectedStateCode)
             settings_city_spinner.setText("")
             SessionState.instance.selectedCity = ""
+            SessionState.instance.selectedCityId = ""
             SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(),
+                    "")
+            SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY_CODE.toString(),
                     "")
             cityList?.clear()
             saveCityDetailData()
@@ -120,9 +138,12 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         }
 
         settings_city_spinner.setOnItemClickListener{ position ->
-            SessionState.instance.selectedCity = if (cityList.get(position) != null) cityList.get(position).name!! else ""
+            SessionState.instance.selectedCityId = if (cityList[position] != null) cityList[position].id!! else ""
+            SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY_CODE.toString(),
+                    SessionState.instance.selectedCityId )
+            SessionState.instance.selectedCity = if (cityList[position] != null) cityList[position].name!! else ""
             SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.SELECTED_CITY.toString(),
-                    if (cityList.get(position) != null) cityList.get(position).name!! else "")
+                    SessionState.instance.selectedCity)
         }
 
         if (LanguagePack.instance.languagePackData == null) {
@@ -247,16 +268,20 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         showProgressDialog(getString(R.string.fetch_country))
         RetrofitController.fetchCountryDetails(object: Callback<List<CountryListModel>> {
             override fun onResponse(call: Call<List<CountryListModel>>?, response: Response<List<CountryListModel>>?) {
-                if (response != null && response.isSuccessful && settings_country_spinner != null) {
-                    countryList.addAll(response.body())
-                    saveCountryDetailData()
+                if(isAdded && isVisible) {
+                    if (response != null && response.isSuccessful && settings_country_spinner != null) {
+                        countryList.addAll(response.body())
+                        saveCountryDetailData()
+                    }
+                    dismissProgressDialog()
                 }
-                dismissProgressDialog()
             }
 
             override fun onFailure(call: Call<List<CountryListModel>>?, t: Throwable?) {
-                dismissProgressDialog()
-                showNetworkErrorSnackBar()
+                if(isAdded && isVisible) {
+                    dismissProgressDialog()
+                    showNetworkErrorSnackBar()
+                }
             }
         })
     }
@@ -265,16 +290,20 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         showProgressDialog(getString(R.string.fetch_state))
         RetrofitController.fetchStateDetails(countryId, object: Callback<List<StateListModel>> {
             override fun onResponse(call: Call<List<StateListModel>>?, response: Response<List<StateListModel>>?) {
-                dismissProgressDialog()
-                if (response != null && response.isSuccessful && settings_state_spinner != null) {
-                    stateList.addAll(response.body())
-                    saveStateDetailData()
+                if (isAdded && isVisible) {
+                    dismissProgressDialog()
+                    if (response != null && response.isSuccessful && settings_state_spinner != null) {
+                        stateList.addAll(response.body())
+                        saveStateDetailData()
+                    }
                 }
             }
 
             override fun onFailure(call: Call<List<StateListModel>>?, t: Throwable?) {
-                dismissProgressDialog()
-                showNetworkErrorSnackBar()
+                if (isAdded && isVisible) {
+                    dismissProgressDialog()
+                    showNetworkErrorSnackBar()
+                }
             }
         })
     }
@@ -283,16 +312,20 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         showProgressDialog(getString(R.string.fetch_city))
         RetrofitController.fetchCityDetails(stateId, object: Callback<List<CityListModel>> {
             override fun onResponse(call: Call<List<CityListModel>>?, response: Response<List<CityListModel>>?) {
-                dismissProgressDialog()
-                if (response != null && response.isSuccessful && settings_city_spinner != null) {
-                    cityList.addAll(response.body())
-                    saveCityDetailData()
+                if (isAdded && isVisible) {
+                    dismissProgressDialog()
+                    if (response != null && response.isSuccessful && settings_city_spinner != null) {
+                        cityList.addAll(response.body())
+                        saveCityDetailData()
+                    }
                 }
             }
 
             override fun onFailure(call: Call<List<CityListModel>>?, t: Throwable?) {
-                dismissProgressDialog()
-                showNetworkErrorSnackBar()
+                if (isAdded && isVisible) {
+                    dismissProgressDialog()
+                    showNetworkErrorSnackBar()
+                }
             }
         })
     }
@@ -337,6 +370,22 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
                     startActivity(LoginRequiredActivity::class.java, false)
                 }
             }
+            R.id.go_premium_button -> {
+                startPremiumFlow()
+            }
+            else -> { }
+        }
+    }
+
+    private fun startPremiumFlow() {
+        if (mContext != null) {
+            val premiumDialog = PremiumAlertDialog(mContext!!, getPremiumItemsList(), R.style.premium_dialog)
+            premiumDialog.showDialog(AppConstants.GO_FOR_PREMIUM_APP, object : OnPremiumDoneButtonClicked {
+                override fun onPremiumDoneButtonClicked(totalCost: String, premiumFeatures: Array<String>) {
+                    val title = SessionState.instance.displayName + "_" + SessionState.instance.email
+                    mActivity?.showPaymentGatewayOptions(title, ("$totalCost.00"), AppConstants.GO_FOR_PREMIUM_APP, null, premiumFeatures)
+                }
+            })
         }
     }
 
@@ -351,7 +400,7 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         if (fragment_settings_user_parent_layout != null) Utility.showSnackBar(fragment_settings_user_parent_layout, "Please check your internet connection", context!!)
     }
 
-    fun showProgressDialog(message: String) {
+    private fun showProgressDialog(message: String) {
         mProgressDialog = Utility.showProgressView(context!!, message)
         mProgressDialog?.show()
     }
@@ -395,22 +444,26 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
                 val body = MultipartBody.Part.createFormData("fileToUpload", file.getName(), requestFile)
                 RetrofitController.updateUserProfilePic(body, object: Callback<ProductUploadProductModel> {
                     override fun onFailure(call: Call<ProductUploadProductModel>?, t: Throwable?) {
-                        dismissProgressDialog()
-                        Utility.showSnackBar(fragment_settings_user_parent_layout, getString(R.string.internet_issue), context!!)
+                        if (isAdded && isVisible) {
+                            dismissProgressDialog()
+                            Utility.showSnackBar(fragment_settings_user_parent_layout, getString(R.string.internet_issue), context!!)
+                        }
                     }
 
                     override fun onResponse(call: Call<ProductUploadProductModel>?, response: Response<ProductUploadProductModel>?) {
-                        if (response != null && response.isSuccessful) {
-                            val responseBody = response.body()
-                            if (responseBody != null && AppConstants.SUCCESS.equals(responseBody.status) && context != null) {
-                                SessionState.instance.profilePicUrl = responseBody.url!!
-                                SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.PROFILE_PIC.toString(),
-                                        SessionState.instance.profilePicUrl)
+                        if (isAdded && isVisible) {
+                            if (response != null && response.isSuccessful) {
+                                val responseBody = response.body()
+                                if (responseBody != null && AppConstants.SUCCESS.equals(responseBody.status) && context != null) {
+                                    SessionState.instance.profilePicUrl = responseBody.url!!
+                                    SessionState.instance.saveValuesToPreferences(context!!, AppConstants.Companion.PREFERENCES.PROFILE_PIC.toString(),
+                                            SessionState.instance.profilePicUrl)
+                                }
+                            } else {
+                                Utility.showSnackBar(fragment_settings_user_parent_layout, getString(R.string.some_wrong), context!!)
                             }
-                        } else {
-                            Utility.showSnackBar(fragment_settings_user_parent_layout, getString(R.string.some_wrong), context!!)
+                            dismissProgressDialog()
                         }
-                        dismissProgressDialog()
                     }
                 })
             } else {
@@ -423,21 +476,25 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         showProgressDialog(getString(R.string.loading))
         RetrofitController.fetchAppConfig(languageCode, object : Callback<AppConfigModel> {
             override fun onFailure(call: Call<AppConfigModel>?, t: Throwable?) {
-                if (context != null && Utility.isNetworkAvailable(context!!)) {
-                    refreshCategoriesWithLanguageCode(languageCode)
-                } else {
-                    dismissProgressDialog()
+                if (isAdded && isVisible) {
+                    if (context != null && Utility.isNetworkAvailable(context!!)) {
+                        refreshCategoriesWithLanguageCode(languageCode)
+                    } else {
+                        dismissProgressDialog()
+                    }
                 }
             }
 
             override fun onResponse(call: Call<AppConfigModel>?, response: Response<AppConfigModel>?) {
-                if (context != null && response != null && response.isSuccessful) {
-                    val appConfigUrl: AppConfigModel = response.body()
-                    AppConfigDetail.saveAppConfigData(context!!, Gson().toJson(appConfigUrl))
-                    AppConfigDetail.initialize(Gson().toJson(appConfigUrl))
-                    dismissProgressDialog()
-                    if (isRecreateActivityRequired) {
-                        this@SettingsFragment.activity?.recreate()
+                if (isAdded && isVisible) {
+                    if (context != null && response != null && response.isSuccessful) {
+                        val appConfigUrl: AppConfigModel = response.body()
+                        AppConfigDetail.saveAppConfigData(context!!, Gson().toJson(appConfigUrl))
+                        AppConfigDetail.initialize(Gson().toJson(appConfigUrl))
+                        dismissProgressDialog()
+                        if (isRecreateActivityRequired) {
+                            this@SettingsFragment.activity?.recreate()
+                        }
                     }
                 }
             }
@@ -499,5 +556,13 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
             cityList.forEach { listOfCity.add(it.name!!)}
             settings_city_spinner.setItems(listOfCity.toArray(arrayOfNulls<String>(cityList.size)))
         }
+    }
+
+    private fun getPremiumItemsList() : ArrayList<PremiumObjectDetails> {
+        val list = arrayListOf<PremiumObjectDetails>()
+        list.add(PremiumObjectDetails(LanguagePack.getString(getString(R.string.no_advertisement_add)), LanguagePack.getString(getString(R.string.no_advertisement_add_description)), AppConstants.PREMIUM_ADS_FREE_COST, canCancelSelection = false, isSelected = true))
+        list.add(PremiumObjectDetails(LanguagePack.getString(getString(R.string.priority_support)), LanguagePack.getString(getString(R.string.no_advertisement_add_description)), AppConstants.PREMIUM_PRIORITY_SUPPORT_COST, canCancelSelection = false, isSelected = true))
+        list.add(PremiumObjectDetails(LanguagePack.getString(getString(R.string.all_ads_premium)), LanguagePack.getString(getString(R.string.no_advertisement_add_description)), AppConstants.PREMIUM_ALL_ADS_PREMIUM_COST, canCancelSelection = false, isSelected = true))
+        return list
     }
 }

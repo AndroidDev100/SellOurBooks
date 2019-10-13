@@ -42,7 +42,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSImagePicker.OnSingleImageSelectedListener, TextWatcher {
+class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSImagePicker.OnMultiImageSelectedListener, TextWatcher {
     private var googleMap: GoogleMap? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val MY_LOCATION_REQUEST = 7
@@ -156,19 +156,15 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
                 LatLng(latitude, longitude)).zoom(15f).build()
 
         googleMap?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-        googleMap?.getUiSettings()?.isZoomControlsEnabled = false
-        googleMap?.getUiSettings()?.isScrollGesturesEnabled = false
-        googleMap?.getUiSettings()?.isZoomGesturesEnabled = false
+        googleMap?.uiSettings?.isZoomControlsEnabled = false
+        googleMap?.uiSettings?.isScrollGesturesEnabled = false
+        googleMap?.uiSettings?.isZoomGesturesEnabled = false
 
         googleMap?.setOnMapClickListener(GoogleMap.OnMapClickListener {
-            /*if (location == null) {
-                Utility.showSnackBar(activity_upload_products_parent_layout, getString(R.string.map_initializing), this)
-            } else {*/
-                val locationBundle = Bundle()
-                locationBundle.putDouble(AppConstants.SELECTED_PRODUCT_LONGITUDE, longitude)
-                locationBundle.putDouble(AppConstants.SELECTED_PRODUCT_LATITUDE, latitude)
-                startActivity(LocationSelectionActivity::class.java, false, locationBundle)
-           // }
+            val locationBundle = Bundle()
+            locationBundle.putDouble(AppConstants.SELECTED_PRODUCT_LONGITUDE, longitude)
+            locationBundle.putDouble(AppConstants.SELECTED_PRODUCT_LATITUDE, latitude)
+            startActivity(LocationSelectionActivity::class.java, false, locationBundle)
         })
     }
 
@@ -181,7 +177,7 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
             }
 
             R.id.upload_details_add_images_button -> {
-                val profileImagePicker = getSingleImagePickerDialog(PRODUCT_IMAGE_PICKER)
+                val profileImagePicker = getMultiImagePickerDialog(PRODUCT_IMAGE_PICKER)
                 profileImagePicker.show(supportFragmentManager, AppConstants.IMAGE_PICKER_FRAGMENT)
             }
 
@@ -238,9 +234,13 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
         }
     }*/
 
-    override fun onSingleImageSelected(uri: Uri?, tag: String?) {
+    /*override fun onSingleImageSelected(uri: Uri?, tag: String?) {
+
+    }*/
+
+    override fun onMultiImageSelected(uriList: MutableList<Uri>?, tag: String?) {
         if (upload_detail_images_recycler_view != null) {
-            selectedImageList.add(uri!!)
+            uriList?.let { selectedImageList.addAll(it) }
             if (upload_detail_images_recycler_view.adapter != null) {
                 upload_detail_images_recycler_view.adapter!!.notifyDataSetChanged()
             } else {
@@ -249,6 +249,7 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
             postButtonEnableListener()
         }
     }
+
 
     private fun setTextChangeListeners() {
         upload_detail_enter_a_title_edit_text.addTextChangedListener(this)
@@ -315,13 +316,14 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
             cityId = cityListModel.id!!
 
             //if (SessionState.instance.uploadedProductLongitude.isNullOrEmpty()) {
-                SessionState.instance.uploadedProductLatitude = if (cityListModel.lat.isNullOrEmpty()) SessionState.instance.uploadedProductLatitude else cityListModel.lat!!
-                SessionState.instance.uploadedProductLongitude = if (cityListModel.long.isNullOrEmpty()) SessionState.instance.uploadedProductLongitude else cityListModel.long!!
+                SessionState.instance.uploadedProductLatitude = if (cityListModel.long.isNullOrEmpty()) SessionState.instance.uploadedProductLatitude else cityListModel.long!!
+                SessionState.instance.uploadedProductLongitude = if (cityListModel.lat.isNullOrEmpty()) SessionState.instance.uploadedProductLongitude else cityListModel.lat!!
                 if (!SessionState.instance.uploadedProductLongitude.isNullOrEmpty() && googleMap != null) {
                     addMarker(SessionState.instance.uploadedProductLatitude.toDouble(),
                             SessionState.instance.uploadedProductLongitude.toDouble())
                 }
            // }
+            postButtonEnableListener()
         }
     }
 
@@ -329,18 +331,22 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
         showProgressDialog(getString(R.string.loading))
         RetrofitController.fetchCountryDetails(object: Callback<List<CountryListModel>> {
             override fun onResponse(call: Call<List<CountryListModel>>?, response: Response<List<CountryListModel>>?) {
-                if (response != null && response.isSuccessful && upload_detail_enter_country_edit_text != null) {
-                    countryList.addAll(response.body())
-                    val listOfCountry = arrayListOf<String>()
-                    countryList.forEach { listOfCountry.add(it.name!!)}
-                    upload_detail_enter_country_edit_text.setItems(listOfCountry.toArray(arrayOfNulls<String>(countryList.size)))
+                if (!this@UploadProductDetail.isFinishing) {
+                    if (response != null && response.isSuccessful && upload_detail_enter_country_edit_text != null) {
+                        countryList.addAll(response.body())
+                        val listOfCountry = arrayListOf<String>()
+                        countryList.forEach { listOfCountry.add(it.name!!)}
+                        upload_detail_enter_country_edit_text.setItems(listOfCountry.toArray(arrayOfNulls<String>(countryList.size)))
+                    }
+                    dismissProgressDialog()
                 }
-                dismissProgressDialog()
             }
 
             override fun onFailure(call: Call<List<CountryListModel>>?, t: Throwable?) {
-                dismissProgressDialog()
-                showNetworkErrorSnackBar()
+                if (!this@UploadProductDetail.isFinishing) {
+                    dismissProgressDialog()
+                    showNetworkErrorSnackBar()
+                }
             }
         })
     }
@@ -349,18 +355,22 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
         showProgressDialog(getString(R.string.fetch_state))
         RetrofitController.fetchStateDetails(countryId, object: Callback<List<StateListModel>> {
             override fun onResponse(call: Call<List<StateListModel>>?, response: Response<List<StateListModel>>?) {
-                dismissProgressDialog()
-                if (response != null && response.isSuccessful && upload_detail_enter_state_edit_text != null) {
-                    stateList.addAll(response.body())
-                    val listOfState = arrayListOf<String>()
-                    stateList.forEach { listOfState.add(it.name!!)}
-                    upload_detail_enter_state_edit_text.setItems(listOfState.toArray(arrayOfNulls<String>(stateList.size)))
+                if (!this@UploadProductDetail.isFinishing) {
+                    dismissProgressDialog()
+                    if (response != null && response.isSuccessful && upload_detail_enter_state_edit_text != null) {
+                        stateList.addAll(response.body())
+                        val listOfState = arrayListOf<String>()
+                        stateList.forEach { listOfState.add(it.name!!)}
+                        upload_detail_enter_state_edit_text.setItems(listOfState.toArray(arrayOfNulls<String>(stateList.size)))
+                    }
                 }
             }
 
             override fun onFailure(call: Call<List<StateListModel>>?, t: Throwable?) {
-                dismissProgressDialog()
-                showNetworkErrorSnackBar()
+                if (!this@UploadProductDetail.isFinishing) {
+                    dismissProgressDialog()
+                    showNetworkErrorSnackBar()
+                }
             }
         })
     }
@@ -369,18 +379,22 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
         showProgressDialog(getString(R.string.fetch_city))
         fetchCityDetails(stateId, object: Callback<List<CityListModel>> {
             override fun onResponse(call: Call<List<CityListModel>>?, response: Response<List<CityListModel>>?) {
-                dismissProgressDialog()
-                if (response != null && response.isSuccessful && upload_detail_enter_city_edit_text != null) {
-                    cityList.addAll(response.body())
-                    val listOfCity = arrayListOf<String>()
-                    cityList.forEach { listOfCity.add(it.name!!)}
-                    upload_detail_enter_city_edit_text.setItems(listOfCity.toArray(arrayOfNulls<String>(cityList.size)))
+                if (!this@UploadProductDetail.isFinishing) {
+                    dismissProgressDialog()
+                    if (response != null && response.isSuccessful && upload_detail_enter_city_edit_text != null) {
+                        cityList.addAll(response.body())
+                        val listOfCity = arrayListOf<String>()
+                        cityList.forEach { listOfCity.add(it.name!!)}
+                        upload_detail_enter_city_edit_text.setItems(listOfCity.toArray(arrayOfNulls<String>(cityList.size)))
+                    }
                 }
             }
 
             override fun onFailure(call: Call<List<CityListModel>>?, t: Throwable?) {
-                dismissProgressDialog()
-                showNetworkErrorSnackBar()
+                if (!this@UploadProductDetail.isFinishing) {
+                    dismissProgressDialog()
+                    showNetworkErrorSnackBar()
+                }
             }
         })
     }
@@ -428,25 +442,29 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
 
         RetrofitController.postUserProduct(uploadDataDetailModel, object : Callback<PostedProductResponseModel>{
             override fun onFailure(call: Call<PostedProductResponseModel>?, t: Throwable?) {
-                dismissProgressDialog()
-                showNetworkErrorSnackBar()
-                if (upload_product_detail_button != null) upload_product_detail_button.isEnabled = true
+                if (!this@UploadProductDetail.isFinishing) {
+                    dismissProgressDialog()
+                    showNetworkErrorSnackBar()
+                    if (upload_product_detail_button != null) upload_product_detail_button.isEnabled = true
+                }
             }
 
             override fun onResponse(call: Call<PostedProductResponseModel>?, response: Response<PostedProductResponseModel>?) {
-                if (response != null && response.isSuccessful && response.body() != null && AppConstants.SUCCESS.equals(response.body().status)) {
-                    dismissProgressDialog()
-                    Toast.makeText(this@UploadProductDetail, "Congratulations!! You have successfully posted", Toast.LENGTH_SHORT).show()
-                    SessionState.instance.apply {
-                        uploadedProductAdditionalInfo = ""
-                        uploadedProductLatitude = ""
-                        uploadedProductLongitude = ""
+                if (!this@UploadProductDetail.isFinishing) {
+                    if (response != null && response.isSuccessful && response.body() != null && AppConstants.SUCCESS.equals(response.body().status)) {
+                        dismissProgressDialog()
+                        Toast.makeText(this@UploadProductDetail, "Congratulations!! You have successfully posted", Toast.LENGTH_SHORT).show()
+                        SessionState.instance.apply {
+                            uploadedProductAdditionalInfo = ""
+                            uploadedProductLatitude = ""
+                            uploadedProductLongitude = ""
+                        }
+                        setResult(Activity.RESULT_OK)
+                        finish()
+                    } else {
+                        showNetworkErrorSnackBar()
+                        if (upload_product_detail_button != null) upload_product_detail_button.isEnabled = true
                     }
-                    setResult(Activity.RESULT_OK)
-                    finish()
-                } else {
-                    showNetworkErrorSnackBar()
-                    if (upload_product_detail_button != null) upload_product_detail_button.isEnabled = true
                 }
             }
         })
@@ -463,28 +481,32 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
                 val body = MultipartBody.Part.createFormData("fileToUpload", file.getName(), requestFile)
                 RetrofitController.updateUserPostedProductPic(body, object: Callback<UploadProductModel> {
                     override fun onFailure(call: Call<UploadProductModel>?, t: Throwable?) {
-                        dismissProgressDialog()
-                        Utility.showSnackBar(activity_upload_products_parent_layout, getString(R.string.internet_issue), this@UploadProductDetail)
+                        if (!this@UploadProductDetail.isFinishing) {
+                            dismissProgressDialog()
+                            Utility.showSnackBar(activity_upload_products_parent_layout, getString(R.string.internet_issue), this@UploadProductDetail)
+                        }
                     }
 
                     override fun onResponse(call: Call<UploadProductModel>?, response: Response<UploadProductModel>?) {
-                        if (response != null && response.isSuccessful) {
-                            val responseBody = response.body()
-                            if (responseBody != null && AppConstants.SUCCESS.equals(responseBody.status)) {
-                                if (selectedImagesToPost.isNullOrEmpty()) {
-                                    selectedImagesToPost = responseBody.url!!
-                                } else {
-                                    selectedImagesToPost += "," + responseBody.url!!
+                        if (!this@UploadProductDetail.isFinishing) {
+                            if (response != null && response.isSuccessful) {
+                                val responseBody = response.body()
+                                if (responseBody != null && AppConstants.SUCCESS.equals(responseBody.status)) {
+                                    if (selectedImagesToPost.isNullOrEmpty()) {
+                                        selectedImagesToPost = responseBody.url!!
+                                    } else {
+                                        selectedImagesToPost += "," + responseBody.url!!
+                                    }
                                 }
+                            } else {
+                                upload_product_detail_button.isEnabled = true
+                                //Utility.showSnackBar(activity_upload_products_parent_layout, getString(R.string.internet_issue), this@UploadProductDetail)
                             }
-                        } else {
-                            upload_product_detail_button.isEnabled = true
-                            //Utility.showSnackBar(activity_upload_products_parent_layout, getString(R.string.internet_issue), this@UploadProductDetail)
-                        }
 
-                        x += 1
-                        if (x == selectedImageList.size) {
-                            getFinalDataToPostAndUploadToServer()
+                            x += 1
+                            if (x == selectedImageList.size) {
+                                getFinalDataToPostAndUploadToServer()
+                            }
                         }
                     }
                 })
