@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import com.bumptech.glide.Glide
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity
@@ -96,7 +99,7 @@ class DashboardCategoryAdapter(val items : List<Category>, val parentActivity: D
 }
 
 class ViewHolder (view: View) : RecyclerView.ViewHolder(view) {
-    val categoryIcon = view.top_layout_category_icon
-    val categoryName = view.top_layout_category_text
-    val categoryParentLayout = view.category_parent_layout
+    val categoryIcon: AppCompatImageView = view.top_layout_category_icon
+    val categoryName: AppCompatTextView = view.top_layout_category_text
+    val categoryParentLayout: LinearLayout = view.category_parent_layout
 }

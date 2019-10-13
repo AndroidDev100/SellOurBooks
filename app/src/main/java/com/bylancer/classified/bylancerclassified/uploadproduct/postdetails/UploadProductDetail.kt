@@ -42,7 +42,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSImagePicker.OnSingleImageSelectedListener, TextWatcher {
+class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSImagePicker.OnMultiImageSelectedListener, TextWatcher {
     private var googleMap: GoogleMap? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val MY_LOCATION_REQUEST = 7
@@ -156,19 +156,15 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
                 LatLng(latitude, longitude)).zoom(15f).build()
 
         googleMap?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-        googleMap?.getUiSettings()?.isZoomControlsEnabled = false
-        googleMap?.getUiSettings()?.isScrollGesturesEnabled = false
-        googleMap?.getUiSettings()?.isZoomGesturesEnabled = false
+        googleMap?.uiSettings?.isZoomControlsEnabled = false
+        googleMap?.uiSettings?.isScrollGesturesEnabled = false
+        googleMap?.uiSettings?.isZoomGesturesEnabled = false
 
         googleMap?.setOnMapClickListener(GoogleMap.OnMapClickListener {
-            /*if (location == null) {
-                Utility.showSnackBar(activity_upload_products_parent_layout, getString(R.string.map_initializing), this)
-            } else {*/
-                val locationBundle = Bundle()
-                locationBundle.putDouble(AppConstants.SELECTED_PRODUCT_LONGITUDE, longitude)
-                locationBundle.putDouble(AppConstants.SELECTED_PRODUCT_LATITUDE, latitude)
-                startActivity(LocationSelectionActivity::class.java, false, locationBundle)
-           // }
+            val locationBundle = Bundle()
+            locationBundle.putDouble(AppConstants.SELECTED_PRODUCT_LONGITUDE, longitude)
+            locationBundle.putDouble(AppConstants.SELECTED_PRODUCT_LATITUDE, latitude)
+            startActivity(LocationSelectionActivity::class.java, false, locationBundle)
         })
     }
 
@@ -181,7 +177,7 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
             }
 
             R.id.upload_details_add_images_button -> {
-                val profileImagePicker = getSingleImagePickerDialog(PRODUCT_IMAGE_PICKER)
+                val profileImagePicker = getMultiImagePickerDialog(PRODUCT_IMAGE_PICKER)
                 profileImagePicker.show(supportFragmentManager, AppConstants.IMAGE_PICKER_FRAGMENT)
             }
 
@@ -238,9 +234,13 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
         }
     }*/
 
-    override fun onSingleImageSelected(uri: Uri?, tag: String?) {
+    /*override fun onSingleImageSelected(uri: Uri?, tag: String?) {
+
+    }*/
+
+    override fun onMultiImageSelected(uriList: MutableList<Uri>?, tag: String?) {
         if (upload_detail_images_recycler_view != null) {
-            selectedImageList.add(uri!!)
+            uriList?.let { selectedImageList.addAll(it) }
             if (upload_detail_images_recycler_view.adapter != null) {
                 upload_detail_images_recycler_view.adapter!!.notifyDataSetChanged()
             } else {
@@ -249,6 +249,7 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
             postButtonEnableListener()
         }
     }
+
 
     private fun setTextChangeListeners() {
         upload_detail_enter_a_title_edit_text.addTextChangedListener(this)
@@ -322,6 +323,7 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
                             SessionState.instance.uploadedProductLongitude.toDouble())
                 }
            // }
+            postButtonEnableListener()
         }
     }
 

@@ -36,11 +36,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.agrawalsuneet.dotsloader.loaders.SlidingLoader
 import com.asksira.bsimagepicker.BSImagePicker
 import com.asksira.bsimagepicker.Utils
 import com.bylancer.classified.bylancerclassified.BuildConfig
 import com.bylancer.classified.bylancerclassified.R
+import com.bylancer.classified.bylancerclassified.premium.PremiumObjectDetails
 import com.bylancer.classified.bylancerclassified.webservices.RetrofitController
 import com.bylancer.classified.bylancerclassified.webservices.notificationmessage.AddTokenStatus
 import com.gmail.samehadar.iosdialog.IOSDialog
@@ -495,6 +497,22 @@ fun getSingleImagePickerDialog(tag: String) : BSImagePicker {
             .build()
 }
 
+fun getMultiImagePickerDialog(tag: String) : BSImagePicker {
+    return BSImagePicker.Builder(BuildConfig.APPLICATION_ID + ".fileprovider")
+            .isMultiSelect()
+            .setMaximumDisplayingImages(Integer.MAX_VALUE) //Default: Integer.MAX_VALUE. Don't worry about performance :)
+            .setSpanCount(3) //Default: 3. This is the number of columns
+            .setGridSpacing(Utils.dp2px(2)) //Default: 2dp. Remember to pass in a value in pixel.
+            .setPeekHeight(Utils.dp2px(360)) //Default: 360dp. This is the initial height of the dialog.
+            .setMinimumMultiSelectCount(1)
+            .setMultiSelectDoneTextColor(R.color.dark_green)
+            .hideCameraTile() //Default: show. Set this if you don't want user to take photo.
+            .hideGalleryTile() //Default: show. Set this if you don't want to further let user select from a gallery app. In such case, I suggest you to set maximum displaying images to Integer.MAX_VALUE.
+            .setTag(tag) //Default: null. Set this if you need to identify which picker is calling back your fragment / activity.
+            //.dismissOnSelect(true) //Default: true. Set this if you do not want the picker to dismiss right after selection. But then you will have to dismiss by yourself.
+            .build()
+}
+
 fun Context.isLocationEnabled() : Boolean {
      var  locationManager: LocationManager? = null;
      var gps_enabled = false
@@ -529,4 +547,22 @@ fun Context.isOver600dp(): Boolean {
 }
 
 fun Context.getDefaultFont() = ResourcesCompat.getFont(this, R.font.roboto_regular)
+
+fun Context.getPremiumAdItemsList() : ArrayList<PremiumObjectDetails> {
+    val list = arrayListOf<PremiumObjectDetails>()
+    list.add(PremiumObjectDetails(LanguagePack.getString(getString(R.string.featured_ad_premium)), LanguagePack.getString(getString(R.string.featured_ad_premium_description)), AppConstants.PREMIUM_ADS_FEATURED_COST, canCancelSelection = true, isSelected = false))
+    list.add(PremiumObjectDetails(LanguagePack.getString(getString(R.string.urgent_ad_premium_)), LanguagePack.getString(getString(R.string.urgent_ad_premium_description)), AppConstants.PREMIUM_ADS_URGENT_COST, canCancelSelection = true, isSelected = false))
+    list.add(PremiumObjectDetails(LanguagePack.getString(getString(R.string.highlighted_ad_premium)), LanguagePack.getString(getString(R.string.highlighted_ad_premium_description)), AppConstants.PREMIUM_ADS_HIGHLIGHTED_COST, canCancelSelection = true, isSelected = false))
+    return list
+}
+
+fun Context.showToast(message: String?) {
+    Toast.makeText(this, message ?: LanguagePack.getString(getString(R.string.some_wrong)), Toast.LENGTH_LONG).show()
+}
+
+fun Context.calculateNoOfColumns(columnWidthDp: Float): Int {
+    val displayMetrics = resources.displayMetrics
+    val screenWidthDp = displayMetrics.widthPixels / displayMetrics.density
+    return (screenWidthDp / columnWidthDp + 0.5).toInt()
+}
 

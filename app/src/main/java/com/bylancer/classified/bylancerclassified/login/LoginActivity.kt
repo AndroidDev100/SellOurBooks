@@ -51,7 +51,7 @@ class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<
     override fun setLayoutView() = R.layout.activity_login
 
     override fun initialize(savedInstanceState: Bundle?) {
-        //printHashKey()
+       // printHashKey()
         if (intent != null && intent.hasExtra(AppConstants.BUNDLE)) {
             intent.getBundleExtra(AppConstants.BUNDLE).getString(AppConstants.MESSAGE)?.let { Utility.showSnackBar(login_screen_parent_layout, it, this) }
         }

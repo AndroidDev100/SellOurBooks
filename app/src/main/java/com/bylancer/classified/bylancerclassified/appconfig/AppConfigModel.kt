@@ -49,5 +49,10 @@ class AppConfigModel {
     @SerializedName("languages")
     @Expose
     var languages: List<Language>? = null
-
+    @SerializedName("currency_code")
+    @Expose
+    val currencyCode: String? = null
+    @SerializedName("currency_sign")
+    @Expose
+    val currencySign: String? = null
 }

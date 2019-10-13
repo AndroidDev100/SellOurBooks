@@ -23,6 +23,7 @@ import com.bylancer.classified.bylancerclassified.webservices.settings.CityListM
 import com.bylancer.classified.bylancerclassified.webservices.settings.CountryListModel
 import com.bylancer.classified.bylancerclassified.webservices.settings.ProductUploadProductModel
 import com.bylancer.classified.bylancerclassified.webservices.settings.StateListModel
+import com.bylancer.classified.bylancerclassified.webservices.transaction.TransactionResponseModel
 import com.bylancer.classified.bylancerclassified.webservices.uploadproduct.PostedProductResponseModel
 import com.bylancer.classified.bylancerclassified.webservices.uploadproduct.UploadDataDetailModel
 import com.bylancer.classified.bylancerclassified.webservices.uploadproduct.UploadProductModel
@@ -199,6 +200,22 @@ class RetrofitController {
                     uploadDataDetailModel.itemScreen,
                     uploadDataDetailModel.additionalInfo)
             call.enqueue(postedProductCallback)
+        }
+
+        fun postPremiumAdTransactionDetails(productName: String, amount: String, userId: String, productId: String,
+                                            isFeatured: String, isUrgent: String, isHighlighted: String, folder: String,
+                                            paymentType: String, transactionDetails: String,  postedTransactionCallback: Callback<TransactionResponseModel>) {
+            val call = webserviceApi.postPremiumTransactionDetail(productName,
+                    amount,
+                    userId,
+                    productId,
+                    isFeatured,
+                    isUrgent,
+                    isHighlighted,
+                    folder,
+                    paymentType,
+                    transactionDetails)
+            call.enqueue(postedTransactionCallback)
         }
     }
 }

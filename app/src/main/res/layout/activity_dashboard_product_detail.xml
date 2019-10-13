@@ -260,24 +260,54 @@
                             android:visibility="invisible"
                             app:srcCompat="@drawable/ic_warning" />
 
-                        <TextView
-                            android:id="@+id/make_an_offer_text_view"
+                        <FrameLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/make_an_offer"
-                            android:onClick="onClick"
-                            android:background="@color/denied_red"
-                            android:textColor="@color/white_color_text"
-                            android:fontFamily="@font/roboto_regular"
-                            android:paddingTop="@dimen/default_margin"
-                            android:paddingBottom="@dimen/default_margin"
-                            android:paddingStart="@dimen/margin_fifteen"
-                            android:paddingEnd="@dimen/margin_fifteen"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/product_detail_warning_image_view"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/make_an_offer_text_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/make_an_offer"
+                                android:onClick="onClick"
+                                android:background="@color/denied_red"
+                                android:textColor="@color/white_color_text"
+                                android:fontFamily="@font/roboto_regular"
+                                android:paddingTop="@dimen/default_margin"
+                                android:paddingBottom="@dimen/default_margin"
+                                android:paddingStart="@dimen/margin_fifteen"
+                                android:paddingEnd="@dimen/margin_fifteen"/>
+
+                            <FrameLayout
+                                android:id="@+id/go_premium_ad_button_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="onClick"
+                                android:clickable="true"
+                                android:background="@drawable/rounded_background_premium">
+
+                                <com.bylancer.classified.bylancerclassified.widgets.ShinnyTextView
+                                    android:id="@+id/go_premium_ad_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/premium"
+                                    android:textColor="@color/white_color_text"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:visibility="gone"
+                                    android:paddingTop="@dimen/default_margin"
+                                    android:paddingBottom="@dimen/default_margin"
+                                    android:paddingStart="@dimen/margin_fifteen"
+                                    android:paddingEnd="@dimen/margin_fifteen"/>
+
+                            </FrameLayout>
+
+                        </FrameLayout>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <View
@@ -402,8 +432,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_twelve"
-                            android:textColor="@color/disable_icon_color"
-                            android:fontFamily="@font/roboto_regular"
+                            android:textColor="@color/shadow_black"
+                            android:fontFamily="@font/roboto_bold"
+                            android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="@+id/product_detail_timeline_text_view"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="@+id/product_detail_price_text_view"

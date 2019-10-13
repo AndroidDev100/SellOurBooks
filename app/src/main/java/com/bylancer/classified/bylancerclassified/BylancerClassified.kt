@@ -2,6 +2,8 @@ package com.bylancer.classified.bylancerclassified
 
 import android.app.Application
 import android.os.StrictMode
+import co.paystack.android.PaystackSdk
+import com.bylancer.classified.bylancerclassified.utils.AppConstants
 import com.bylancer.classified.bylancerclassified.utils.SessionState
 import com.crashlytics.android.Crashlytics
 import com.facebook.FacebookSdk
@@ -29,7 +31,11 @@ class BylancerClassified : Application() {
         StrictMode.setVmPolicy(builder.build())
 
         // Initialize the Audience Network SDK
-        AudienceNetworkAds.initialize(this);
+        AudienceNetworkAds.initialize(this)
+
+        //PayStack for Africa
+        PaystackSdk.initialize(applicationContext)
+        PaystackSdk.setPublicKey(AppConstants.PAY_STACK_PUBLIC_KEY)
     }
 
     companion object {

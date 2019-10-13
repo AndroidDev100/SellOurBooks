@@ -42,7 +42,7 @@ class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickLis
         my_products_recycler_view.layoutManager = GridLayoutManager(this, SPAN_COUNT)
         my_products_recycler_view.setHasFixedSize(false)
         my_products_recycler_view.isNestedScrollingEnabled = false
-        my_products_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 10, true))
+        my_products_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 20, true))
         initializingRecyclerViewScrollListener()
     }
 
@@ -94,7 +94,7 @@ class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickLis
                     if (my_products_recycler_view.adapter != null) {
                         my_products_recycler_view.adapter?.notifyDataSetChanged()
                     } else  {
-                        my_products_recycler_view.adapter = DashboardItemAdapter(productDataList, this)
+                        my_products_recycler_view.adapter = DashboardItemAdapter(productDataList, this, true)
                     }
                 } else {
                     no_my_products_frame.visibility = View.VISIBLE
@@ -111,13 +111,15 @@ class MyPostedProductActivity : BylancerBuilderActivity(), OnProductItemClickLis
         if (!this.isFinishing) {
             iosDialog?.dismiss()
             isProductDataLoading = false
-            no_my_products_frame.visibility = View.VISIBLE
-            my_products_recycler_view.visibility = View.GONE
+            if (productDataList.isNullOrEmpty()) {
+                no_my_products_frame.visibility = View.VISIBLE
+                my_products_recycler_view.visibility = View.GONE
+                Utility.showSnackBar(my_posted_product_parent_layout, LanguagePack.getString(getString(R.string.internet_issue)), this)
+            }
             if (my_posted_property_pull_to_refresh != null && my_posted_property_pull_to_refresh.isRefreshing) {
                 productPageNumber = lastProductPageNumber
                 my_posted_property_pull_to_refresh?.isRefreshing = false
             }
-            Utility.showSnackBar(my_posted_product_parent_layout, LanguagePack.getString(getString(R.string.internet_issue)), this)
         }
     }
 

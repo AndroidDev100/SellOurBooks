@@ -20,6 +20,9 @@ import com.bylancer.classified.bylancerclassified.fragments.BylancerBuilderFragm
 import com.bylancer.classified.bylancerclassified.login.LoginActivity
 import com.bylancer.classified.bylancerclassified.login.LoginRequiredActivity
 import com.bylancer.classified.bylancerclassified.login.TermsAndConditionWebView
+import com.bylancer.classified.bylancerclassified.premium.OnPremiumDoneButtonClicked
+import com.bylancer.classified.bylancerclassified.premium.PremiumAlertDialog
+import com.bylancer.classified.bylancerclassified.premium.PremiumObjectDetails
 import com.bylancer.classified.bylancerclassified.utils.*
 import com.bylancer.classified.bylancerclassified.webservices.RetrofitController
 import com.bylancer.classified.bylancerclassified.webservices.settings.CityListModel
@@ -42,11 +45,10 @@ import java.io.File
  *
  */
 class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImagePicker.OnSingleImageSelectedListener {
-    var mProgressDialog: IOSDialog? = null
+    private var mProgressDialog: IOSDialog? = null
     val countryList = arrayListOf<CountryListModel>()
     val stateList = arrayListOf<StateListModel>()
     val cityList = arrayListOf<CityListModel>()
-    var isKeyboardOpen: Boolean = false
     val PROFILE_IMAGE_PICKER = "profile_image_picker"
 
     override fun setLayoutView() = R.layout.fragment_settings
@@ -60,12 +62,17 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
         settings_my_ads_frame.setOnClickListener(this)
         settings_support_frame.setOnClickListener(this)
         profile_icon_image_view.setOnClickListener(this)
+        go_premium_button.setOnClickListener(this)
         if (SessionState.instance.isLoggedIn) {
             settings_login_sign_up_icon.setImageResource(R.drawable.ic_settings_logout)
             settings_login_sign_up_text.text = LanguagePack.getString(getString(R.string.log_out))
             if (!SessionState.instance.profilePicUrl.isNullOrEmpty()) {
                 Glide.with(profile_icon_image_view.context).load(SessionState.instance.profilePicUrl).apply(RequestOptions().circleCrop()).into(profile_icon_image_view);
             }
+            /*if (!SessionState.instance.isUserHasPremiumApp) {
+                go_premium_button.visibility = View.VISIBLE
+                go_premium_button.text = LanguagePack.getString(getString(R.string.premium))
+            }*/
         } else {
             settings_login_sign_up_text.text = LanguagePack.getString(getString(R.string.login_sign_up))
         }
@@ -363,6 +370,22 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
                     startActivity(LoginRequiredActivity::class.java, false)
                 }
             }
+            R.id.go_premium_button -> {
+                startPremiumFlow()
+            }
+            else -> { }
+        }
+    }
+
+    private fun startPremiumFlow() {
+        if (mContext != null) {
+            val premiumDialog = PremiumAlertDialog(mContext!!, getPremiumItemsList(), R.style.premium_dialog)
+            premiumDialog.showDialog(AppConstants.GO_FOR_PREMIUM_APP, object : OnPremiumDoneButtonClicked {
+                override fun onPremiumDoneButtonClicked(totalCost: String, premiumFeatures: Array<String>) {
+                    val title = SessionState.instance.displayName + "_" + SessionState.instance.email
+                    mActivity?.showPaymentGatewayOptions(title, ("$totalCost.00"), AppConstants.GO_FOR_PREMIUM_APP, null, premiumFeatures)
+                }
+            })
         }
     }
 
@@ -533,5 +556,13 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
             cityList.forEach { listOfCity.add(it.name!!)}
             settings_city_spinner.setItems(listOfCity.toArray(arrayOfNulls<String>(cityList.size)))
         }
+    }
+
+    private fun getPremiumItemsList() : ArrayList<PremiumObjectDetails> {
+        val list = arrayListOf<PremiumObjectDetails>()
+        list.add(PremiumObjectDetails(LanguagePack.getString(getString(R.string.no_advertisement_add)), LanguagePack.getString(getString(R.string.no_advertisement_add_description)), AppConstants.PREMIUM_ADS_FREE_COST, canCancelSelection = false, isSelected = true))
+        list.add(PremiumObjectDetails(LanguagePack.getString(getString(R.string.priority_support)), LanguagePack.getString(getString(R.string.no_advertisement_add_description)), AppConstants.PREMIUM_PRIORITY_SUPPORT_COST, canCancelSelection = false, isSelected = true))
+        list.add(PremiumObjectDetails(LanguagePack.getString(getString(R.string.all_ads_premium)), LanguagePack.getString(getString(R.string.no_advertisement_add_description)), AppConstants.PREMIUM_ALL_ADS_PREMIUM_COST, canCancelSelection = false, isSelected = true))
+        return list
     }
 }

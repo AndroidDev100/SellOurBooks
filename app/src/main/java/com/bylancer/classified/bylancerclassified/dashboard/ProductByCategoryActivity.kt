@@ -83,7 +83,7 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
         product_by_category_recycler_view.setHasFixedSize(false)
         product_by_category_recycler_view.itemAnimator = DefaultItemAnimator()
         product_by_category_recycler_view.isNestedScrollingEnabled = false
-        product_by_category_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 10, true))
+        product_by_category_recycler_view.addItemDecoration(GridSpacingItemDecoration(SPAN_COUNT, 0, true))
         initializingRecyclerViewScrollListener()
     }
 

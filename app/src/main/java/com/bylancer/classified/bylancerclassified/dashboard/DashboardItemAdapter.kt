@@ -24,7 +24,7 @@ import com.bylancer.classified.bylancerclassified.utils.checkIfNumber
 import com.bylancer.classified.bylancerclassified.webservices.productlist.ProductsData
 
 
-class DashboardItemAdapter(private val dashboardItemList : List<ProductsData>, private val onProductItemClickListener: OnProductItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DashboardItemAdapter(private val dashboardItemList : List<ProductsData>, private val onProductItemClickListener: OnProductItemClickListener, private val isFromMyProduct: Boolean = false) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var holder : RecyclerView.ViewHolder? = null
@@ -70,16 +70,22 @@ class DashboardItemAdapter(private val dashboardItemList : List<ProductsData>, p
                     dashboardListItemLayout.listItemPrice!!.text  = dataModel.price + symbol
                 }
 
+                dashboardListItemLayout.dashboardItemUrgentTagTextView?.visibility = View.GONE
+
                 if (AppConstants.IS_ACTIVE.equals(dataModel.featured)) {
+                    dashboardListItemLayout.dashboardItemFeaturedTagTextView?.visibility = View.VISIBLE
                     dashboardListItemLayout.dashboardItemFeaturedTagTextView?.text = LanguagePack.getString("Featured")
                     dashboardListItemLayout.dashboardItemFeaturedTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.new_ui_red_background)!!)
+                } else {
+                    dashboardListItemLayout.dashboardItemFeaturedTagTextView?.visibility = View.GONE
                 }
 
                 if (AppConstants.IS_ACTIVE.equals(dataModel.urgent)) {
-                    dashboardListItemLayout.dashboardItemFeaturedTagTextView?.visibility = View.VISIBLE
                     if (dashboardListItemLayout.dashboardItemFeaturedTagTextView?.text!!.isEmpty()) {
+                        dashboardListItemLayout.dashboardItemFeaturedTagTextView?.visibility = View.VISIBLE
                         dashboardListItemLayout.dashboardItemFeaturedTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.denied_red)!!)
                         dashboardListItemLayout.dashboardItemFeaturedTagTextView?.text = LanguagePack.getString("Urgent")
+                        dashboardListItemLayout.dashboardItemUrgentTagTextView?.visibility = View.GONE
                     } else {
                         dashboardListItemLayout.dashboardItemFeaturedTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.new_ui_red_background)!!)
                         dashboardListItemLayout.dashboardItemUrgentTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.denied_red)!!)
@@ -115,6 +121,13 @@ class DashboardItemAdapter(private val dashboardItemList : List<ProductsData>, p
                     dashboardListItemLayout.listItemDistance?.setTypeface(getNormalTypeFace(dashboardListItemLayout.listItemDistance?.context!!), Typeface.NORMAL)
                 }
 
+                if (isFromMyProduct && !AppConstants.PRODUCT_ACTIVE.equals(dataModel?.status)) {
+                    holder.dashboardItemStatusTextView?.visibility = View.VISIBLE
+                    holder.dashboardItemStatusTextView?.text = LanguagePack.getString("Pending")
+                } else {
+                    holder.dashboardItemStatusTextView?.visibility = View.GONE
+                }
+
                 Glide.with(dashboardListItemLayout.listItemImageView!!.context).load(dataModel.picture).apply(RequestOptions().fitCenter()).into(dashboardListItemLayout.listItemImageView!!)
                 dashboardListItemLayout.itemView.setOnClickListener {
                     if(onProductItemClickListener != null) {
@@ -143,6 +156,7 @@ class DashboardItemAdapter(private val dashboardItemList : List<ProductsData>, p
         var listItemDistance : AppCompatTextView? = null
         var dashboardItemFeaturedTagTextView : AppCompatTextView? = null
         var dashboardItemUrgentTagTextView : AppCompatTextView? = null
+        var dashboardItemStatusTextView : AppCompatTextView? = null
         var dashboardFeaturedItemParentLayout : LinearLayout? = null
         var dashboardItemCardView : CardView? = null
         init {
@@ -153,6 +167,7 @@ class DashboardItemAdapter(private val dashboardItemList : List<ProductsData>, p
             dashboardFeaturedItemParentLayout = findViewById(R.id.dashboard_featured_item_parent_layout)
             dashboardItemFeaturedTagTextView = findViewById(R.id.dashboard_item_featured_tag_text_view)
             dashboardItemUrgentTagTextView = findViewById(R.id.dashboard_item_urgent_tag_text_view)
+            dashboardItemStatusTextView = findViewById(R.id.dashboard_item_status_text_view)
             dashboardItemCardView = findViewById(R.id.dashboard_item_card_view_layout)
         }
     }

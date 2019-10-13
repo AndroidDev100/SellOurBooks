@@ -8,7 +8,7 @@ class SessionState private constructor() {
     var isGoogleBannerSupported: Boolean = false
     var isGoogleInterstitialSupported: Boolean = false
     var isFacebookInterstitialSupported: Boolean = false
-    var isPremiumAppSupported: Boolean = false
+    var isUserHasPremiumApp: Boolean = true
     var isLoginFirstTime: Boolean = false
     var displayName: String = ""
     var email: String = ""
@@ -40,6 +40,8 @@ class SessionState private constructor() {
     var uploadedProductLongitude: String = ""
     var uploadedProductAdditionalInfo: String = ""
     var appVersionFromServer : String = ""
+    var paymentCurrencyCode : String = ""
+    var paymentCurrencySign : String = ""
 
     val isLoggedIn: Boolean
         get() = isLogin
@@ -51,7 +53,7 @@ class SessionState private constructor() {
             this.isFacebookInterstitialSupported = prefs.getBoolean(AppConstants.Companion.PREFERENCES.FACEBOOK_INTERSTITIAL.toString(), false)
             this.isGoogleBannerSupported = prefs.getBoolean(AppConstants.Companion.PREFERENCES.GOOGLE_BANNER.toString(), false)
             this.isGoogleInterstitialSupported = prefs.getBoolean(AppConstants.Companion.PREFERENCES.GOOGLE_INTERSTITIAL.toString(), false)
-            this.isPremiumAppSupported = prefs.getBoolean(AppConstants.Companion.PREFERENCES.PREMIUM_APP.toString(), false)
+            //this.isUserHasPremiumApp = prefs.getBoolean(AppConstants.Companion.PREFERENCES.PREMIUM_APP.toString(), false)
             this.isLoginFirstTime = prefs.getBoolean(AppConstants.Companion.PREFERENCES.IS_FIRST_TIME_LOGIN.toString(), true)
             this.email = prefs.getString(AppConstants.Companion.PREFERENCES.EMAIL.toString(), "")!!
             this.phoneNumber = prefs.getString(AppConstants.Companion.PREFERENCES.PHONE.toString(), "")!!

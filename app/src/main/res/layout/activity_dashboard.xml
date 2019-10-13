@@ -36,11 +36,11 @@
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginStart="@dimen/default_margin"
         app:fabSize="mini"
-        android:backgroundTint="@color/denied_red"
+        android:backgroundTint="@color/dark_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/bottom_navigation_menu"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_plus" />
+        android:src="@drawable/ic_sell" />
 
     <FrameLayout
         android:id="@+id/fragment_container"

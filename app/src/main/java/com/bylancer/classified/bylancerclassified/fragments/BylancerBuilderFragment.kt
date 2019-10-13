@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity
 import com.bylancer.classified.bylancerclassified.utils.AppConstants
 
 /**
@@ -15,6 +16,7 @@ import com.bylancer.classified.bylancerclassified.utils.AppConstants
  */
 abstract class BylancerBuilderFragment : Fragment() {
     var mContext : Context? = null
+    var mActivity : BylancerBuilderActivity? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(setLayoutView(), container, false)
     }
@@ -24,6 +26,10 @@ abstract class BylancerBuilderFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mContext = activity
+        if (activity is BylancerBuilderActivity) {
+            mActivity = activity as BylancerBuilderActivity
+        }
+
         initialize(savedInstanceState)
     }
 

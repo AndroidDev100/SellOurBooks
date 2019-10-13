@@ -67,7 +67,7 @@
     <dimen name="bottom_navigation_bar_height">56dp</dimen>
     <dimen name="bottom_navigation_bar_divider_height">1dp</dimen>
     <dimen name="dashboard_item_image_view_width">160dp</dimen>
-    <dimen name="dashboard_item_view_width">170dp</dimen>
+    <dimen name="dashboard_item_view_width">165dp</dimen>
     <dimen name="dashboard_item_image_view_height">130dp</dimen>
     <dimen name="dashboard_item_card_view_height">240dp</dimen>
     <dimen name="dashboard_continue_browsing_parent_layout_size">90dp</dimen>
@@ -103,5 +103,10 @@
 
     <!-- Location Selector -->
     <dimen name="location_selector_edit_text_height">50dp</dimen>
+
+    <!-- Premium -->
+    <dimen name="premium_button_radius">25dp</dimen>
+    <dimen name="premium_recycler_view_height">200dp</dimen>
+    <dimen name="success_dialog_button_with">200dp</dimen>
 
 </resources>
