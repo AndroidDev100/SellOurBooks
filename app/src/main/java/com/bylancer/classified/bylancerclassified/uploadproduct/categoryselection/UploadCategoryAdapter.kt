@@ -1,9 +1,9 @@
 package com.bylancer.classified.bylancerclassified.uploadproduct.categoryselection
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.appconfig.Category
@@ -19,8 +19,8 @@ class UploadCategoryAdapter(val items : List<Category>, val onCategorySelection:
     override fun onBindViewHolder(holder: UploadCategoryViewHolder, position: Int) {
         val category: Category = items.get(position)
         holder?.categoryName?.text = category.name
-        Glide.with(holder?.categoryIcon.context).load(category.picture).into(holder?.categoryIcon)
-        holder?.categoryParentLayout.setOnClickListener() {
+        Glide.with(holder?.categoryIcon!!.context).load(category.picture).into(holder!!.categoryIcon)
+        holder?.categoryParentLayout!!.setOnClickListener() {
             if (onCategorySelection != null) {
                 onCategorySelection.onCategorySelected(category.id!!, position)
             }

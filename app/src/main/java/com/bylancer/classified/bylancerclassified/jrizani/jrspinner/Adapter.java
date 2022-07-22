@@ -6,13 +6,14 @@ package com.bylancer.classified.bylancerclassified.jrizani.jrspinner;
 /*         20 Feb 2019         */
 /*=============================*/
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bylancer.classified.bylancerclassified.R;
 

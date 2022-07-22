@@ -4,11 +4,13 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.appcompat.widget.*
 import android.text.InputType
 import android.view.View
 import android.view.WindowManager
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bylancer.classified.bylancerclassified.R
@@ -59,9 +61,9 @@ class ProductByCategoryActivity : BylancerBuilderActivity(), OnProductItemClickL
 
         if (intent != null && intent.getBundleExtra(AppConstants.BUNDLE) != null) {
             var receivedBundle = intent.getBundleExtra(AppConstants.BUNDLE)
-            productCategoryId = receivedBundle.getString(AppConstants.SELECTED_CATEGORY_ID, "")
-            productSubCategoryId = receivedBundle.getString(AppConstants.SELECTED_SUB_CATEGORY_ID, "")
-            keywords = receivedBundle.getString(AppConstants.SELECTED_KEYWORD, "")
+            productCategoryId = receivedBundle!!.getString(AppConstants.SELECTED_CATEGORY_ID, "")
+            productSubCategoryId = receivedBundle!!.getString(AppConstants.SELECTED_SUB_CATEGORY_ID, "")
+            keywords = receivedBundle!!.getString(AppConstants.SELECTED_KEYWORD, "")
         }
 
         fetchProductList(true)

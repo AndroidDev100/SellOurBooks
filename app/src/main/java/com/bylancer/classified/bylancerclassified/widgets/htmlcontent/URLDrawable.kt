@@ -1,8 +1,8 @@
 package com.bylancer.classified.bylancerclassified.widgets.htmlcontent
 
 import android.graphics.Canvas
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 
 
 @Suppress("DEPRECATION")

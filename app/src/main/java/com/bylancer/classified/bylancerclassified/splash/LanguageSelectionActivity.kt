@@ -11,9 +11,7 @@ import com.bylancer.classified.bylancerclassified.dashboard.DashboardActivity
 import com.bylancer.classified.bylancerclassified.utils.AppConstants
 import com.bylancer.classified.bylancerclassified.utils.LanguagePack
 import com.bylancer.classified.bylancerclassified.utils.SessionState
-import com.bylancer.classified.bylancerclassified.utils.Utility
 import com.bylancer.classified.bylancerclassified.webservices.RetrofitController
-import com.gmail.samehadar.iosdialog.IOSDialog
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_language_selection.*
 import retrofit2.Call

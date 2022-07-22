@@ -10,7 +10,7 @@ class AppConstants {
     companion object {
         const val DETAIL_ACTIVITY_PARCELABLE = "DETAIL_ACTIVITY_PARCELABLE"
         const val BUNDLE = "bundle"
-        const val BASE_URL = "https://classified.bylancer.com/"
+        const val BASE_URL = "https://sellourbooks.com/"
         const val REGISTER_URL = "api/v1/?action=register"
         const val LOGIN_URL = "api/v1/?action=login"
         const val FORGOT_PASSWORD_URL = "api/v1/?action=forgot_password"

@@ -7,15 +7,12 @@ import android.app.NotificationManager
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.core.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import com.bylancer.classified.bylancerclassified.BuildConfig
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity
@@ -30,7 +27,9 @@ import com.bylancer.classified.bylancerclassified.webservices.notificationmessag
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import retrofit2.Call
@@ -160,17 +159,12 @@ class DashboardActivity : BylancerBuilderActivity() {
             }
             // [END handle_data_extras]
 
-
-            FirebaseInstanceId.getInstance().instanceId
-                    .addOnCompleteListener(OnCompleteListener { task ->
-                        if (!task.isSuccessful) {
-                            return@OnCompleteListener
-                        }
-
-                        subscribeToTopic()
-                        // Get new Instance ID token
-                        val token = task.result?.token
-                    })
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    return@OnCompleteListener
+                }
+                subscribeToTopic()
+            })
 
         }
 
@@ -203,7 +197,7 @@ class DashboardActivity : BylancerBuilderActivity() {
                 item.setShifting(false)
                 // set once again checked value, so view will be updated
 
-                item.setChecked(item.itemData.isChecked)
+                item.setChecked(item.itemData!!.isChecked)
             }
         } catch (e: NoSuchFieldException) {
             Log.e("BNVHelper", "Unable to get shift mode field", e)
@@ -298,13 +292,13 @@ class DashboardActivity : BylancerBuilderActivity() {
             override fun onResponse(call: Call<NotificationCounter>?, response: Response<NotificationCounter>?) {
                 if (response != null && response.isSuccessful && response.body() != null) {
                     val body = response.body()
-                    if (!body.unreadChat.isNullOrEmpty() && !body.unreadChat.equals("0")) {
-                        showBadgeOnIcon(3, body.unreadChat!!)
+                    if (!body!!.unreadChat.isNullOrEmpty() && !body!!.unreadChat.equals("0")) {
+                        showBadgeOnIcon(3, body!!.unreadChat!!)
                     } else {
 
                     }
-                    if (!body.unreadNotification.isNullOrEmpty() && !body.unreadNotification.equals("0")) {
-                        showBadgeOnIcon(1, body.unreadNotification!!)
+                    if (!body!!.unreadNotification.isNullOrEmpty() && !body!!.unreadNotification.equals("0")) {
+                        showBadgeOnIcon(1, body!!.unreadNotification!!)
                     } else {
 
                     }

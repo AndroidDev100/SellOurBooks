@@ -2,7 +2,6 @@ package com.bylancer.classified.bylancerclassified.dashboard
 
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity
@@ -30,7 +30,7 @@ class DashboardCategoryAdapter(val items : List<Category>, val parentActivity: D
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category: Category = items.get(position)
         holder?.categoryName?.text = category.name
-        Glide.with(holder?.categoryIcon?.context).load(category.picture).into(holder?.categoryIcon)
+        Glide.with(holder!!.categoryIcon.context).load(category.picture).into(holder!!.categoryIcon)
         holder?.categoryParentLayout?.setOnClickListener() {
             showSubCategoryInSearchBar(parentActivity, category.subCategory!!, category.id!!, category.name!!, category.picture!!)
         }

@@ -1,9 +1,9 @@
 package com.bylancer.classified.bylancerclassified.uploadproduct.categoryselection
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.appconfig.SubCategory
@@ -20,11 +20,11 @@ class UploadSubCategoryAdapter(val items : List<SubCategory>, val onCategorySele
         val subCategory: SubCategory = items.get(position)
         holder?.categoryName?.text = subCategory.name
         if (subCategory.picture != null) {
-            Glide.with(holder?.categoryIcon.context).load(subCategory.picture).into(holder?.categoryIcon)
+            Glide.with(holder?.categoryIcon!!.context).load(subCategory.picture).into(holder!!.categoryIcon)
         } else {
-            holder?.categoryIcon.setImageResource(R.drawable.sub_category_icon)
+            holder?.categoryIcon!!.setImageResource(R.drawable.sub_category_icon)
         }
-        holder?.categoryParentLayout.setOnClickListener() {
+        holder?.categoryParentLayout!!.setOnClickListener() {
             if (onCategorySelection != null) {
                 onCategorySelection.onCategorySelected(subCategory.id!!, position)
             }

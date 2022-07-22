@@ -1,8 +1,8 @@
 package com.bylancer.classified.bylancerclassified.settings
 
 import android.os.Bundle
-import androidx.recyclerview.widget.GridLayoutManager
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity
 import com.bylancer.classified.bylancerclassified.dashboard.DashboardItemAdapter

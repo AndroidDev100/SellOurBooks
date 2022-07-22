@@ -18,18 +18,11 @@ package com.bylancer.classified.bylancerclassified.widgets
 
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.LinearGradient
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
-import android.graphics.Shader
+import android.graphics.*
 import android.graphics.drawable.PaintDrawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
-import android.widget.TextView
-
 import androidx.appcompat.widget.AppCompatTextView
 
 /**

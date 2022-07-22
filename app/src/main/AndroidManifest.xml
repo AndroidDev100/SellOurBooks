@@ -1,45 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.bylancer.classified.bylancerclassified">
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.bylancer.classified.bylancerclassified">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <uses-permission android:name="com.bylancer.classified.bylancerclassified.permission.MAPS_RECEIVE" />
-
     <permission
-        android:name="com.example.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" />
+            android:name="com.example.permission.MAPS_RECEIVE"
+            android:protectionLevel="signature" />
     <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true" />
+            android:glEsVersion="0x00020000"
+            android:required="true" />
 
     <application
-        android:name=".BylancerClassified"
-        android:allowBackup="true"
-        android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        tools:replace="android:allowBackup"
-        android:requestLegacyExternalStorage="true"
-        android:theme="@style/AppTheme">
+            android:name=".BylancerClassified"
+            android:allowBackup="true"
+            android:hardwareAccelerated="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:largeHeap="true"
+            android:requestLegacyExternalStorage="true"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            tools:replace="android:allowBackup">
 
         <activity
-            android:name=".splash.SplashActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="stateHidden">
+                android:name=".splash.SplashActivity"
+                android:exported="true"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,152 +43,155 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".dashboard.DashboardActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+                android:name=".dashboard.DashboardActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".login.LoginRequiredActivity"
-            android:excludeFromRecents="true"
-            android:theme="@style/MyActivityDialog"
-            android:windowSoftInputMode="stateHidden" />
+                android:name=".login.LoginRequiredActivity"
+                android:excludeFromRecents="true"
+                android:theme="@style/MyActivityDialog"
+                android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".login.LoginActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".login.LoginActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".login.ManualLoginActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".login.ManualLoginActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".login.ForgotPasswordActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".login.ForgotPasswordActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".login.RegisterUserActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".login.RegisterUserActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".dashboard.DashboardProductDetailActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".dashboard.DashboardProductDetailActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".login.TermsAndConditionWebView"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".login.TermsAndConditionWebView"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".chat.ChatActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".chat.ChatActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".settings.MyFavoritesActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".settings.MyFavoritesActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".settings.MyPostedProductActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".settings.MyPostedProductActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".dashboard.ProductByCategoryActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".dashboard.ProductByCategoryActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".uploadproduct.categoryselection.UploadCategorySelectionActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".uploadproduct.categoryselection.UploadCategorySelectionActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".uploadproduct.subcategoryselection.UploadSubCategorySelectionActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".uploadproduct.subcategoryselection.UploadSubCategorySelectionActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".uploadproduct.postdetails.UploadSelectATitleActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".uploadproduct.postdetails.UploadSelectATitleActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".uploadproduct.postdetails.UploadProductDetail"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".uploadproduct.postdetails.UploadProductDetail"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".uploadproduct.postdetails.LocationSelectionActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".uploadproduct.postdetails.LocationSelectionActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".uploadproduct.postdetails.ProductAdditionalInfoWebview"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".uploadproduct.postdetails.ProductAdditionalInfoWebview"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".splash.LanguageSelectionActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
-
-        <activity android:name=".dashboard.locationselector.LocationSelectorActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan"/>
-
-        <activity android:name=".submitcreditcardflow.SubmitCreditCardActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan"/>
+                android:name=".splash.LanguageSelectionActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".member.MembershipUpgradeViewActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/BylancerTheme"
-            android:windowSoftInputMode="adjustPan" />
+                android:name=".dashboard.locationselector.LocationSelectorActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            tools:replace="android:theme" />
+                android:name=".submitcreditcardflow.SubmitCreditCardActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
+                android:name=".member.MembershipUpgradeViewActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/BylancerTheme"
+                android:windowSoftInputMode="adjustPan" />
+
+        <activity
+                android:name="com.facebook.FacebookActivity"
+                android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+                android:label="@string/app_name"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                tools:replace="android:theme" />
+
+        <activity
+                android:name="com.facebook.CustomTabActivity"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name="com.facebook.ads.AudienceNetworkActivity"
-            android:screenOrientation="userPortrait" />
+                android:name="com.facebook.ads.AudienceNetworkActivity"
+                android:screenOrientation="userPortrait" />
 
         <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+                android:name="com.facebook.sdk.ApplicationId"
+                android:value="@string/facebook_app_id" />
         <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="c3fe00f02e777cb40e346f9342c5cc0edf0fdb3a" />
+                android:name="io.fabric.ApiKey"
+                android:value="c3fe00f02e777cb40e346f9342c5cc0edf0fdb3a" />
 
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+                android:name="com.google.android.geo.API_KEY"
+                android:value="@string/google_maps_key" />
         <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_stat_notifications" />
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/ic_stat_notifications" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -202,50 +201,51 @@
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/white_background" /> <!-- Set custom default icon. This is used when no icon is set for incoming notification messages. -->
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/white_background" /> <!-- Set custom default icon. This is used when no icon is set for incoming notification messages. -->
         <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id" />
+                android:name="com.google.firebase.messaging.default_notification_channel_id"
+                android:value="@string/default_notification_channel_id" />
         <!--
         Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message.
         -->
         <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/ad_mob_banner" />
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="@string/ad_mob_banner" />
 
         <!-- PayStack meta data -->
         <meta-data
-            android:name="co.paystack.android.PublicKey"
-            android:value="@string/app_name"/>
+                android:name="co.paystack.android.PublicKey"
+                android:value="@string/app_name" />
 
         <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="${applicationId}.fileprovider"
+                android:exported="false"
+                android:grantUriPermissions="true">
             <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_paths" />
         </provider>
         <service
-            android:name=".notification.MyFirebaseMessagingService"
-            android:exported="false">
+                android:name=".notification.MyFirebaseMessagingService"
+                android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
+        <activity
+                android:name="com.google.firebase.auth.internal.FederatedSignInActivity"
+                tools:replace="android:launchMode"
+                android:launchMode="standard" />
         <!--PayPal Starts-->
-        <service
-            android:name="com.paypal.android.sdk.payments.PayPalService">
-        </service>
+        <service android:name="com.paypal.android.sdk.payments.PayPalService" />
 
         <activity
-            android:name="com.paypal.android.sdk.payments.PaymentActivity"
-            android:screenOrientation="userPortrait"
-            android:theme="@style/NoActionBarAppTheme"/>
+                android:name="com.paypal.android.sdk.payments.PaymentActivity"
+                android:screenOrientation="userPortrait"
+                android:theme="@style/NoActionBarAppTheme" />
         <!--PayPal Ends-->
     </application>
 

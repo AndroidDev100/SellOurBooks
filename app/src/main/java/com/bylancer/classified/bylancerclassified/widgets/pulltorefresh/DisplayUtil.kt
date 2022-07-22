@@ -17,8 +17,6 @@
 package com.bylancer.classified.bylancerclassified.widgets.pulltorefresh
 
 import android.content.Context
-import android.content.res.Resources
-import android.util.DisplayMetrics
 
 /**
  * @author amyu

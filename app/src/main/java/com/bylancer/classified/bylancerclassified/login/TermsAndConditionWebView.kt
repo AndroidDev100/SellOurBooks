@@ -23,8 +23,8 @@ class TermsAndConditionWebView: BylancerBuilderActivity(), View.OnClickListener 
         tc_web_view_progress_indicator.visibility = View.VISIBLE
         val bundle = intent.getBundleExtra(AppConstants.BUNDLE)
         if (bundle != null) {
-            terms_condition_web_view.loadUrl(bundle.getString(AppConstants.TERMS_CONDITION_URL))
-            terms_condition_title_text_view.text = (bundle.getString(AppConstants.TERMS_CONDITION_TITLE))
+            terms_condition_web_view.loadUrl(bundle!!.getString(AppConstants.TERMS_CONDITION_URL).toString())
+            terms_condition_title_text_view.text = (bundle!!.getString(AppConstants.TERMS_CONDITION_TITLE))
         }
     }
 

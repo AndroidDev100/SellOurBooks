@@ -7,10 +7,6 @@ package com.bylancer.classified.bylancerclassified.jrizani.jrspinner;
 /*=============================*/
 
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Pair;
@@ -20,6 +16,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bylancer.classified.bylancerclassified.R;
 

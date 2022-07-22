@@ -1,7 +1,5 @@
 package com.bylancer.classified.bylancerclassified.uploadproduct.postdetails
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.bylancer.classified.bylancerclassified.R
@@ -10,12 +8,7 @@ import com.bylancer.classified.bylancerclassified.utils.AppConstants
 import com.bylancer.classified.bylancerclassified.utils.LanguagePack
 import com.bylancer.classified.bylancerclassified.utils.SessionState
 import com.bylancer.classified.bylancerclassified.utils.Utility
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException
-import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.places.Places
-import com.google.android.gms.location.places.ui.PlacePicker
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
@@ -42,7 +35,7 @@ class LocationSelectionActivity: BylancerBuilderActivity(), View.OnClickListener
         if (intent != null) {
             val bundle = intent.getBundleExtra(AppConstants.BUNDLE)
             if (bundle != null) {
-                initializeMap(bundle.getDouble(AppConstants.SELECTED_PRODUCT_LATITUDE), bundle.getDouble(AppConstants.SELECTED_PRODUCT_LONGITUDE))
+                initializeMap(bundle!!.getDouble(AppConstants.SELECTED_PRODUCT_LATITUDE), bundle!!.getDouble(AppConstants.SELECTED_PRODUCT_LONGITUDE))
             } else {
                 someThingWrong()
             }

@@ -45,7 +45,7 @@ class MembershipUpgradeViewActivity : BylancerBuilderActivity(), View.OnClickLis
 
     override fun onResponse(call: Call<MembershipPlanList>?, response: Response<MembershipPlanList>?) {
         if (response != null && response.isSuccessful && !response.body()?.plans.isNullOrEmpty()) {
-            populateUIGetUserPlan(response.body().plans!!)
+            populateUIGetUserPlan(response.body()!!.plans!!)
         } else {
             dismissProgressDialog()
             showToast(getString(R.string.some_wrong))

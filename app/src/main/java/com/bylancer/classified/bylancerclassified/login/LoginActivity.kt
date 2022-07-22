@@ -12,9 +12,6 @@ import android.text.style.ForegroundColorSpan
 import android.util.Base64
 import android.util.Log
 import android.view.View
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.Volley
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity
 import com.bylancer.classified.bylancerclassified.dashboard.DashboardActivity
@@ -32,7 +29,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.activity_login.*
-import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,7 +49,7 @@ class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<
     override fun initialize(savedInstanceState: Bundle?) {
        // printHashKey()
         if (intent != null && intent.hasExtra(AppConstants.BUNDLE)) {
-            intent.getBundleExtra(AppConstants.BUNDLE).getString(AppConstants.MESSAGE)?.let { Utility.showSnackBar(login_screen_parent_layout, it, this) }
+            intent.getBundleExtra(AppConstants.BUNDLE)!!.getString(AppConstants.MESSAGE)?.let { Utility.showSnackBar(login_screen_parent_layout, it, this) }
         }
 
         setUpGoogleLogin()

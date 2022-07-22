@@ -30,7 +30,7 @@ class NotificationMessageAdapter(private val mBaseFragment: BylancerBuilderFragm
     override fun onBindViewHolder(chatViewHolder: ChatViewHolder, position: Int) {
         val notificationMessageModel = mNotificationMessageListModel.get(position)
         chatViewHolder?.notificationMessageDetailIcon?.visibility = View.VISIBLE
-        chatViewHolder?.notificationMessage?.text = notificationMessageModel.message
+        chatViewHolder?.notificationMessage!!.text = notificationMessageModel.message
         chatViewHolder?.notificationMessageTitleName?.text = notificationMessageModel.productTitle
         if (notificationMessageModel.productTitle.isNullOrEmpty()) {
             chatViewHolder.notificationMessageTitleName?.visibility = View.GONE
@@ -42,22 +42,22 @@ class NotificationMessageAdapter(private val mBaseFragment: BylancerBuilderFragm
             AppConstants.AD_APPROVE -> {
                 chatViewHolder?.notificationMessageTitleName?.setTextColor(chatViewHolder?.notificationMessageTitleName?.context?.resources!!.getColor(R.color.dark_green))
                 chatViewHolder?.notificationMessageType?.setImageResource(R.drawable.ic_ad_aprove)
-                setColorFilter(chatViewHolder?.notificationMessageType, R.color.dark_green)
+                setColorFilter(chatViewHolder!!.notificationMessageType, R.color.dark_green)
             }
             AppConstants.AD_DELETE -> {
                 chatViewHolder?.notificationMessageDetailIcon?.visibility = View.GONE
                 chatViewHolder?.notificationMessageTitleName?.setTextColor(chatViewHolder?.notificationMessageTitleName?.context?.resources!!.getColor(R.color.denied_red))
                 chatViewHolder?.notificationMessageType?.setImageResource(R.drawable.ic_ad_deleted)
-                setColorFilter(chatViewHolder?.notificationMessageType, R.color.denied_red)
+                setColorFilter(chatViewHolder!!.notificationMessageType, R.color.denied_red)
             }
             else -> {
                 chatViewHolder?.notificationMessageTitleName?.setTextColor(chatViewHolder?.notificationMessageTitleName?.context?.resources!!.getColor(R.color.yellow_dark))
                 chatViewHolder?.notificationMessageType?.setImageResource(R.drawable.ic_new_message)
-                setColorFilter(chatViewHolder?.notificationMessageType, R.color.yellow_dark)
+                setColorFilter(chatViewHolder!!.notificationMessageType, R.color.yellow_dark)
             }
         }
 
-        chatViewHolder?.itemView.setOnClickListener() {
+        chatViewHolder?.itemView!!.setOnClickListener() {
             when (notificationMessageModel?.type) {
                 AppConstants.AD_APPROVE -> {
                     onItemClicked(notificationMessageModel?.type, notificationMessageModel?.productId)
@@ -94,7 +94,7 @@ class NotificationMessageAdapter(private val mBaseFragment: BylancerBuilderFragm
     }
 
     private fun setColorFilter(imageView: AppCompatImageView, colorResId: Int) {
-        imageView.setColorFilter(ContextCompat.getColor(imageView?.context, colorResId), android.graphics.PorterDuff.Mode.SRC_ATOP);
+        imageView.setColorFilter(ContextCompat.getColor(imageView!!.context, colorResId), android.graphics.PorterDuff.Mode.SRC_ATOP);
     }
 
     class ChatViewHolder(view: View): RecyclerView.ViewHolder(view) {

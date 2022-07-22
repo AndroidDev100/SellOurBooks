@@ -8,12 +8,12 @@ import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.asksira.bsimagepicker.BSImagePicker
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity
@@ -28,7 +28,6 @@ import com.bylancer.classified.bylancerclassified.webservices.settings.StateList
 import com.bylancer.classified.bylancerclassified.webservices.uploadproduct.PostedProductResponseModel
 import com.bylancer.classified.bylancerclassified.webservices.uploadproduct.UploadDataDetailModel
 import com.bylancer.classified.bylancerclassified.webservices.uploadproduct.UploadProductModel
-import com.gmail.samehadar.iosdialog.IOSDialog
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -37,6 +36,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_upload_product_detail.*
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -44,7 +44,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
 
 class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSImagePicker.OnMultiImageSelectedListener, TextWatcher {
     private var googleMap: GoogleMap? = null
@@ -84,11 +83,11 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
 
         if (intent != null && intent.getBundleExtra(AppConstants.BUNDLE) != null && AppConfigDetail.category != null) {
             var bundle = intent.getBundleExtra(AppConstants.BUNDLE)
-            upload_detail_enter_a_title_edit_text.setText(bundle.getString(AppConstants.UPLOAD_PRODUCT_SELECTED_TITLE))
-            var category = AppConfigDetail.category!!.get(bundle.getInt(AppConstants.SELECTED_CATEGORY_POSITION))
+            upload_detail_enter_a_title_edit_text.setText(bundle?.getString(AppConstants.UPLOAD_PRODUCT_SELECTED_TITLE))
+            var category = AppConfigDetail.category!!.get(bundle?.getInt(AppConstants.SELECTED_CATEGORY_POSITION)!!)
             productCategoryId = category.id!!
             isJobCategory = category.name!!.contains("Job")
-            productSubCategoryId = bundle.getString(AppConstants.SELECTED_SUB_CATEGORY_ID, "0")
+            productSubCategoryId = bundle!!.getString(AppConstants.SELECTED_SUB_CATEGORY_ID, "0")
             setProductListingUnder(category)
         } else {
             Utility.showSnackBar(activity_upload_products_parent_layout, getString(R.string.some_wrong_retry), this)
@@ -479,7 +478,7 @@ class UploadProductDetail : BylancerBuilderActivity(), View.OnClickListener, BSI
                 val byteArray = out.toByteArray()
                 out.close()
 
-                val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), byteArray)
+                val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), byteArray)
                 // MultipartBody.Part is used to send also the actual file name
                 val body = MultipartBody.Part.createFormData("fileToUpload", file.name, requestFile)
                 RetrofitController.updateUserPostedProductPic(body, object: Callback<UploadProductModel> {

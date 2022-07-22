@@ -6,14 +6,15 @@ import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import androidx.fragment.app.FragmentActivity;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
+import com.bylancer.classified.bylancerclassified.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.bylancer.classified.bylancerclassified.R;
 
 /*=============================*/
 /*            AUTHOR           */

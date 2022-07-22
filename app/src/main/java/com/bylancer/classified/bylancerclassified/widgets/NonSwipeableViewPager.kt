@@ -2,10 +2,10 @@ package com.bylancer.classified.bylancerclassified.widgets
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.animation.DecelerateInterpolator
 import android.widget.Scroller
 import androidx.viewpager.widget.ViewPager
-import android.view.MotionEvent
 
 
 class NonSwipeableViewPager : ViewPager {

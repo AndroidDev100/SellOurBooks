@@ -1,10 +1,6 @@
 package com.bylancer.classified.bylancerclassified.utils
 
-import android.graphics.Canvas
-import android.graphics.ColorFilter
-import android.graphics.Paint
-import android.graphics.PixelFormat
-import android.graphics.Rect
+import android.graphics.*
 import android.graphics.drawable.Drawable
 
 class ColorCircleDrawable(color: Int) : Drawable() {

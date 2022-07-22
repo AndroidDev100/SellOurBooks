@@ -3,8 +3,6 @@ package com.bylancer.classified.bylancerclassified.premium
 import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
-import android.text.Html
-import android.text.Spannable
 import android.view.WindowManager
 import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -25,7 +23,7 @@ class PremiumAlertDialog(context: Context, private val productItemList : ArrayLi
     fun showDialog(type : Int, callback : OnPremiumDoneButtonClicked) {
         setContentView(R.layout.go_premium_app_dialog)
         window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-        window?.setBackgroundDrawable(ColorDrawable(mContext?.resources.getColor(android.R.color.transparent)))
+        window?.setBackgroundDrawable(ColorDrawable(mContext?.resources!!.getColor(android.R.color.transparent)))
         setCanceledOnTouchOutside(false)
         premium_title?.text = LanguagePack.getString(mContext?.getString(R.string.premium_dialog_title))
         premium_confirm_text_view?.text = LanguagePack.getString(mContext?.getString(R.string.premium))

@@ -9,8 +9,6 @@ import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActi
 import com.bylancer.classified.bylancerclassified.utils.AppConstants
 import com.bylancer.classified.bylancerclassified.utils.LanguagePack
 import com.bylancer.classified.bylancerclassified.utils.SessionState
-import com.bylancer.classified.bylancerclassified.utils.Utility
-import com.gmail.samehadar.iosdialog.IOSDialog
 import kotlinx.android.synthetic.main.activity_product_additional_info_webview.*
 
 class ProductAdditionalInfoWebview : BylancerBuilderActivity(), View.OnClickListener {
@@ -30,9 +28,9 @@ class ProductAdditionalInfoWebview : BylancerBuilderActivity(), View.OnClickList
         var subCatId = "1"
         if (intent != null && intent.getBundleExtra(AppConstants.BUNDLE) != null) {
             val bundle = intent.getBundleExtra(AppConstants.BUNDLE)
-            catId = bundle.getString(AppConstants.SELECTED_CATEGORY_ID, "1")
-            subCatId = bundle.getString(AppConstants.SELECTED_SUB_CATEGORY_ID, "1")
-            title = bundle.getString(AppConstants.ADDITIONAL_INFO_ACTIVITY_TITLE, "")
+            catId = bundle!!.getString(AppConstants.SELECTED_CATEGORY_ID, "1")
+            subCatId = bundle!!.getString(AppConstants.SELECTED_SUB_CATEGORY_ID, "1")
+            title = bundle!!.getString(AppConstants.ADDITIONAL_INFO_ACTIVITY_TITLE, "")
             if (!title.isNullOrEmpty()) {
                 products_additional_info_title_text_view.text = LanguagePack.getString(title)
             }

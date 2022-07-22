@@ -1,16 +1,13 @@
 package com.bylancer.classified.bylancerclassified
 
+//import com.google.android.gms.ads.MobileAds
 import android.app.Application
 import android.os.StrictMode
 import co.paystack.android.PaystackSdk
-import com.bylancer.classified.bylancerclassified.utils.AppConstants
 import com.bylancer.classified.bylancerclassified.utils.SessionState
-import com.crashlytics.android.Crashlytics
 import com.facebook.FacebookSdk
 import com.facebook.ads.AudienceNetworkAds
 import com.google.android.gms.ads.MobileAds
-//import com.google.android.gms.ads.MobileAds
-import io.fabric.sdk.android.Fabric
 
 /**
  * Created by Ani on 1/13/19.
@@ -22,7 +19,7 @@ class BylancerClassified : Application() {
     override fun onCreate() {
         super.onCreate()
         mInstance = this
-        Fabric.with(this, Crashlytics())
+//        Fabric.with(this, Crashlytics())
         logUserToCrashlytics()
         FacebookSdk.sdkInitialize(applicationContext)
         MobileAds.initialize(this)
@@ -50,9 +47,9 @@ class BylancerClassified : Application() {
         // TODO: Use the current user's information
         // You can call any combination of these three methods
         if (SessionState.instance.isLoggedIn) {
-            Crashlytics.setUserIdentifier(SessionState.instance.userId)
-            Crashlytics.setUserEmail(SessionState.instance.email)
-            Crashlytics.setUserName(SessionState.instance.userName)
+//            Crashlytics.setUserIdentifier(SessionState.instance.userId)
+//            Crashlytics.setUserEmail(SessionState.instance.email)
+//            Crashlytics.setUserName(SessionState.instance.userName)
         }
     }
 

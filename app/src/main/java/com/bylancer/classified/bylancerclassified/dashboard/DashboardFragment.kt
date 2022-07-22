@@ -33,7 +33,6 @@ import kotlinx.android.synthetic.main.fragment_dashboard.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.roundToInt
 
 /**
  * Contains Dashboard data
@@ -89,8 +88,9 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
             }
             !SessionState.instance.selectedCountry.isNullOrEmpty() -> {
                 SessionState.instance.selectedCountry
-            } else -> {
-                if (SessionState.instance.defaultCountry.isNullOrEmpty()) {
+            }
+            else -> {
+                if (!SessionState.instance.defaultCountry.isNullOrEmpty()) {
                     SessionState.instance.defaultCountry
                 } else {
                     getString(R.string.default_country)
@@ -123,7 +123,7 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
     }
 
     private fun setUpCategoryRecyclerView() {
-        dashboard_category_menu_recycler_view?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        dashboard_category_menu_recycler_view?.layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.HORIZONTAL, false)
         dashboard_category_menu_recycler_view?.setHasFixedSize(false)
         if (productDataList.isEmpty()) {
             dashboard_category_menu_recycler_view?.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
@@ -154,7 +154,7 @@ class DashboardFragment : BylancerBuilderFragment(), Callback<List<ProductsData>
         if (resources.getBoolean(R.bool.isTablet)) {
             SPAN_COUNT = 3
         }
-        dashboard_featured_recycler_view.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        dashboard_featured_recycler_view.layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.HORIZONTAL, false)
         dashboard_featured_recycler_view.setHasFixedSize(false)
         dashboard_featured_recycler_view.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation)
 

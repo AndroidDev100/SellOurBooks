@@ -3,8 +3,8 @@ package com.bylancer.classified.bylancerclassified.uploadproduct.subcategorysele
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.recyclerview.widget.GridLayoutManager
 import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity
 import com.bylancer.classified.bylancerclassified.appconfig.AppConfigDetail
@@ -34,8 +34,8 @@ class UploadSubCategorySelectionActivity : BylancerBuilderActivity(), OnUploadCa
         if (AppConfigDetail.category != null && intent != null) {
             val bundle = intent.getBundleExtra(AppConstants.BUNDLE)
             if (bundle != null) {
-                var categoryId = bundle.getString(AppConstants.SELECTED_CATEGORY_ID)
-                categoryPosition = bundle.getInt(AppConstants.SELECTED_CATEGORY_POSITION)
+                var categoryId = bundle!!.getString(AppConstants.SELECTED_CATEGORY_ID)
+                categoryPosition = bundle!!.getInt(AppConstants.SELECTED_CATEGORY_POSITION)
                 sub_category_selection_recycler_view.adapter = UploadSubCategoryAdapter(AppConfigDetail.category!!.get(categoryPosition).subCategory!!, this)
             }
         } else {

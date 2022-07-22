@@ -214,7 +214,7 @@ abstract class BylancerBuilderActivity : AppCompatActivity() {
         val interstitialTask = object : TimerTask() {
             override fun run() {
                 this@BylancerBuilderActivity.runOnUiThread() {
-                    if (mInterstitialAd?.isLoaded && !this@BylancerBuilderActivity.isFinishing && !isPaymentActive) {
+                    if (mInterstitialAd?.isLoaded!! && !this@BylancerBuilderActivity.isFinishing && !isPaymentActive) {
                         mInterstitialAd?.show()
                     }
                 }

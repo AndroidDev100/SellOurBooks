@@ -60,7 +60,7 @@ class RetrofitController {
                 return Retrofit.Builder()
                         .baseUrl(BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create(gson))
-                        .client(getOkHttpClientBuilder().build())
+                        .client(getOkHttpClientBuilder())
                         .build()
             }
 
@@ -254,7 +254,7 @@ class RetrofitController {
     }
 }
 
-fun getOkHttpClientBuilder() : OkHttpClient.Builder {
+fun getOkHttpClientBuilder() : OkHttpClient {
     val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
         override fun getAcceptedIssuers(): Array<X509Certificate> {
             return arrayOf()
@@ -289,7 +289,6 @@ fun getOkHttpClientBuilder() : OkHttpClient.Builder {
     val keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm())
     keyManagerFactory.init(keyStore, "keystore_pass".toCharArray())
     sslContext.init(null, trustAllCerts, SecureRandom())
-    client.sslSocketFactory(sslContext.socketFactory)
-            .hostnameVerifier { _, _ -> true }
-    return client
+    client.build().hostnameVerifier
+    return client.build()
 }

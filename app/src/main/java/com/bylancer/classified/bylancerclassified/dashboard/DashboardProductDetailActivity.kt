@@ -105,8 +105,8 @@ class DashboardProductDetailActivity: BylancerBuilderActivity(), Callback<Dashbo
 
         val bundle = intent.getBundleExtra(AppConstants.BUNDLE)
         if (bundle != null) {
-            product_detail_title_text_view.text = bundle.getString(AppConstants.PRODUCT_NAME, "")
-            getProductDetails(bundle.getString(AppConstants.PRODUCT_ID, ""))
+            product_detail_title_text_view.text = bundle!!.getString(AppConstants.PRODUCT_NAME, "")
+            getProductDetails(bundle!!.getString(AppConstants.PRODUCT_ID, ""))
         }
     }
 

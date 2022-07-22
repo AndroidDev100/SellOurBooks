@@ -3,9 +3,6 @@ package com.bylancer.classified.bylancerclassified.splash
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AlertDialog
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.Volley
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.activities.BylancerBuilderActivity
 import com.bylancer.classified.bylancerclassified.appconfig.AppConfigDetail
@@ -14,7 +11,6 @@ import com.bylancer.classified.bylancerclassified.dashboard.DashboardActivity
 import com.bylancer.classified.bylancerclassified.utils.*
 import com.bylancer.classified.bylancerclassified.webservices.RetrofitController
 import com.google.gson.Gson
-import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

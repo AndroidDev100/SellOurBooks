@@ -25,7 +25,7 @@ class NotificationMessagesFragment : BylancerBuilderFragment(), Callback<List<No
         notification_alarm_title_text_view.text = LanguagePack.getString(getString(R.string.notification))
 
         recycler_view_notification_alarm_message_list.setHasFixedSize(false)
-        recycler_view_notification_alarm_message_list.layoutManager = LinearLayoutManager(context)
+        recycler_view_notification_alarm_message_list.layoutManager = LinearLayoutManager(context!!)
         fetchNotificationList()
     }
 

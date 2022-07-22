@@ -30,6 +30,7 @@ import com.gmail.samehadar.iosdialog.IOSDialog
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_settings.*
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -421,7 +422,7 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
             Glide.with(profile_icon_image_view.context).load(uri).apply(RequestOptions().circleCrop()).into(profile_icon_image_view)
             val file = File(uri.path)
             if (file != null) {
-                val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+                val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
                 // MultipartBody.Part is used to send also the actual file name
                 val body = MultipartBody.Part.createFormData("fileToUpload", file.getName(), requestFile)
                 RetrofitController.updateUserProfilePic(body, object: Callback<ProductUploadProductModel> {
@@ -550,9 +551,9 @@ class SettingsFragment : BylancerBuilderFragment(), View.OnClickListener, BSImag
             }
 
             override fun onResponse(call: Call<CurrentUserMembershipPlan>?, response: Response<CurrentUserMembershipPlan>?) {
-                if (response != null && response.isSuccessful && response.body() != null && !response.body().imageUrl.isNullOrEmpty()) {
+                if (response != null && response.isSuccessful && response.body() != null && !response!!.body()!!.imageUrl.isNullOrEmpty()) {
                     badge_icon_image_view.visibility = View.VISIBLE
-                    Glide.with(badge_icon_image_view.context).load(response.body().imageUrl).into(badge_icon_image_view)
+                    Glide.with(badge_icon_image_view.context).load(response!!.body()!!.imageUrl).into(badge_icon_image_view)
                 }
                 dismissProgressDialog()
                 if (isLanguageFetchRequired) initLanguagePack()

@@ -1,9 +1,9 @@
 package com.bylancer.classified.bylancerclassified.dashboard
 
+import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import androidx.annotation.NonNull
 import com.bylancer.classified.bylancerclassified.database.DataConverterCustomData
 import com.bylancer.classified.bylancerclassified.database.DataConverterListImages
 import com.google.gson.annotations.Expose
@@ -11,11 +11,12 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 class DashboardDetailModel {
+
     @NonNull
     @PrimaryKey
     @SerializedName("id")
     @Expose
-    var productId: String? = null
+    var productId: String=""
     @SerializedName("title")
     @Expose
     var title: String? = null

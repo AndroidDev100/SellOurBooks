@@ -1,10 +1,10 @@
 package com.bylancer.classified.bylancerclassified.uploadproduct.postdetails
 
 import android.net.Uri
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bylancer.classified.bylancerclassified.R
 import kotlinx.android.synthetic.main.upload_selected_image_adapter.view.*
@@ -17,8 +17,8 @@ class UploadSelectedImageAdapter(val items : MutableList<Uri>) : RecyclerView.Ad
 
     override fun onBindViewHolder(holder: UploadSelectedImageViewHolder, position: Int) {
         val imageUrl = items.get(position)
-        Glide.with(holder?.selectedImage.context).load(imageUrl).into(holder?.selectedImage)
-        holder?.cancelSelectedImage.setOnClickListener() {
+        Glide.with(holder?.selectedImage!!.context).load(imageUrl).into(holder!!.selectedImage)
+        holder?.cancelSelectedImage!!.setOnClickListener() {
             items.removeAt(position)
             notifyDataSetChanged()
         }

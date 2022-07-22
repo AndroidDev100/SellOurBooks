@@ -2,8 +2,8 @@ package com.bylancer.classified.bylancerclassified.chat
 
 import android.os.Bundle
 import android.os.Handler
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bylancer.classified.bylancerclassified.R
@@ -37,11 +37,11 @@ class ChatActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<L
         iOSDialog = Utility.showProgressView(this, LanguagePack.getString("Loading..."))
 
         if (bundle != null) {
-            chat_title_text_view.text = bundle.getString(AppConstants.CHAT_TITLE, "")
-            var chatUserName = bundle.getString(AppConstants.CHAT_USER_NAME, "")
-            chatUserId = bundle.getString(AppConstants.CHAT_USER_ID, "")
-            val chatUserImage = AppConstants.IMAGE_URL + bundle.getString(AppConstants.CHAT_USER_IMAGE, "")
-            if (bundle.getString(AppConstants.CHAT_USER_IMAGE, "").isNullOrEmpty()) {
+            chat_title_text_view.text = bundle!!.getString(AppConstants.CHAT_TITLE, "")
+            var chatUserName = bundle!!.getString(AppConstants.CHAT_USER_NAME, "")
+            chatUserId = bundle!!.getString(AppConstants.CHAT_USER_ID, "")
+            val chatUserImage = AppConstants.IMAGE_URL + bundle!!.getString(AppConstants.CHAT_USER_IMAGE, "")
+            if (bundle!!.getString(AppConstants.CHAT_USER_IMAGE, "").isNullOrEmpty()) {
                 Glide.with(this).load(getDefaultImage()).apply(RequestOptions().circleCrop()).into(chat_user_image_view)
             } else {
                 Glide.with(this).load(chatUserImage).apply(RequestOptions().circleCrop()).into(chat_user_image_view)

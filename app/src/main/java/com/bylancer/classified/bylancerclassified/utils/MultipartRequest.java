@@ -10,12 +10,6 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;*/
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
-
 public class MultipartRequest { /*extends Request<String> {
 
    private MultipartEntity entity = new MultipartEntity();

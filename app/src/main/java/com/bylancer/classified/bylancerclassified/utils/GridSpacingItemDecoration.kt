@@ -1,8 +1,8 @@
 package com.bylancer.classified.bylancerclassified.utils
 
 import android.graphics.Rect
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Created by Ani on 3/22/18.

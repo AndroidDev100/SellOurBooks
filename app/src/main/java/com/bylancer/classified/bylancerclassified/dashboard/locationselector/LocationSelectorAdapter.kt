@@ -1,27 +1,13 @@
 package com.bylancer.classified.bylancerclassified.dashboard.locationselector
 
-import android.content.Context
-import android.content.res.Resources
-import android.graphics.Typeface
-import android.graphics.drawable.Drawable
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
 import com.bylancer.classified.bylancerclassified.R
-import com.bylancer.classified.bylancerclassified.utils.AppConstants
-import com.bylancer.classified.bylancerclassified.utils.LanguagePack
-import com.bylancer.classified.bylancerclassified.utils.Utility
-import com.bylancer.classified.bylancerclassified.utils.checkIfNumber
-import com.bylancer.classified.bylancerclassified.webservices.productlist.ProductsData
 
 
 class LocationSelectorAdapter(private val locationItemList : List<String>, private val onItemClickListener: LocationSelectedListener, private val isCityList: Boolean = false) : RecyclerView.Adapter<LocationSelectorAdapter.LocationSelectorViewHolder>() {

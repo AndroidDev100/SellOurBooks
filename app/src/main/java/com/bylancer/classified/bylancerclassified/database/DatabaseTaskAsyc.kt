@@ -2,8 +2,8 @@ package com.bylancer.classified.bylancerclassified.database
 
 import android.content.Context
 import android.os.AsyncTask
-import androidx.appcompat.widget.AppCompatImageView
 import android.view.View
+import androidx.appcompat.widget.AppCompatImageView
 import com.bylancer.classified.bylancerclassified.R
 import com.bylancer.classified.bylancerclassified.dashboard.DashboardDetailModel
 import com.bylancer.classified.bylancerclassified.utils.LanguagePack
@@ -15,8 +15,7 @@ class DatabaseTaskAsyc(val context: Context, val mDashboardDetailModel: Dashboar
 
     override fun doInBackground(vararg p0: Void): Boolean {
         if (context != null && mDashboardDetailModel != null) {
-            if (mDashboardDetailModel?.productId != null && DBUtil.getDatabaseInstance(context)?.daoAccess()?.
-                            checkPropertyExist(mDashboardDetailModel?.productId!!) > 0) {
+            if (mDashboardDetailModel?.productId != null && DBUtil.getDatabaseInstance(context)?.daoAccess()?.checkPropertyExist(mDashboardDetailModel?.productId!!)!! > 0) {
                 if (!isForValidating) {
                     DBUtil.getDatabaseInstance(context).daoAccess().
                             deleteProperty(mDashboardDetailModel!!)

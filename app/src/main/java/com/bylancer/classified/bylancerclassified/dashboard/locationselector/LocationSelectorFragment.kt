@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bylancer.classified.bylancerclassified.R
@@ -120,7 +119,7 @@ class LocationSelectorFragment : BylancerBuilderFragment(), LocationSelectedList
 
     private fun initializeRecyclerView() {
         if (mContext != null) {
-            location_list_recycler_view.layoutManager = LinearLayoutManager(mContext)
+            location_list_recycler_view.layoutManager = LinearLayoutManager(mContext!!)
             location_list_recycler_view.setHasFixedSize(true)
             location_list_recycler_view.itemAnimator = DefaultItemAnimator()
         }
