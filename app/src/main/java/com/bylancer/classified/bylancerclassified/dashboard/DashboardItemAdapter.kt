@@ -80,12 +80,12 @@ class DashboardItemAdapter(private val dashboardItemList : List<ProductsData>, p
                 if (AppConstants.IS_ACTIVE.equals(dataModel.urgent, true)) {
                     if (dashboardListItemLayout.dashboardItemFeaturedTagTextView?.text!!.isEmpty()) {
                         dashboardListItemLayout.dashboardItemFeaturedTagTextView?.visibility = View.VISIBLE
-                        dashboardListItemLayout.dashboardItemFeaturedTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.denied_red)!!)
+                        dashboardListItemLayout.dashboardItemFeaturedTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.colorPrimary)!!)
                         dashboardListItemLayout.dashboardItemFeaturedTagTextView?.text = LanguagePack.getString("Urgent")
                         dashboardListItemLayout.dashboardItemUrgentTagTextView?.visibility = View.GONE
                     } else {
                         dashboardListItemLayout.dashboardItemFeaturedTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.new_ui_red_background)!!)
-                        dashboardListItemLayout.dashboardItemUrgentTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.denied_red)!!)
+                        dashboardListItemLayout.dashboardItemUrgentTagTextView?.setBackgroundColor(getColor(dashboardListItemLayout.dashboardItemFeaturedTagTextView?.resources, R.color.colorPrimary)!!)
                         dashboardListItemLayout.dashboardItemUrgentTagTextView?.text = LanguagePack.getString("Urgent")
                         dashboardListItemLayout.dashboardItemUrgentTagTextView?.visibility = View.VISIBLE
                     }
@@ -111,7 +111,7 @@ class DashboardItemAdapter(private val dashboardItemList : List<ProductsData>, p
                     dashboardListItemLayout.dashboardItemCardView?.background = ContextCompat.getDrawable(holder.dashboardFeaturedItemParentLayout?.context!!, R.drawable.layout_no_shadow)
                     dashboardListItemLayout.dashboardItemCardView?.useCompatPadding = true
                     dashboardListItemLayout.listItemDescription?.setTextColor(getColor(dashboardListItemLayout.listItemDescription?.resources, R.color.black_color_text)!!)
-                    dashboardListItemLayout.listItemPrice?.setTextColor(getColor(dashboardListItemLayout.listItemPrice?.resources, R.color.denied_red)!!)
+                    dashboardListItemLayout.listItemPrice?.setTextColor(getColor(dashboardListItemLayout.listItemPrice?.resources, R.color.colorPrimary)!!)
                     dashboardListItemLayout.listItemDistance?.setTextColor(getColor(dashboardListItemLayout.listItemDistance?.resources, R.color.dark_gray)!!)
                     dashboardListItemLayout.listItemDescription?.setTypeface(getNormalTypeFace(dashboardListItemLayout.listItemDescription?.context!!), Typeface.NORMAL)
                     dashboardListItemLayout.listItemPrice?.setTypeface(getNormalTypeFace(dashboardListItemLayout.listItemPrice?.context!!), Typeface.NORMAL)

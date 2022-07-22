@@ -217,8 +217,8 @@ class LoginActivity : BylancerBuilderActivity(), View.OnClickListener, Callback<
             }
 
             span.setSpan(cs, 54, span.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            span.setSpan(ForegroundColorSpan(resources.getColor(R.color.denied_red)), minLength, maxLength, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            span.setSpan(ForegroundColorSpan(resources.getColor(R.color.denied_red)), 54, span.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            span.setSpan(ForegroundColorSpan(resources.getColor(R.color.colorPrimary)), minLength, maxLength, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            span.setSpan(ForegroundColorSpan(resources.getColor(R.color.colorPrimary)), 54, span.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             login_terms_condition.setText(span)
             login_terms_condition.setMovementMethod(LinkMovementMethod.getInstance())
         }

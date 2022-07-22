@@ -404,7 +404,7 @@ abstract class BylancerBuilderActivity : AppCompatActivity() {
 
         if (!isSuccess) {
             val topBackground = successOrFailureDialog.findViewById<View>(R.id.success_dialog_top_background)
-            topBackground?.setBackgroundColor(resources?.getColor(R.color.denied_red)!!)
+            topBackground?.setBackgroundColor(resources?.getColor(R.color.colorPrimary)!!)
 
             val iconImageView = successOrFailureDialog.findViewById<ImageView>(R.id.success_dialog_icon)
             iconImageView.setImageResource(R.drawable.close)

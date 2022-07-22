@@ -50,7 +50,7 @@
                         android:textColor="@color/white_background"
                         android:textSize="@dimen/small_text_size"
                         android:fontFamily="@font/roboto_bold"
-                        android:background="@color/denied_red"
+                        android:background="@color/colorPrimary"
                         android:visibility="gone"
                         android:layout_marginBottom="@dimen/margin_small"
                         android:padding="@dimen/margin_small"/>
@@ -64,7 +64,7 @@
                         android:textColor="@color/white_background"
                         android:textSize="@dimen/small_text_size"
                         android:fontFamily="@font/roboto_bold"
-                        android:background="@color/denied_red"
+                        android:background="@color/colorPrimary"
                         android:visibility="visible"
                         android:padding="@dimen/margin_small"/>
 
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_margin"
                 android:gravity="start"
-                android:textColor="@color/denied_red"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_size_normal"
                 android:visibility="invisible"
                 android:paddingStart="@dimen/margin_small"

@@ -62,11 +62,11 @@ class MyFavoriteItemAdapter(private val favItemList : List<DashboardDetailModel>
         if (AppConstants.IS_ACTIVE.equals(dataModel.urgent)) {
             holder.favItemItemFeaturedTagTextView?.visibility = View.VISIBLE
             if (holder.favItemItemFeaturedTagTextView?.text!!.isEmpty()) {
-                holder.favItemItemFeaturedTagTextView?.setBackgroundColor(getColor(holder.favItemItemFeaturedTagTextView?.resources, R.color.denied_red)!!)
+                holder.favItemItemFeaturedTagTextView?.setBackgroundColor(getColor(holder.favItemItemFeaturedTagTextView?.resources, R.color.colorPrimary)!!)
                 holder.favItemItemFeaturedTagTextView?.text = LanguagePack.getString("Urgent")
             } else {
                 holder.favItemItemFeaturedTagTextView?.setBackgroundColor(getColor(holder.favItemItemFeaturedTagTextView?.resources, R.color.new_ui_red_background)!!)
-                holder.favItemItemUrgentTagTextView?.setBackgroundColor(getColor(holder.favItemItemFeaturedTagTextView?.resources, R.color.denied_red)!!)
+                holder.favItemItemUrgentTagTextView?.setBackgroundColor(getColor(holder.favItemItemFeaturedTagTextView?.resources, R.color.colorPrimary)!!)
                 holder.favItemItemUrgentTagTextView?.text = LanguagePack.getString("Urgent")
                 holder.favItemItemUrgentTagTextView?.visibility = View.VISIBLE
             }
@@ -92,7 +92,7 @@ class MyFavoriteItemAdapter(private val favItemList : List<DashboardDetailModel>
             holder.favItemItemCardView?.background = ContextCompat.getDrawable(holder.favItemFeaturedItemParentLayout?.context!!, R.drawable.layout_no_shadow)
             holder.favItemItemCardView?.useCompatPadding = true
             holder.listItemDescription?.setTextColor(getColor(holder.listItemDescription?.resources, R.color.black_color_text)!!)
-            holder.listItemPrice?.setTextColor(getColor(holder.listItemPrice?.resources, R.color.denied_red)!!)
+            holder.listItemPrice?.setTextColor(getColor(holder.listItemPrice?.resources, R.color.colorPrimary)!!)
             holder.listItemDistance?.setTextColor(getColor(holder.listItemDistance?.resources, R.color.dark_gray)!!)
             holder.listItemDescription?.setTypeface(getNormalTypeFace(holder.listItemDescription?.context!!), Typeface.NORMAL)
             holder.listItemPrice?.setTypeface(getNormalTypeFace(holder.listItemPrice?.context!!), Typeface.NORMAL)

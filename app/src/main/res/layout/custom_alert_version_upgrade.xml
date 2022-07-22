@@ -14,7 +14,7 @@
         android:text="@string/version_available"
         android:padding="@dimen/margin_ten"
         android:fontFamily="@font/museo_bold"
-        android:textColor="@color/denied_red"
+        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/custom_alert_title_text_size" />
 
     <androidx.appcompat.widget.AppCompatTextView

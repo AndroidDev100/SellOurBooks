@@ -236,7 +236,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
                     android:text="@string/continue_browsing"
-                    android:textColor="@color/denied_red"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_size_normal"
                     android:textStyle="bold" />
 

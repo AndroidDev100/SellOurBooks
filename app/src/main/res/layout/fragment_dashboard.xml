@@ -94,7 +94,7 @@
                             android:id="@+id/progress_view_dashboard"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_bylancer_icon" />
+                            android:src="@mipmap/ic_launcher" />
 
                     </FrameLayout>
 

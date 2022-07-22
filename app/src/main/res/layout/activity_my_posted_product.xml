@@ -70,7 +70,7 @@
                 android:id="@+id/no_my_products_added"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/denied_red"
+                android:textColor="@color/colorPrimary"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/margin_fifteen"
                 android:textSize="@dimen/text_size_normal"

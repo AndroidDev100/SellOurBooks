@@ -46,9 +46,9 @@ class NotificationMessageAdapter(private val mBaseFragment: BylancerBuilderFragm
             }
             AppConstants.AD_DELETE -> {
                 chatViewHolder?.notificationMessageDetailIcon?.visibility = View.GONE
-                chatViewHolder?.notificationMessageTitleName?.setTextColor(chatViewHolder?.notificationMessageTitleName?.context?.resources!!.getColor(R.color.denied_red))
+                chatViewHolder?.notificationMessageTitleName?.setTextColor(chatViewHolder?.notificationMessageTitleName?.context?.resources!!.getColor(R.color.colorPrimary))
                 chatViewHolder?.notificationMessageType?.setImageResource(R.drawable.ic_ad_deleted)
-                setColorFilter(chatViewHolder!!.notificationMessageType, R.color.denied_red)
+                setColorFilter(chatViewHolder!!.notificationMessageType, R.color.colorPrimary)
             }
             else -> {
                 chatViewHolder?.notificationMessageTitleName?.setTextColor(chatViewHolder?.notificationMessageTitleName?.context?.resources!!.getColor(R.color.yellow_dark))

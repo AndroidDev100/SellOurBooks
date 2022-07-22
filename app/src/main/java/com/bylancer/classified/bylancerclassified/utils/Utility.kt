@@ -254,9 +254,9 @@ class Utility {
          */
         fun showSlidingProgressIndicator(context: Context) : SlidingLoader {
             return SlidingLoader(context, 40, 10,
-                    ContextCompat.getColor(context, R.color.denied_red),
-                    ContextCompat.getColor(context, R.color.denied_red),
-                    ContextCompat.getColor(context, R.color.denied_red)).apply {
+                    ContextCompat.getColor(context, R.color.colorPrimary),
+                    ContextCompat.getColor(context, R.color.colorPrimary),
+                    ContextCompat.getColor(context, R.color.colorPrimary)).apply {
                 animDuration = 1000
                 distanceToMove = 12
             }

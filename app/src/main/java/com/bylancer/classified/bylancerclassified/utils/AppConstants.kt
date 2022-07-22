@@ -50,7 +50,7 @@ class AppConstants {
         val CURRENT_VERSION = "1.0"
         const val CURRENCY_IN_LEFT= "1"
         const val PREF_FILE = "bylancer_appsgeek"
-        const val SUPPORT_EMAIL = "apps.bylancer@gmail.com"
+        const val SUPPORT_EMAIL = "contactus@sellourbooks.com"
         const val PRODUCT_LOADING_LIMIT = "16"
         const val PRODUCT_LOADING_OFFSET = 8
         const val PRODUCT_STATUS = "active"
